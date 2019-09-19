@@ -1,0 +1,25 @@
+.grid {
+  display: inline-block;
+  text-align: center;
+  height: 90vh;
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 90%;
+}
+
+.cell {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 8);
+  height: calc(100% / 8);
+  background: #4679BD;
+  margin: 0.1% 0.1% 0.1% 0.1%;
+}
+
+/* Slide technique
+
+  1. When sliding a tile from the board
+  2. Remove the last tile a.k.a tile on the opposite side
+  3. apply at the width of that tile to the first tile from where you want to slide this way the gap will be filled
+  4. place the tile on the spot and remove the margin of the first tile
+*/
