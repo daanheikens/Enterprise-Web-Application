@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-board',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoardComponent implements OnInit {
 
-  constructor() { }
+  arrowUp = faArrowUp;
+  arrowDown = faArrowDown;
+  arrowRight = faArrowRight;
+  arrowLeft = faArrowLeft;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

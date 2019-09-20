@@ -2,61 +2,49 @@
 .grid {
   display: inline-block;
   text-align: center;
-  height: 90vh;
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
+  height: 100vh;
+  width: 100%;
+}
+
+.grid-vertical {
+  display: table-cell;
+  vertical-align: middle !important;
+  height: 100vh;
+  width: 100%;
+}
+
+.cell-empty {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
 }
 
 .cell {
   position: relative;
   display: inline-block;
-  width: calc(100% / 8);
-  height: calc(100% / 8);
+  width: calc(100% / 10);
+  height: calc(100% / 10);
   background: #4679BD;
   margin: 0.1% 0.1% 0.1% 0.1%;
 }
 
-/* Arrow buttons indicate where to place a tile */
-.arrow {
-  background: url("./assets/arrow.png");
+.cell-arrow {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
+  height: calc(100% / 10);
+  margin: 0.1% 0.1% 0.1% 0.1%;
 }
 
-.arrow-top {
-
+.arrow-vertical {
+  position: relative;
+  text-align: right;
+  top: calc(50% - 16px);
 }
 
-.arrow-right {
-
-}
-
-.arrow-bottom {
-
-}
-
-.arrow-left {
-
-}
-
-.arrow:hover {
-  cursor: pointer;
-}
-
-/* Gap fill*/
-.cell-fill-gap-right {
-  margin-right: calc(100% / 8);
-}
-
-.cell-fill-gap-top {
-  margin-top: calc(100% / 8);
-}
-
-.cell-fill-gap-left {
-  margin-left: calc(100% / 8);
-}
-
-.cell-fill-gap-bottom {
-  margin-bottom: calc(100% / 8);
+.arrow-horizontal {
+  position: relative;
+  top: calc(50% - 16px);
 }
 
 /* Slide technique
