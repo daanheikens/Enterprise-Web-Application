@@ -1,4 +1,10 @@
 /* Default board styling */
+.row-boxed {
+  padding-top: 4%;
+  overflow: hidden;
+  height: 100vh;
+}
+
 .grid {
   display: inline-block;
   text-align: center;
