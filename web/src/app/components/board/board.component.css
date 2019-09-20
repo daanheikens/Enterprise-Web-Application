@@ -8,6 +8,7 @@
   text-align: center;
   height: 100vh;
   width: 100%;
+  padding-top: 3%;
 }
 
 .cell-empty {
@@ -21,8 +22,13 @@
   display: inline-block;
   width: calc(100% / 10);
   height: auto;
-  background: #4679BD;
+  background-color: #281D7D;
   margin: 0.01pt;
+}
+
+.cell-blue {
+  background-image: url("/assets/images/tile-bl.png");
+  z-index:-1
 }
 
 .cell-arrow {
@@ -30,7 +36,7 @@
   display: inline-block;
   width: calc(100% / 10);
   height: auto;
-  margin: 0.1% 0.1% 0.1% 0.1%;
+  margin: 0.01% 0.01% 0.01% 0.01%;
 }
 
 .arrow-vertical {
