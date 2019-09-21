@@ -9,7 +9,7 @@
         <div class="text-center top-controls">
           <div class="cell"></div>
           <div class="cell-arrow">
-            <fa-icon class="arrow-vertical" [icon]="arrowDown"></fa-icon>
+            <fa-icon class="arrow-vertical" [@replaceImg]=currentState (click)="changeState()" [icon]="arrowDown"></fa-icon>
           </div>
           <div class="cell"></div>
           <div class="cell-arrow">
