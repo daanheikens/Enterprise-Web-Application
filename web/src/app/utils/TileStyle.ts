@@ -1,0 +1,17 @@
+export enum TileStyle {
+  STRAIGHT   = 'tile-straight',
+  CORNER     = 'tile-corner',
+  EMPTY      = 'cell-blue',
+  BAT        = 'tile-bat',
+  BUG        = 'tile-bug',
+  DRAGON     = 'tile-dragon',
+  FLY_THING  = 'tile-fly-thing',
+  GHOST      = 'tile-ghost',
+  GHOST_UGLY = 'tile-ghost-ugly',
+  OWL        = 'tile-owl',
+  MOUSE      = 'tile-mouse',
+  SALAMANDER = 'tile-salamander',
+  SPIDER     = 'tile-spider',
+  UGLY_ASS   = 'tile-ugly-ass',
+  WITCH      = 'tile-witch',
+}
