@@ -1,62 +1,66 @@
 /* Default board styling */
+.row-boxed {
+  height: 100vh;
+}
+
 .grid {
   display: inline-block;
   text-align: center;
-  height: 90vh;
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
+  height: 100vh;
+  width: 100%;
+  padding-top: 3%;
+}
+
+.cell-empty {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
 }
 
 .cell {
   position: relative;
   display: inline-block;
-  width: calc(100% / 8);
-  height: calc(100% / 8);
-  background: #4679BD;
-  margin: 0.1% 0.1% 0.1% 0.1%;
+  width: calc(100% / 10);
+  height: auto;
+  background-color: #281D7D;
+  margin: 0.01pt;
 }
 
-/* Arrow buttons indicate where to place a tile */
-/*.arrow {
-  background: url("./assets/arrow.png");
-}*/
-
-.arrow-top {
-
+.cell-blue {
+  background-image: url("/assets/images/tile-bl.png");
+  z-index:-1
 }
 
-.arrow-right {
-
+.cell-arrow {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
+  height: auto;
+  margin: 0.01% 0.01% 0.01% 0.01%;
 }
 
-.arrow-bottom {
-
+.arrow-vertical {
+  position: relative;
+  text-align: right;
+  top: calc(50% - 16px);
 }
 
-.arrow-left {
-
+.arrow-horizontal {
+  position: relative;
+  top: calc(50% - 16px);
 }
 
-.arrow:hover {
-  cursor: pointer;
+/* Rotation classes to rotate a certain image */
+.rotated-90 {
+  transform: rotate(90deg);
 }
 
-/* Gap fill*/
-.cell-fill-gap-right {
-  margin-right: calc(100% / 8);
+.rotated-180 {
+  transform: rotate(180deg);
 }
 
-.cell-fill-gap-top {
-  margin-top: calc(100% / 8);
-}
-
-.cell-fill-gap-left {
-  margin-left: calc(100% / 8);
-}
-
-.cell-fill-gap-bottom {
-  margin-bottom: calc(100% / 8);
+.rotated-270 {
+  transform: rotate(270deg);
 }
 
 /* Slide technique
