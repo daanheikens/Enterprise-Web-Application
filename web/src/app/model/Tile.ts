@@ -1,6 +1,4 @@
-export enum WallType {
-  NoWalls = 'NoWalls'
-}
+import {WallType} from './WallType';
 
 export class Tile {
 
