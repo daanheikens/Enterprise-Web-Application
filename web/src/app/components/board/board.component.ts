@@ -24,15 +24,14 @@ export class BoardComponent implements OnInit {
     colRowLeft4: 'initial',
     colRowLeft6: 'initial',
   };
-
   public arrowUp: IconDefinition = faArrowUp;
   public arrowDown: IconDefinition = faArrowDown;
   public arrowRight: IconDefinition = faArrowRight;
   public arrowLeft: IconDefinition = faArrowLeft;
-  private enableAnimation = false;
+  private enableAnimation: boolean;
 
   public ngOnInit(): void {
-
+    this.enableAnimation = false;
   }
 
   public insertTop(column: number): void {
@@ -54,8 +53,8 @@ export class BoardComponent implements OnInit {
   /**
    * Called after the trigger is done
    */
-  public onDone($event: Event): void {
-    // Also here, we only ewant to call this when we are in the animation
+  public onDone($event: Event, position: string): void {
+    // Also here, we only want to call this when we are in the animation
     if (this.enableAnimation) {
       this.enableAnimation = false;
       // TODO @Lars here to change the image src with the data-binding This places the image on the board.
@@ -63,6 +62,8 @@ export class BoardComponent implements OnInit {
        * Example: this.board.tiles[x][y].imageSource = TileStyles.STRAIGHT
        * How to bind it to the IMG tag: <img [src]="{{board.tiles[x][y].imageSource}}"
        */
+      // Reset state to prepare for next turn
+      this.currentState[position] = 'initial';
     }
   }
 

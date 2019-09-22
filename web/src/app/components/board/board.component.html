@@ -24,98 +24,107 @@
         <div class="cell-empty"></div>
         <!-- Row 1 -->
         <img src="/assets/images/tile-corner-blue.png" class="cell"/>
-        <img [@replaceImg-top]="currentState.colTop2" (@replaceImg-top.done)="onDone($event)"
+        <img [@replaceImg-top]="currentState.colTop2"
+             (@replaceImg-top.done)="onDone($event, 'colTop2')"
              class="cell"/>
         <img src="/assets/images/tile-corner-blue-helmet.png" class="cell"/>
-        <img [@replaceImg-top]="currentState.colTop4" (@replaceImg-top.done)="onDone($event)"
+        <img [@replaceImg-top]="currentState.colTop4"
+             (@replaceImg-top.done)="onDone($event, 'colTop4')"
              class="cell"/>
         <img src="/assets/images/tile-corner-green-candle.png" class="cell"/>
-        <img [@replaceImg-top]="currentState.colTop6" (@replaceImg-top.done)="onDone($event)"
+        <img [@replaceImg-top]="currentState.colTop6"
+             (@replaceImg-top.done)="onDone($event, 'colTop6')"
              class="cell"/>
         <img src="/assets/images/tile-corner-green.png" class="cell"/>
         <div class="cell-empty"></div>
         <div class="cell-arrow text-right">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-right]="currentState.colRowRight2" (@replaceImg-right.done)="onDone($event)"
+                   [@replaceImg-right]="currentState.colRowRight2"
+                   (@replaceImg-right.done)="onDone($event, 'colRowRight2')"
                    [icon]="arrowRight" [size]="'2x'" (click)="insertRight(2)"></fa-icon>
         </div>
         <!--  Row 2-->
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-corner.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <div class="cell-arrow text-left">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-left]="currentState.colRowLeft2" (@replaceImg-left.done)="onDone($event)"
+                   [@replaceImg-left]="currentState.colRowLeft2"
+                   (@replaceImg-left.done)="onDone($event, 'colRowLeft2')"
                    [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(2)"></fa-icon>
         </div>
         <div class="cell-empty"></div>
         <!--  Row 3-->
         <img src="/assets/images/tile-corner-blue-sword.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-straight.png" class="cell"/>
         <img src="/assets/images/tile-corner-blue-gem.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-green-chest.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-green-ring.png" class="cell"/>
         <div class="cell-empty"></div>
         <div class="cell-arrow text-right">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-right]="currentState.colRowRight4" (@replaceImg-right.done)="onDone($event)"
+                   [@replaceImg-right]="currentState.colRowRight4"
+                   (@replaceImg-right.done)="onDone($event, 'colRowRight4')"
                    [icon]="arrowRight" [size]="'2x'" (click)="insertRight(4)"></fa-icon>
         </div>
         <!--  Row 4-->
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-witch.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <div class="cell-arrow text-left">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-left]="currentState.colRowLeft4" (@replaceImg-left.done)="onDone($event)"
+                   [@replaceImg-left]="currentState.colRowLeft4"
+                   (@replaceImg-left.done)="onDone($event, 'colRowLeft4')"
                    [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(4)"></fa-icon>
         </div>
         <div class="cell-empty"></div>
         <!--  Row 5-->
         <img src="/assets/images/tile-corner-yellow-skull.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-spider.png" class="cell"/>
         <img src="/assets/images/tile-corner-yellow-keys.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-red-crown.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-red-map.png" class="cell"/>
         <div class="cell-empty"></div>
         <div class="cell-arrow text-right">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-right]="currentState.colRowRight6" (@replaceImg-right.done)="onDone($event)"
+                   [@replaceImg-right]="currentState.colRowRight6"
+                   (@replaceImg-right.done)="onDone($event, 'colRowRight6')"
                    [icon]="arrowRight" [size]="'2x'" (click)="insertRight(6)"></fa-icon>
         </div>
         <!--  Row 6-->
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-salamander.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <div class="cell-arrow text-left">
           <fa-icon class="arrow-horizontal"
-                   [@replaceImg-left]="currentState.colRowLeft6" (@replaceImg-left.done)="onDone($event)"
+                   [@replaceImg-left]="currentState.colRowLeft6"
+                   (@replaceImg-left.done)="onDone($event, 'colRowLeft6')"
                    [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(6)"></fa-icon>
         </div>
         <div class="cell-empty"></div>
         <!--  Row 7-->
         <img src="/assets/images/tile-corner-yellow.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-straight.png" class="cell"/>
         <img src="/assets/images/tile-corner-yellow-gold.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-red-book.png" class="cell"/>
-        <img src="/assets/images/tile-bl.png" class="cell cell-blue"/>
+        <img src="/assets/images/tile-bl.png" class="cell"/>
         <img src="/assets/images/tile-corner-red.png" class="cell"/>
         <div class="cell-empty"></div>
         <!--   Bottom controls   -->
@@ -123,19 +132,22 @@
           <div class="cell"></div>
           <div class="cell-arrow" (click)="insertBottom(2)">
             <fa-icon class="arrow-horizontal"
-                     [@replaceImg-bottom]="currentState.colBottom2" (@replaceImg-bottom.done)="onDone($event)"
+                     [@replaceImg-bottom]="currentState.colBottom2"
+                     (@replaceImg-bottom.done)="onDone($event, 'colBottom2')"
                      [icon]="arrowUp" [size]="'2x'"></fa-icon>
           </div>
           <div class="cell"></div>
           <div class="cell-arrow" (click)="insertBottom(4)">
             <fa-icon class="arrow-horizontal"
-                     [@replaceImg-bottom]="currentState.colBottom4" (@replaceImg-bottom.done)="onDone($event)"
+                     [@replaceImg-bottom]="currentState.colBottom4"
+                     (@replaceImg-bottom.done)="onDone($event, 'colBottom4')"
                      [icon]="arrowUp" [size]="'2x'"></fa-icon>
           </div>
           <div class="cell"></div>
           <div class="cell-arrow" (click)="insertBottom(6)">
             <fa-icon class="arrow-horizontal"
-                     [@replaceImg-bottom]="currentState.colBottom6" (@replaceImg-bottom.done)="onDone($event)"
+                     [@replaceImg-bottom]="currentState.colBottom6"
+                     (@replaceImg-bottom.done)="onDone($event, 'colBottom6')"
                      [icon]="arrowUp" [size]="'2x'"></fa-icon>
           </div>
           <div class="cell"></div>
