@@ -39,6 +39,11 @@
   margin: 0.01% 0.01% 0.01% 0.01%;
 }
 
+.cell-arrow:hover {
+  cursor: pointer;
+  /* add a small animation here to enlargen the icon in order to provide proper user feedback  */
+}
+
 .arrow-vertical {
   position: relative;
   text-align: right;
@@ -50,7 +55,7 @@
   top: calc(50% - 16px);
 }
 
-/* Rotation classes to rotate a certain image */
+/* Rotation classes to rotate a certain image (can preobably be replaced by angular animations later on */
 .rotated-90 {
   transform: rotate(90deg);
 }
@@ -63,7 +68,7 @@
   transform: rotate(270deg);
 }
 
-/* Slide technique
+/* Slide technique (Will be replaced by angular animations probably)
 
   1. When sliding a tile from the board
   2. Remove the last tile a.k.a tile on the opposite side

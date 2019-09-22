@@ -1,28 +1,77 @@
 import {Component, OnInit} from '@angular/core';
-import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp} from '@fortawesome/free-solid-svg-icons';
-import {TestAnimation} from '../animations/TestAnimation';
+import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {TileAnimations} from '../animations/TileAnimations';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css'],
-  animations: [TestAnimation]
+  animations: [TileAnimations]
 })
 export class BoardComponent implements OnInit {
 
-  currentState = 'initial';
-  arrowUp = faArrowUp;
-  arrowDown = faArrowDown;
-  arrowRight = faArrowRight;
-  arrowLeft = faArrowLeft;
+  public currentState = {
+    colTop2: 'initial',
+    colTop4: 'initial',
+    colTop6: 'initial',
+    colBottom2: 'initial',
+    colBottom4: 'initial',
+    colBottom6: 'initial',
+    colRowRight2: 'initial',
+    colRowRight4: 'initial',
+    colRowRight6: 'initial',
+    colRowLeft2: 'initial',
+    colRowLeft4: 'initial',
+    colRowLeft6: 'initial',
+  };
 
-  constructor() {
+  public arrowUp: IconDefinition = faArrowUp;
+  public arrowDown: IconDefinition = faArrowDown;
+  public arrowRight: IconDefinition = faArrowRight;
+  public arrowLeft: IconDefinition = faArrowLeft;
+  private enableAnimation = false;
+
+  public ngOnInit(): void {
+
   }
 
-  ngOnInit() {
+  public insertTop(column: number): void {
+    this.changeState('colTop' + column);
   }
 
-  changeState() {
-    this.currentState = this.currentState === 'initial' ? 'final' : 'initial';
+  public insertRight(row: number): void {
+    this.changeState('rowRight' + row);
+  }
+
+  public insertBottom(column: number): void {
+    this.changeState('colBottom' + column);
+  }
+
+  public insertLeft(row: number): void {
+    this.changeState('rowLeft' + row);
+  }
+
+  /**
+   * Called after the trigger is done
+   */
+  public onDone($event: Event): void {
+    // Also here, we only ewant to call this when we are in the animation
+    if (this.enableAnimation) {
+      this.enableAnimation = false;
+      // TODO @Lars here to change the image src with the data-binding This places the image on the board.
+      /**
+       * Example: this.board.tiles[x][y].imageSource = TileStyles.STRAIGHT
+       * How to bind it to the IMG tag: <img [src]="{{board.tiles[x][y].imageSource}}"
+       */
+    }
+  }
+
+  private changeState(position: string): void {
+    // this prevents the animation from being cancelled by any other animation
+    if (!this.enableAnimation) {
+      this.enableAnimation = true;
+      // This is the state transfer, it moves from initial to final
+      this.currentState[position] = this.currentState[position] === 'initial' ? 'final' : 'initial';
+    }
   }
 }

@@ -2,8 +2,10 @@
 
 ### 1. Setup Angular CLI runner
 ![Alt text](images/Angular-CLI-config.png?raw=true "Title")
+
 ### 2. Setup Spring boot runner
 ![Alt text](images/SpringBoot-config.png?raw=true "Title")
+
 ### 3. How to push database changes (migrations)
 
 1. Create the .SQL file which contains the changes
@@ -24,3 +26,11 @@ and change the name init to a desired name. Example: v2.0__accounts.sql
 6. Schematic generated
 
 Note: This only works within the *app* folder. This due to the NgModule dependency.
+
+### 5. How to add a new NPM package
+
+1. go to the ewa/web/src directory
+2. bottom of the IntelliJ IDE, you wil find a 'terminal' tab. Click it
+3. run the command npm install PACKAGE_NAME --save
+4. package will be installed and added to the package.json file thus it gets automatically installed
+when starting the webserver.
