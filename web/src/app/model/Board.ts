@@ -2,6 +2,11 @@ import {Tile} from './Tile';
 import {log} from 'util';
 
 export class Board {
+
+  constructor(matrix: Tile[][] ) {
+    this.tiles = matrix;
+  }
+
   public tiles: Tile[][] = [];
 
   public placeableTile: Tile;

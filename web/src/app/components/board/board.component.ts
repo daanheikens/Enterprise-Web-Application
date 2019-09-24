@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
+import {Board} from '../../model/Board';
+import {BoardFactory} from '../../services/boardFactory';
 
 @Component({
   selector: 'app-board',
@@ -30,8 +32,11 @@ export class BoardComponent implements OnInit {
   public arrowLeft: IconDefinition = faArrowLeft;
   private enableAnimation: boolean;
 
+  public board: Board;
+
   public ngOnInit(): void {
     this.enableAnimation = false;
+    this.board = new BoardFactory().CreateBoardTemp();
   }
 
   public insertTop(column: number): void {
