@@ -1,5 +1,6 @@
 import {WallType} from './WallType';
 import {TileStyle} from '../utils/TileStyle';
+import {TileRotation} from './TileRotation';
 
 export class Tile {
 
@@ -19,4 +20,5 @@ export class Tile {
   public rightWall: boolean;
   public leftWall: boolean;
   public imgSrc: TileStyle;
+  public tileRotation: TileRotation = TileRotation.Zero;
 }

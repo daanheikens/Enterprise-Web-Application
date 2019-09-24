@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
 import {BoardFactory} from '../../services/boardFactory';
+import {Key} from 'selenium-webdriver';
 
 @Component({
   selector: 'app-board',
@@ -41,18 +42,23 @@ export class BoardComponent implements OnInit {
 
   public insertTop(column: number): void {
     this.changeState('colTop' + column);
+    console.log('insertTop; calling insertTop with column ' + column)
+    this.board.insertTop(column - 1);
   }
 
   public insertRight(row: number): void {
     this.changeState('rowRight' + row);
+    this.board.insertLeft(row - 1);
   }
 
   public insertBottom(column: number): void {
     this.changeState('colBottom' + column);
+    this.board.insertBottom(column - 1);
   }
 
   public insertLeft(row: number): void {
     this.changeState('rowLeft' + row);
+    this.board.insertRight(row - 1);
   }
 
   /**
@@ -62,12 +68,7 @@ export class BoardComponent implements OnInit {
     // Also here, we only want to call this when we are in the animation
     if (this.enableAnimation) {
       this.enableAnimation = false;
-      // TODO @Lars here to change the image src with the data-binding This places the image on the board.
-      /**
-       * Example: this.board.tiles[x][y].imageSource = TileStyles.STRAIGHT
-       * How to bind it to the IMG tag: <img [src]="{{board.tiles[x][y].imageSource}}"
-       */
-      // Reset state to prepare for next turn
+      // Reset state to prepare for next tur
       this.currentState[position] = 'initial';
     }
   }
@@ -80,4 +81,14 @@ export class BoardComponent implements OnInit {
       this.currentState[position] = this.currentState[position] === 'initial' ? 'final' : 'initial';
     }
   }
+
+  @HostListener('window:keyup', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    console.log('handleKeybaordEvent; alt key pressed ' + event.key)
+    if (event.key === 'r') {
+      console.log('Found r key rotating!')
+      this.board.rotatePlacableTile();
+    }
+  }
+
 }
