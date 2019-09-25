@@ -1,0 +1,50 @@
+.navbar{
+  max-height: 20%;
+  background-color:#281D7D !important;
+  justify-content: center;
+}
+
+.tile{
+  width: 30%;
+  height:30%;
+}
+
+.kaart{
+  margin-left: -40px;
+
+  width: auto;
+  height: 130px;
+  z-index:999;
+}
+
+.kaart-achterkant{
+  margin-left: 60px;
+  width: auto;
+  height: 130px;
+
+}
+
+@media only screen and (max-width: 1080px){
+  .navbar{
+    max-height: 15%;
+
+  }
+  .tile{
+    width: 25%;
+    height:25%;
+  }
+
+  .kaart{
+    margin-left: -40px;
+    width: auto;
+    height: 110px;
+
+  }
+
+  .kaart-achterkant{
+    margin-left: 60px;
+    width: auto;
+    height: 110px;
+
+  }
+}

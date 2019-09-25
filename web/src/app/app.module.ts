@@ -4,12 +4,14 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {BoardComponent} from './components/board/board.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {BottombarComponent} from './components/bottombar/bottombar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardComponent
+    BoardComponent,
+    BottombarComponent
   ],
   imports: [
     BrowserModule,
