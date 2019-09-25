@@ -1,0 +1,110 @@
+/* Tile Rotations */
+.RotationZero {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.RotationNinety {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.RotationOneEighty {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.RotationTwoHundredSeventy {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+
+/* Default board styling */
+.row-boxed {
+  height: 100vh;
+}
+
+.grid {
+  display: inline-block;
+  text-align: center;
+  height: 100vh;
+  width: 100%;
+  padding-top: 3%;
+}
+
+.cell-empty {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
+}
+
+.cell {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
+  height: auto;
+  background-color: #281D7D;
+  margin: 0.01pt;
+}
+
+.cell-blue {
+  background-image: url("/assets/images/tile-bl.png");
+  z-index:-1
+}
+
+.cell-arrow {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 10);
+  height: auto;
+  margin: 0.01% 0.01% 0.01% 0.01%;
+}
+
+.cell-arrow:hover {
+  cursor: pointer;
+  /* add a small animation here to enlargen the icon in order to provide proper user feedback  */
+}
+
+.arrow-vertical {
+  position: relative;
+  text-align: right;
+  top: calc(50% - 16px);
+}
+
+.arrow-horizontal {
+  position: relative;
+  top: calc(50% - 16px);
+}
+
+/* Rotation classes to rotate a certain image (can preobably be replaced by angular animations later on */
+.rotated-90 {
+  transform: rotate(90deg);
+}
+
+.rotated-180 {
+  transform: rotate(180deg);
+}
+
+.rotated-270 {
+  transform: rotate(270deg);
+}
+
+/* Slide technique (Will be replaced by angular animations probably)
+
+  1. When sliding a tile from the board
+  2. Remove the last tile a.k.a tile on the opposite side
+  3. apply at the width of that tile to the first tile from where you want to slide this way the gap will be filled
+  4. place the tile on the spot and remove the margin of the first tile
+*/
