@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Tile} from '../../model/Tile';
 
 @Component({
   selector: 'app-bottombar',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BottombarComponent implements OnInit {
 
+  @Input()
+  public placeableTile: Tile;
+
   constructor() { }
 
   ngOnInit() {
   }
-
 }
