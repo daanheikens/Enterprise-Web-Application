@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List listUser() {
-        return userService.findAll();
+    public List<User> listUser() {
+       return userService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public User findOne(@PathVariable long id) {
+    public User findOne(@PathVariable Long id) {
         return userService.findOne(id);
     }
 
@@ -37,6 +37,6 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable(value = "id") Long id) {
-        userService.delete(id);
+        userService.deleteById(id);
     }
 }
