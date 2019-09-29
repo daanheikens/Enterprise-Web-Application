@@ -5,7 +5,13 @@ import {AppComponent} from './app.component';
 import {BoardComponent} from './components/board/board.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {BottombarComponent} from './components/bottombar/bottombar.component';
-import { GameComponent } from './components/game/game.component';
+import {GameComponent} from './components/game/game.component';
+import {LoginComponent} from './components/login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
+import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
+import {AppRoutingModule} from './app-routing.module';
 
 
 @NgModule({
@@ -13,14 +19,21 @@ import { GameComponent } from './components/game/game.component';
     AppComponent,
     BoardComponent,
     GameComponent,
-    BottombarComponent
+    BottombarComponent,
+    LoginComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
