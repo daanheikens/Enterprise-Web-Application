@@ -3,9 +3,11 @@ import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {GameComponent} from './components/game/game.component';
 import {AuthGuard} from './auth/auth.guard';
+import {RegisterComponent} from './components/register/register.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'game', component: GameComponent, canActivate: [AuthGuard]},
   {path: '**', redirectTo: 'login'}
 ];

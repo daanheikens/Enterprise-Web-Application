@@ -12,6 +12,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
 import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
 import {AppRoutingModule} from './app-routing.module';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import {AppRoutingModule} from './app-routing.module';
     BoardComponent,
     GameComponent,
     BottombarComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     AppRoutingModule,
