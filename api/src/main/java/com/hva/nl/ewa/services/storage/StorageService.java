@@ -52,6 +52,6 @@ public class StorageService {
             throw new StorageException("Failed to store file " + filename, e);
         }
 
-        return filename;
+        return "/resources/uploads/" + filename;
     }
 }

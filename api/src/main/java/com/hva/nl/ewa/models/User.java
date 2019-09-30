@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @NotNull
     private String email;
     @Column
-    @Null
     private String image;
 
     public void setId(long id) {
