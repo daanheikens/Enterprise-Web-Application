@@ -6,16 +6,10 @@ import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
 
-  }
-
-  register(body: HttpParams) {
-    const headers = {
-      'Content-type': 'application/x-www-form-urlencoded'
-    };
-
-    return this.http.post<User>(`${environment.apiUrl}/user/create`, body, {headers})
+  register(body: FormData) {
+    return this.http.post<User>(environment.registerUrl, body)
       .pipe(map(user => {
         return user;
       }));

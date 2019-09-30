@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {first} from 'rxjs/operators';
 import {HttpParams} from '@angular/common/http';
+import {NgAnalyzedFile} from '@angular/compiler';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,8 @@ export class RegisterComponent implements OnInit {
   returnUrl: string;
   error = '';
 
+  private selectedFiles: FileList;
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -31,7 +34,8 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      email: ['', Validators.required, Validators.email]
+      email: ['', Validators.required, Validators.email],
+      image: ['', Validators.required]
     });
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/game';
@@ -41,6 +45,10 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -48,10 +56,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const body = new HttpParams()
-      .set('username', this.formControls.username.value)
-      .set('password', this.formControls.password.value)
-      .set('email', this.formControls.email.value);
+    const body = new FormData();
+    body.set('username', this.formControls.username.value);
+    body.set('password', this.formControls.password.value);
+    body.set('email', this.formControls.password.value);
+    body.set('file', this.selectedFiles.item(0));
 
     this.loading = true;
     this.userService.register(body)

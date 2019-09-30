@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  registerUrl: 'http://localhost:8080/register',
   apiUrl: 'http://localhost:8080/api',
   authUrl: 'http://localhost:8080/oauth/token',
   clientId: 'ewa_api',

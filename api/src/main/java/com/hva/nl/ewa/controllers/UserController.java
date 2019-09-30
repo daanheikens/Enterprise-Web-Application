@@ -3,25 +3,26 @@ package com.hva.nl.ewa.controllers;
 import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@PreAuthorize("#oauth2.hasAnyScope('player', 'admin')")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<User> listUser() {
        return userService.findAll();
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public User create(@RequestBody User user) {
-        return userService.save(user);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

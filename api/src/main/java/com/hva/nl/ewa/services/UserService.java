@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public User loadUserByUsername(String s) {
