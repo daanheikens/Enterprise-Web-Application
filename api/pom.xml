@@ -13,7 +13,6 @@
     <version>0.0.2</version>
     <name>ewa</name>
     <description>Enterprise Web Application</description>
-
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -85,5 +84,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

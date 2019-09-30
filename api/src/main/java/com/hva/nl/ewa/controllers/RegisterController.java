@@ -23,7 +23,6 @@ public class RegisterController {
 
     private final PasswordEncoder encoder;
 
-
     @Autowired
     public RegisterController(UserService userService, StorageService storageService, PasswordEncoder encoder) {
         this.userService = userService;
