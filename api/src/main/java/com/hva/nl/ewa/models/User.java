@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 
@@ -15,17 +14,27 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private long id;
+
     @Column
     @NotNull
+    private String screenName;
+
+    @Column
+    @NotNull
+    @JsonIgnore
     private String username;
+
     @Column
     @NotNull
     @JsonIgnore
     @Size(min = 5, max = 80,message = "{password.size}")
     private String password;
+
     @Column
     @NotNull
+    @JsonIgnore
     private String email;
+
     @Column
     private String image;
 
@@ -35,6 +44,14 @@ public class User implements UserDetails {
 
     public long getId() {
         return id;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
     }
 
     public void setUsername(String username) {

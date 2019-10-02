@@ -31,12 +31,14 @@ public class RegisterController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> create(@RequestParam("username") String username,
+    public ResponseEntity<User> create(@RequestParam("screenName") String screenName,
+                                       @RequestParam("username") String username,
                                        @RequestParam("password") String password,
                                        @RequestParam("email") String email,
                                        @RequestParam("file") MultipartFile file) throws StorageException {
 
         User user = new User();
+        user.setScreenName(screenName);
         user.setUsername(username);
         user.setPassword(this.encoder.encode(password));
         user.setEmail(email);

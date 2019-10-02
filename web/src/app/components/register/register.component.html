@@ -4,6 +4,14 @@
     <div class="card-body">
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
+          <label for="screenName">Screen name</label>
+          <input type="text" formControlName="screenName" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && formControls.screenName.errors }"/>
+          <div *ngIf="submitted && formControls.screenName.errors" class="invalid-feedback">
+            <div *ngIf="formControls.screenName.errors.required">Screen name is required</div>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="username">Username</label>
           <input type="text" formControlName="username" class="form-control"
                  [ngClass]="{ 'is-invalid': submitted && formControls.username.errors }"/>
