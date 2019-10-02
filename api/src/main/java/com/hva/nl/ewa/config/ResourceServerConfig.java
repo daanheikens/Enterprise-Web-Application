@@ -1,11 +1,16 @@
 package com.hva.nl.ewa.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+
+import java.util.Properties;
 
 @Configuration
 @EnableResourceServer
@@ -27,5 +32,24 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/api/**").authenticated();
+    }
+
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername("ii");
+        mailSender.setPassword("ii");
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        // Set to true if mail fails to send and watch the log
+        props.put("mail.debug", "false");
+
+        return mailSender;
     }
 }

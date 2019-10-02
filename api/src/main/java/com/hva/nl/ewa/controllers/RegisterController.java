@@ -2,6 +2,7 @@ package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.exceptions.StorageException;
 import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.EmailService;
 import com.hva.nl.ewa.services.storage.StorageService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,22 @@ public class RegisterController {
 
     private final UserService userService;
 
+    private final EmailService emailService;
+
     private final StorageService storageService;
 
     private final PasswordEncoder encoder;
 
     @Autowired
-    public RegisterController(UserService userService, StorageService storageService, PasswordEncoder encoder) {
+    public RegisterController(UserService userService,
+                              StorageService storageService,
+                              PasswordEncoder encoder,
+                              EmailService emailService
+    ) {
         this.userService = userService;
         this.storageService = storageService;
         this.encoder = encoder;
+        this.emailService = emailService;
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +53,7 @@ public class RegisterController {
         user.setImage(this.storageService.uploadFile(file));
         // We must do this to omit the password
         user = this.userService.save(user);
-
+        this.emailService.sendMail("d.heikens@hotmail.com", "joost@joost.joost", "Test");
         return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.CREATED);
     }
 }
