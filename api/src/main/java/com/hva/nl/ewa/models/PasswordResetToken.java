@@ -1,17 +1,17 @@
 package com.hva.nl.ewa.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 public class PasswordResetToken {
 
-    private static final int EXPIRATION = 60 * 24;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
