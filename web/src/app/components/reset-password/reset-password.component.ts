@@ -19,7 +19,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   public submitted = false;
   public error = '';
   public success = '';
-  private subscribedParamaters: Subscription;
+  private subscribedParameters: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,13 +29,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.subscribedParamaters.unsubscribe();
+    this.subscribedParameters.unsubscribe();
   }
 
   ngOnInit(): void {
     this.resetPasswordForm = new ResetPasswordFormFactory().createForm();
 
-    this.subscribedParamaters = this.activatedRoute.queryParams.subscribe(params => {
+    this.subscribedParameters = this.activatedRoute.queryParams.subscribe(params => {
       this.formControls['token'].setValue(params['token']);
     });
   }
@@ -44,7 +44,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     return this.resetPasswordForm.controls;
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.submitted = true;
 
     if (this.resetPasswordForm.invalid) {

@@ -16,7 +16,7 @@ export class TokenGuard implements CanActivate {
     this.router.navigate(['/login'])
       .then(r => {
         return false;
-      }).catch(reason => {
+      }).catch(r => {
       return false;
     });
   }

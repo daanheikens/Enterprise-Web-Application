@@ -39,11 +39,11 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  selectFile(event) {
+  public selectFile(event) {
     this.selectedFiles = event.target.files;
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.submitted = true;
 
     if (this.registerForm.invalid) {

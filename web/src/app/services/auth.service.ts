@@ -19,7 +19,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(body: HttpParams) {
+  public login(body: HttpParams): Observable<User> {
     const headers = {
       'Authorization': 'Basic ' + btoa(environment.clientId + ':' + environment.clientSecret),
       'Content-type': 'application/x-www-form-urlencoded'
@@ -33,7 +33,7 @@ export class AuthService {
       }));
   }
 
-  logout() {
+  public logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
