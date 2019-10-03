@@ -23,7 +23,7 @@
         </div>
         <div class="cell-empty"></div>
         <!-- Row 1 -->
-        <img src="{{board.tiles[0][0].imgSrc}}" class="cell {{board.tiles[0][1].tileRotation}}"/>
+        <img src="{{board.tiles[0][0].imgSrc}}" class="cell {{board.tiles[0][0].tileRotation}}"/>
         <img src="{{board.tiles[0][1].imgSrc}}" [@replaceImg-top]="currentState.colTop2"
              (@replaceImg-top.done)="onDone($event, 'colTop2')"
              class="cell {{board.tiles[0][1].tileRotation}}"/>
