@@ -5,6 +5,7 @@ import {UserService} from '../../services/user.service';
 import {first} from 'rxjs/operators';
 import {HttpParams} from '@angular/common/http';
 import {NgAnalyzedFile} from '@angular/compiler';
+import {RegisterFormFactory} from '../../forms/RegisterFormFactory';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,6 @@ export class RegisterComponent implements OnInit {
   private selectedFiles: FileList;
 
   constructor(
-    private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService
@@ -31,14 +31,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      screenName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      email: ['', Validators.compose([Validators.email, Validators.required])],
-      image: ['', Validators.required]
-    });
-
+    this.registerForm = new RegisterFormFactory().createForm();
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/game';
   }
 

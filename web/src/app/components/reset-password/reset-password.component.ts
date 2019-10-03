@@ -5,6 +5,7 @@ import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {ResetPasswordFormFactory} from '../../forms/ResetPasswordFormFactory';
 
 @Component({
   selector: 'app-reset-password',
@@ -24,6 +25,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private passwordResetService: PasswordResetService,
     private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -31,10 +33,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.resetPasswordForm = this.formBuilder.group({
-      newPassword: ['', Validators.compose([Validators.minLength(6), Validators.required])],
-      token: ['', Validators.required],
-    });
+    this.resetPasswordForm = new ResetPasswordFormFactory().createForm();
 
     this.subscribedParamaters = this.activatedRoute.queryParams.subscribe(params => {
       this.formControls['token'].setValue(params['token']);
@@ -49,6 +48,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     if (this.resetPasswordForm.invalid) {
+      this.error = "An error has occured, contact an Administrator";
       return;
     }
 
@@ -63,6 +63,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         data => {
           this.success = 'Password reset e-mail has been send';
           this.loading = false;
+          return this.router.navigate(['/login'])
         },
         error => {
           this.error = error;

@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {HttpParams} from '@angular/common/http';
+import {LoginFormFactory} from '../../forms/LoginFormFactory';
 
 @Component({
   selector: 'app-login',
@@ -30,11 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-
+    this.loginForm = new LoginFormFactory().createForm();
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/game';
   }
 

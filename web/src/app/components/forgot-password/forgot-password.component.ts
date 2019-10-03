@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PasswordResetService} from '../../services/password-reset.service';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
+import {ForgotPasswordFormFactory} from '../../forms/ForgotPasswordFormFactory';
 
 @Component({
   selector: 'app-forgot-password',
@@ -23,9 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.forgotPasswordForm = this.formBuilder.group({
-      email: ['', Validators.required]
-    });
+    this.forgotPasswordForm = new ForgotPasswordFormFactory().createForm();
   }
 
   get formControls() {
@@ -55,5 +54,7 @@ export class ForgotPasswordComponent implements OnInit {
           this.success = 'Password reset e-mail has been send';
           this.loading = false;
         });
+
+    this.forgotPasswordForm.reset();
   }
 }
