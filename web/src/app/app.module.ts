@@ -13,6 +13,8 @@ import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
 import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
 import {AppRoutingModule} from './app-routing.module';
 import { RegisterComponent } from './components/register/register.component';
+import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
+import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { RegisterComponent } from './components/register/register.component';
     GameComponent,
     BottombarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ResetpasswordComponent,
+    ForgotpasswordComponent
   ],
   imports: [
     AppRoutingModule,
