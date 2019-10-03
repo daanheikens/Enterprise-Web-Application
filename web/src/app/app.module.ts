@@ -12,9 +12,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
 import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
 import {AppRoutingModule} from './app-routing.module';
-import { RegisterComponent } from './components/register/register.component';
-import { ResetpasswordComponent } from './components/resetpassword/resetpassword.component';
-import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassword.component';
+import {RegisterComponent} from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -25,8 +25,8 @@ import { ForgotpasswordComponent } from './components/forgotpassword/forgotpassw
     BottombarComponent,
     LoginComponent,
     RegisterComponent,
-    ResetpasswordComponent,
-    ForgotpasswordComponent
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     AppRoutingModule,

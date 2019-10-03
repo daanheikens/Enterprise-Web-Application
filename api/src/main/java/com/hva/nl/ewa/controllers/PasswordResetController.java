@@ -60,6 +60,7 @@ public class PasswordResetController {
         User user = passwordResetToken.getUser();
         user.setPassword(this.passwordEncoder.encode(newPassword));
         this.userService.save(user);
+        this.passwordResetTokenService.delete(passwordResetToken);
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }

@@ -27,4 +27,8 @@ public class PasswordResetTokenService {
     public PasswordResetToken findOne(String token) {
         return this.passwordResetTokenRepository.findByToken(token).orElse(null);
     }
+
+    public void delete(PasswordResetToken passwordResetToken) {
+        this.passwordResetTokenRepository.delete(passwordResetToken);
+    }
 }
