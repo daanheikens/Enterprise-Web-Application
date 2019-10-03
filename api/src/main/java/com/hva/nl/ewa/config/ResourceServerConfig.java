@@ -31,6 +31,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/reset-password").permitAll()
                 .antMatchers("/api/**").authenticated();
     }
 
@@ -40,8 +41,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("ii");
-        mailSender.setPassword("ii");
+        mailSender.setUsername("JoostDeTester12345@gmail.com");
+        mailSender.setPassword("7JU35bF6QKz$");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

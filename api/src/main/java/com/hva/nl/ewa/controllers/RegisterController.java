@@ -2,7 +2,6 @@ package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.exceptions.StorageException;
 import com.hva.nl.ewa.models.User;
-import com.hva.nl.ewa.services.EmailService;
 import com.hva.nl.ewa.services.storage.StorageService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/register")
+@RequestMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegisterController {
 
     private final UserService userService;
-
-    private final EmailService emailService;
 
     private final StorageService storageService;
 
@@ -29,16 +26,14 @@ public class RegisterController {
     @Autowired
     public RegisterController(UserService userService,
                               StorageService storageService,
-                              PasswordEncoder encoder,
-                              EmailService emailService
+                              PasswordEncoder encoder
     ) {
         this.userService = userService;
         this.storageService = storageService;
         this.encoder = encoder;
-        this.emailService = emailService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<User> create(@RequestParam("screenName") String screenName,
                                        @RequestParam("username") String username,
                                        @RequestParam("password") String password,
@@ -53,7 +48,6 @@ public class RegisterController {
         user.setImage(this.storageService.uploadFile(file));
         // We must do this to omit the password
         user = this.userService.save(user);
-        this.emailService.sendMail("d.heikens@hotmail.com", "joost@joost.joost", "Test");
         return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.CREATED);
     }
 }
