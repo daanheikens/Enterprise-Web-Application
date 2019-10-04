@@ -15,6 +15,6 @@ export abstract class AbstractFormFactory implements FormFactory {
     this.formBuilder = new FormBuilder();
   }
 
-  /** This is (apparently) neccesairy since TypeScript does require that abstract classes ALSO implement the interface methods. */
+  /** This is (apparently) neccesary since TypeScript does require that abstract classes ALSO implement the interface methods. */
   public abstract createForm(): FormGroup;
 }

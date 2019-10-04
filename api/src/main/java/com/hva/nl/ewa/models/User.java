@@ -1,11 +1,9 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
-import javax.validation.Constraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -36,6 +34,14 @@ public class User implements UserDetails {
     @NotNull
     @JsonIgnore
     private String email;
+
+    @Column
+    @NotNull
+    private double latitude;
+
+    @Column
+    @NotNull
+    private double longitude;
 
     @Column
     private String image;
@@ -70,6 +76,22 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getImage() {

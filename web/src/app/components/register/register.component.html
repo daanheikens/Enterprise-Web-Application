@@ -37,6 +37,30 @@
           </div>
         </div>
         <div class="form-group">
+          <label for="street">Street</label>
+          <input type="text" formControlName="street" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && formControls.street.errors }"/>
+          <div *ngIf="submitted && formControls.street.errors" class="invalid-feedback">
+            <div *ngIf="formControls.street.errors.required">Street is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="number">Housenumber (With addition)</label>
+          <input type="text" formControlName="number" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && formControls.number.errors }"/>
+          <div *ngIf="submitted && formControls.number.errors" class="invalid-feedback">
+            <div *ngIf="formControls.number.errors.required">Housenumber is required</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" formControlName="city" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && formControls.city.errors }"/>
+          <div *ngIf="submitted && formControls.city.errors" class="invalid-feedback">
+            <div *ngIf="formControls.city.errors.required">City is required</div>
+          </div>
+        </div>
+        <div class="form-group">
           <label for="image">Image</label>
           <input (change)="selectFile($event)" type="file" formControlName="image" class="form-control"
                  [ngClass]="{ 'is-invalid': submitted && formControls.image.errors }"/>

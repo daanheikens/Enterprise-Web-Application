@@ -16,7 +16,16 @@
     <properties>
         <java.version>11</java.version>
     </properties>
-
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -80,6 +89,13 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>2.1.8.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.byteowls/jopencage -->
+        <dependency>
+            <groupId>com.byteowls</groupId>
+            <artifactId>jopencage</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

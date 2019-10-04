@@ -1,7 +1,9 @@
 package com.hva.nl.ewa.controllers;
 
+import com.byteowls.jopencage.model.JOpenCageLatLng;
 import com.hva.nl.ewa.exceptions.StorageException;
 import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.GeocodingService;
 import com.hva.nl.ewa.services.storage.StorageService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,17 @@ public class RegisterController {
 
     private final PasswordEncoder encoder;
 
+    private final GeocodingService geocodingService;
+
     @Autowired
     public RegisterController(UserService userService,
                               StorageService storageService,
+                              GeocodingService geocodingService,
                               PasswordEncoder encoder
     ) {
         this.userService = userService;
         this.storageService = storageService;
+        this.geocodingService = geocodingService;
         this.encoder = encoder;
     }
 
@@ -38,16 +44,20 @@ public class RegisterController {
                                        @RequestParam("username") String username,
                                        @RequestParam("password") String password,
                                        @RequestParam("email") String email,
-                                       @RequestParam("file") MultipartFile file) throws StorageException {
-
+                                       @RequestParam("street") String street,
+                                       @RequestParam("number") String number,
+                                       @RequestParam("city") String city,
+                                       @RequestParam("file") MultipartFile file
+    ) throws StorageException {
         User user = new User();
         user.setScreenName(screenName);
         user.setUsername(username);
         user.setPassword(this.encoder.encode(password));
         user.setEmail(email);
+        JOpenCageLatLng coordinates = this.geocodingService.addressToCoordinates(street, number, city);
+        user.setLatitude(coordinates.getLat());
+        user.setLongitude(coordinates.getLng());
         user.setImage(this.storageService.uploadFile(file));
-        // We must do this to omit the password
-        user = this.userService.save(user);
-        return new ResponseEntity<>(user, new HttpHeaders(), HttpStatus.CREATED);
+        return new ResponseEntity<>(this.userService.save(user), new HttpHeaders(), HttpStatus.CREATED);
     }
 }

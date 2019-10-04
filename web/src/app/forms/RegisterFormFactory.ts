@@ -9,7 +9,10 @@ export class RegisterFormFactory extends AbstractFormFactory {
       username: ['', Validators.required],
       password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
       email: ['', Validators.compose([Validators.email, Validators.required])],
-      image: ['', Validators.required]
+      image: ['', Validators.required],
+      street: ['', Validators.required],
+      number: ['', Validators.required],
+      city: ['', Validators.required]
     });
   }
 }
