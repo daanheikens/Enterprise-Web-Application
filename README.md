@@ -7,7 +7,7 @@
 ![Alt text](images/SpringBoot-config.png?raw=true "Title")
 
 ### 3. How to push database changes (migrations)
-
+## WARNING Only use when making constraint or datalength changes and such. Hibernate will create DDL for you whenever you create an entity##
 1. Create the .SQL file which contains the changes
 2. Name it according to the following example: v1.0__init.sql. 
 Change the version number to the next version (in this example v2.0)
