@@ -106,5 +106,4 @@ export class BoardComponent implements OnInit, AfterViewInit {
       this.onPlaceableTileChanged();
     }
   }
-
 }
