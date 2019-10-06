@@ -1,9 +1,10 @@
-import {Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
 import {BoardFactory} from '../../services/boardFactory';
 import {Tile} from '../../model/Tile';
+import {PawnFactory} from '../../lib/factories/PawnFactory';
 
 @Component({
   selector: 'app-board',
@@ -11,8 +12,7 @@ import {Tile} from '../../model/Tile';
   styleUrls: ['./board.component.css'],
   animations: [TileAnimations]
 })
-export class BoardComponent implements OnInit {
-
+export class BoardComponent implements OnInit, AfterViewInit {
   @Output()
   public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
 
@@ -42,6 +42,10 @@ export class BoardComponent implements OnInit {
     this.enableAnimation = false;
     this.board = new BoardFactory().CreateBoardTemp();
     this.onPlaceableTileChanged();
+  }
+
+  public ngAfterViewInit(): void {
+    PawnFactory.createPawns(this.board);
   }
 
   public insertTop(column: number): void {

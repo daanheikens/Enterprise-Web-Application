@@ -32,6 +32,6 @@ export class Pawn {
   }
 
   get style(): Object {
-    return {'top': this._topOffset + '%', 'left': this._leftOffset + '%'};
+    return {'top': this._topOffset + 'px', 'left': this._leftOffset + 'px'};
   }
 }

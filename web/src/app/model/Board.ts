@@ -5,9 +5,8 @@ import PawnCollection from '../collections/PawnCollection';
 
 export class Board {
 
-  constructor(matrix: Tile[][], pawns: PawnCollection) {
+  constructor(matrix: Tile[][]) {
     this.tiles = matrix;
-    this.pawns = pawns;
   }
 
   public tiles: Tile[][] = [];

@@ -1,8 +1,6 @@
 import {Tile} from '../model/Tile';
 import {Board} from '../model/Board';
 import {TileStyle} from '../utils/TileStyle';
-import {Pawn} from '../model/Pawn';
-import PawnCollection from '../collections/PawnCollection';
 
 export class BoardFactory {
 
@@ -35,11 +33,6 @@ export class BoardFactory {
       }
       boardArray[randomRow][randomCol] = tileToInsert;
     }
-
-    let pawnBlue = new Pawn(1, '/assets/images/pawn.png', '10', '13');
-    let pawnGreen = new Pawn(2, '/assets/images/pawn.png', '10', '13');
-    let pawnYellow = new Pawn(3, '/assets/images/pawn.png', '10', '13');
-    let pawnRed = new Pawn(4, '/assets/images/pawn.png', '10', '13');
 
     boardArray[0][0] = new Tile(12, true, false, false, true, TileStyle.CORNER_BLUE);
     boardArray[0][2] = new Tile(13, true, false, false, false, TileStyle.HELMET);
@@ -77,7 +70,7 @@ export class BoardFactory {
       }
     }
 
-    const board = new Board(boardArray, new PawnCollection(pawnRed, pawnBlue, pawnYellow, pawnGreen));
+    const board = new Board(boardArray);
     board.placeableTile = new Tile(idNumber, true, true, false, false, TileStyle.UGLY_ASS);
     return board;
   }

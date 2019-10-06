@@ -170,10 +170,11 @@
              class="cell  {{board.tiles[6][5].tileRotation}}"/>
         <img id="{{board.tiles[6][6].id}}" src="{{board.tiles[6][6].imgSrc}}"
              class="cell  {{board.tiles[6][6].tileRotation}}"/>
-        <img src="/assets/images/pawn.png" class="pawn" [ngStyle]="board.pawns.redPawn.style">
-        <img class="pawn pawn-blue" [ngStyle]="board.pawns.bluePawn.style"/>
-        <img class="pawn pawn-yellow" [ngStyle]="board.pawns.yellowPawn.style"/>
-        <img class="pawn pawn-green" [ngStyle]="board.pawns.greenPawn.style"/>
+
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn" [ngStyle]="board.pawns.redPawn.style">
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-blue" [ngStyle]="board.pawns.bluePawn.style"/>
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-yellow" [ngStyle]="board.pawns.yellowPawn.style"/>
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-green" [ngStyle]="board.pawns.greenPawn.style"/>
         <!--   Bottom controls   -->
         <div class="text-center">
           <div class="cell"></div>
