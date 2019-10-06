@@ -1,9 +1,10 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
 import {BoardFactory} from '../../services/boardFactory';
 import {Key} from 'selenium-webdriver';
+import {Tile} from '../../model/Tile';
 
 @Component({
   selector: 'app-board',
@@ -12,6 +13,9 @@ import {Key} from 'selenium-webdriver';
   animations: [TileAnimations]
 })
 export class BoardComponent implements OnInit {
+
+  @Output()
+  public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
 
   public currentState = {
     colTop2: 'initial',
@@ -38,27 +42,32 @@ export class BoardComponent implements OnInit {
   public ngOnInit(): void {
     this.enableAnimation = false;
     this.board = new BoardFactory().CreateBoardTemp();
+    this.onPlaceableTileChanged();
   }
 
   public insertTop(column: number): void {
     this.changeState('colTop' + column);
-    console.log('insertTop; calling insertTop with column ' + column)
+    console.log('insertTop; calling insertTop with column ' + column);
     this.board.insertTop(column - 1);
+    this.onPlaceableTileChanged();
   }
 
   public insertRight(row: number): void {
     this.changeState('rowRight' + row);
     this.board.insertLeft(row - 1);
+    this.onPlaceableTileChanged();
   }
 
   public insertBottom(column: number): void {
     this.changeState('colBottom' + column);
     this.board.insertBottom(column - 1);
+    this.onPlaceableTileChanged();
   }
 
   public insertLeft(row: number): void {
     this.changeState('rowLeft' + row);
     this.board.insertRight(row - 1);
+    this.onPlaceableTileChanged();
   }
 
   /**
@@ -82,12 +91,17 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  private onPlaceableTileChanged(): void {
+    this.placeableTileChangedMessage.emit(this.board.placeableTile);
+  }
+
   @HostListener('window:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('handleKeybaordEvent; alt key pressed ' + event.key)
+    console.log('handleKeybaordEvent; alt key pressed ' + event.key);
     if (event.key === 'r') {
-      console.log('Found r key rotating!')
+      console.log('Found r key rotating!');
       this.board.rotatePlacableTile();
+      this.onPlaceableTileChanged();
     }
   }
 
