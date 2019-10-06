@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {User} from './model/User';
+import {Router} from '@angular/router';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'web';
+  title = 'EWA';
+  currentUser: User;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.authService.currentUser.subscribe(x => this.currentUser = x);
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login'])
+      .then(r => {});
+  }
 }

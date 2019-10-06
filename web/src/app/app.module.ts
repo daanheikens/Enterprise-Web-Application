@@ -5,8 +5,16 @@ import {AppComponent} from './app.component';
 import {BoardComponent} from './components/board/board.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {BottombarComponent} from './components/bottombar/bottombar.component';
-import { GameComponent } from './components/game/game.component';
-import {FormsModule} from '@angular/forms';
+import {GameComponent} from './components/game/game.component';
+import {LoginComponent} from './components/login/login.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
+import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
+import {AppRoutingModule} from './app-routing.module';
+import {RegisterComponent} from './components/register/register.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -14,15 +22,24 @@ import {FormsModule} from '@angular/forms';
     AppComponent,
     BoardComponent,
     GameComponent,
-    BottombarComponent
+    BottombarComponent,
+    LoginComponent,
+    RegisterComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    FormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
