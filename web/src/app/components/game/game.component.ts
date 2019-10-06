@@ -15,7 +15,7 @@ export class GameComponent implements OnInit {
   ngOnInit() {
   }
 
-  onPlaceableTileChanged(tile: Tile) {
+  public onPlaceableTileChanged(tile: Tile) {
     this.placeAbleTile = tile;
   }
 }
