@@ -1,9 +1,8 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
 import {BoardFactory} from '../../services/boardFactory';
-import {Key} from 'selenium-webdriver';
 import {Tile} from '../../model/Tile';
 
 @Component({
@@ -47,7 +46,6 @@ export class BoardComponent implements OnInit {
 
   public insertTop(column: number): void {
     this.changeState('colTop' + column);
-    console.log('insertTop; calling insertTop with column ' + column);
     this.board.insertTop(column - 1);
     this.onPlaceableTileChanged();
   }

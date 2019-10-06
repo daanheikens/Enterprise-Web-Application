@@ -6,6 +6,7 @@ import {BoardComponent} from './components/board/board.component';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {BottombarComponent} from './components/bottombar/bottombar.component';
 import { GameComponent } from './components/game/game.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { GameComponent } from './components/game/game.component';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
