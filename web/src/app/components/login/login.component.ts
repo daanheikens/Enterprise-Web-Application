@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {HttpParams} from '@angular/common/http';
 import {LoginFormFactory} from '../../forms/LoginFormFactory';
+import {MessageService} from '../../services/message.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {
     if (this.authService.currentUserValue) {
       this.router.navigate(['/']);
