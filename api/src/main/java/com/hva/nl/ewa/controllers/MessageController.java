@@ -29,6 +29,7 @@ public class MessageController {
     @MessageMapping("/chat/{roomId}/addUser")
     public void addUser(@DestinationVariable String roomId, @Payload Message chatMessage,
                         SimpMessageHeaderAccessor headerAccessor) {
+        System.out.println("Came here");
         String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
         if (currentRoomId != null) {
             Message leaveMessage = new Message();

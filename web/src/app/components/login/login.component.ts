@@ -55,15 +55,16 @@ export class LoginComponent implements OnInit {
       .set('scope', 'player');
 
     this.loading = true;
-    this.authService.login(body)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.router.navigate([this.returnUrl]);
-        },
-        error => {
-          this.error = error;
-          this.loading = false;
-        });
+    this.messageService.sendMessage();
+    // this.authService.login(body)
+    //   .pipe(first())
+    //   .subscribe(
+    //     data => {
+    //       this.router.navigate([this.returnUrl]);
+    //     },
+    //     error => {
+    //       this.error = error;
+    //       this.loading = false;
+    //     });
   }
 }

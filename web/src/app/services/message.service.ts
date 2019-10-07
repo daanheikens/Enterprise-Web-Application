@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {AfterViewInit, Injectable} from '@angular/core';
 import {CompatClient, Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -15,7 +15,16 @@ export class MessageService {
   }
 
   public sendMessage() {
-    // Send the message to the spring endpoint
+    let roomId = 1;
+    let topic = `/app/chat/${roomId}`;
+
+
+    let currentSubscription = this.stompClient.subscribe(`/channel/${roomId}`, this.onMessageReceived);
+
+    this.stompClient.send(`${topic}/addUser`,
+      {},
+      JSON.stringify({sender: "Daan", type: 'JOIN'})
+    );
   }
 
   public onMessageReceived(): void {
