@@ -10,13 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/game", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/games", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GameController {
 
     private final GameService gameService;
@@ -48,5 +47,33 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.addUser(user);
         return new ResponseEntity<>(this.gameService.save(game), new HttpHeaders(), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<Game>> find() {
+        return new ResponseEntity<>(this.gameService.find(), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public ResponseEntity<Game> getCurrentGame(OAuth2Authentication auth) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+
+        if (user == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        Game currentGame = null;
+        for (Game game : user.getGames()) {
+            if (game != null) {
+                currentGame = game;
+                break;
+            }
+        }
+
+        if (currentGame == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(this.gameService.findOne(currentGame.getId()), new HttpHeaders(), HttpStatus.OK);
     }
 }

@@ -35,6 +35,7 @@ public class MessageController {
     @MessageMapping("/game/{gameId}/join")
     public void addUser(@DestinationVariable String gameId, @Payload MessageDTO messageDTO,
                         SimpMessageHeaderAccessor headerAccessor) {
+
         // TODO: Build in access_token check
         // TOOD: Build in maxPlayer check AND userId check (To not hijack game)
         String currentGameId = (String) headerAccessor.getSessionAttributes().put("game_id", gameId);

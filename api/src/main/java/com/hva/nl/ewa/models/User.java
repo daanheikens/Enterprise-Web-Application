@@ -47,6 +47,7 @@ public class User implements UserDetails {
     @Column
     private String image;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
 

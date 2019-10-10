@@ -4,52 +4,72 @@ import * as SockJS from 'sockjs-client';
 import {Message, MessageType} from '../model/Message';
 import {GameService} from './game.service';
 import {first} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
+  /**
+   * Observables for messages
+   */
+  public joinGame: Observable<Message>;
+  public turnEnded: Observable<Message>;
+  public leaveGame: Observable<Message>;
+  public movePawn: Observable<Message>;
+  /**
+   * Subject for the messages
+   */
+  private joinGameSubject: Subject<Message>;
+  private turnEndedSubject: Subject<Message>;
+  private leaveGameSubject: Subject<Message>;
+  private movePawnSubject: Subject<Message>;
 
   private static readonly BASE_PREFIX = '/app/game';
-
   private stompClient: CompatClient;
-
   private currentSubscription: StompSubscription;
-
   private isConnected = false;
 
-  constructor(private readonly gameService: GameService) {
-  }
-
-  public connect(): void {
-    this.stompClient = Stomp.over(new SockJS('http://localhost:8080/ws'));
-    this.stompClient.connect({}, this.onConnected, this.onError);
+  constructor(private readonly gameService: GameService,) {
+    this.joinGameSubject = new Subject<Message>();
+    this.turnEndedSubject = new Subject<Message>();
+    this.leaveGameSubject = new Subject<Message>();
+    this.movePawnSubject = new Subject<Message>();
+    this.joinGame = this.joinGameSubject.asObservable();
+    this.turnEnded = this.turnEndedSubject.asObservable();
+    this.leaveGame = this.leaveGameSubject.asObservable();
+    this.movePawn = this.movePawnSubject.asObservable();
   }
 
   public sendMessage(message: Message, gameId: number) {
     if (!this.isConnected) {
-      return;
+      this.stompClient = Stomp.over(new SockJS('http://localhost:8080/ws'));
+      this.stompClient.connect({}, this.onConnected, this.onError);
     }
 
-    if (message.type == MessageType.JOIN_GAME) {
-      // Join room
-    } else if (message.type == MessageType.TURN_ENDED) {
+    console.log("Connected");
 
-    } else if (message.type == MessageType.LEAVE_GAME) {
-
-    } else if (message.type == MessageType.MOVE_PAWN) {
-
-    } else {
-      throw new Error('Unexpected type');
+    switch (message.type) {
+      case MessageType.JOIN_GAME:
+        console.log("Joining game......");
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/join`, {}, JSON.stringify(message));
+        break;
+      case MessageType.TURN_ENDED:
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/notify`, {}, JSON.stringify(message));
+        break;
+      case MessageType.LEAVE_GAME:
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/leave`, {}, JSON.stringify(message));
+        break;
+      case MessageType.MOVE_PAWN:
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/move`, {}, JSON.stringify(message));
+        break;
+      default:
+        throw new Error('Unexpected type');
     }
-
-    // Send a message to the message broker. a.k.a. turn or anything like it
   }
 
   private onMessageReceived(payload): void {
-    if (!this.isConnected) {
-      return;
-    }
+
   }
 
   private onConnected(): void {
@@ -59,9 +79,6 @@ export class MessageService {
       .subscribe(
         data => {
           game = data;
-        },
-        error => {
-          console.log(error);
         });
 
     if (game == null) {
@@ -78,6 +95,6 @@ export class MessageService {
   }
 
   private onError(error): void {
-    // Handle error and show error in HTML? (let component subscribe to changes)
+    this.stompClient.disconnect();
   }
 }

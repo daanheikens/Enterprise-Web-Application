@@ -4,6 +4,7 @@ import {GameService} from '../../services/game.service';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
 import {Game} from '../../model/Game';
+import {MessageService} from '../../services/message.service';
 
 @Component({
   selector: 'app-game',
@@ -16,7 +17,10 @@ export class GameComponent implements OnInit {
 
   private readonly game: Game;
 
-  constructor(private gameService: GameService) {}
+  constructor(
+    private readonly gameService: GameService,
+    private readonly messageService: MessageService
+  ) {}
 
   ngOnInit() {
     // For testing purposes we can create a room with just 1 person and play with 1 person

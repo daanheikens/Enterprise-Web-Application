@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Game} from '../model/Game';
 
 @Injectable({
@@ -11,11 +11,11 @@ import {Game} from '../model/Game';
 export class GameService {
 
   constructor(private readonly http: HttpClient) {
+
   }
 
   public create(body: HttpParams): Observable<Game> {
-    console.log(body);
-    return this.http.post<Game>(`${environment.apiUrl}/game`, body)
+    return this.http.post<Game>(`${environment.apiUrl}/games`, body)
       .pipe(map(game => {
         return game;
       }));
@@ -25,7 +25,7 @@ export class GameService {
    * Gets the current game of the user, if available
    */
   public getCurrentGame(): Observable<Game> {
-    return this.http.get<Game>(`${environment.apiUrl}/game`)
+    return this.http.get<Game>(`${environment.apiUrl}/games/current`)
       .pipe(map(game => {
         return game;
       }));

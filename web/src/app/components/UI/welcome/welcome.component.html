@@ -10,16 +10,10 @@
     <div class="col-sm-6">
       <div class="card text-center">
         <div class="card-body">
-          <div *ngIf="noNewGame ; else continueGame" class="card-img-overlay">
-            <h1>New game</h1>
-            <a href="#" class="stretched-link"></a>
+          <div class="card-img-overlay">
+            <h1>{{inGame ? "Continue game" : "New game"}}</h1>
+            <a class="stretched-link" (click)="onGameClick()"></a>
           </div>
-          <ng-template #continueGame>
-            <div class="card-img-overlay">
-              <h1>Continue game</h1>
-              <a href="#" class="stretched-link"></a>
-            </div>
-          </ng-template>
         </div>
       </div>
       <div class="card text-center">
