@@ -12,8 +12,7 @@ export class WelcomeComponent implements OnInit {
   noNewGame = false;
 
 
-  constructor(private readonly gameService: GameService) {
-  }
+  constructor(private readonly gameService: GameService) {}
 
   ngOnInit() {
     // TODO: here query the user to find if the user already created a game, if so button should be continue;
