@@ -41,9 +41,11 @@ export class WelcomeComponent implements OnInit {
         error => {
           console.log(error);
         });
+
+    // Game is created, we can now navigate to the GameComponent
   }
 
   public onContinueGame() {
-
+    // Navigate to the game component
   }
 }

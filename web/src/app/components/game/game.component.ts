@@ -16,10 +16,17 @@ export class GameComponent implements OnInit {
 
   private game: Game;
 
-  constructor(private gameService: GameService) {
-  }
+  constructor(private gameService: GameService) {}
 
   ngOnInit() {
+    // Load the game in steps:
+    /**
+     * Step 1 fetch the game of the user
+     * Step 2 Connect to the correct room
+     * Step 3 Wait until (enough) players join the game
+     * Step 4 Fetch the board of this game when all players are joined
+     * Step 5 start the game
+     */
   }
 
   public onPlaceableTileChanged(tile: Tile) {
