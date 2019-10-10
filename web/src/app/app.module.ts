@@ -15,6 +15,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {RegisterComponent} from './components/register/register.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { WelcomeComponent } from './components/UI/welcome/welcome.component';
+import { HeaderComponent } from './components/UI/welcome/header/header.component';
 
 
 @NgModule({
@@ -27,6 +29,9 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     RegisterComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent
+    BoardComponent,
+    WelcomeComponent,
+    HeaderComponent
   ],
   imports: [
     AppRoutingModule,
