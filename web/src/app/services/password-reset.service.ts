@@ -9,8 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class PasswordResetService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public requestNewPassword(body: HttpParams): Observable<Object> {
     return this.http.post(environment.resetUrl, body)

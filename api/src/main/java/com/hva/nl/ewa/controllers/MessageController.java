@@ -21,23 +21,31 @@ public class MessageController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/chat/{roomId}/sendMessage")
-    public void sendMessage(@DestinationVariable String roomId, @Payload Message chatMessage) {
-        messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
+    /**
+     * Endpoint used for notifying a turn
+     */
+    @MessageMapping("/chat/{gameId}/notify")
+    public void sendMessage(@DestinationVariable String gameId, @Payload Message message) {
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), message);
     }
 
-    @MessageMapping("/chat/{roomId}/addUser")
-    public void addUser(@DestinationVariable String roomId, @Payload Message chatMessage,
+    /**
+     * Endpoint used for joining a game
+     */
+    @MessageMapping("/chat/{gameId}/join")
+    public void addUser(@DestinationVariable String gameId, @Payload Message message,
                         SimpMessageHeaderAccessor headerAccessor) {
-        System.out.println("Came here");
-        String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
-        if (currentRoomId != null) {
+        // TODO: Build in access_token check
+        // TOOD: Build in maxPlayer check AND userId check (To not hijack game)
+        String currentGameId = (String) headerAccessor.getSessionAttributes().put("game_id", gameId);
+        // Leave other room (This is just in case another is still open)
+        if (currentGameId != null) {
             Message leaveMessage = new Message();
             leaveMessage.setType(Message.MessageType.LEAVE);
-            leaveMessage.setSender(chatMessage.getSender());
-            messagingTemplate.convertAndSend(format("/channel/%s", currentRoomId), leaveMessage);
+            leaveMessage.setSender(message.getSender());
+            messagingTemplate.convertAndSend(format("/channel/%s", currentGameId), leaveMessage);
         }
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
-        messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
+        headerAccessor.getSessionAttributes().put("username", message.getSender());
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), message);
     }
 }

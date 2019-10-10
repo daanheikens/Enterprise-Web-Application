@@ -7,8 +7,8 @@ import {User} from '../model/User';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<User>;
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));

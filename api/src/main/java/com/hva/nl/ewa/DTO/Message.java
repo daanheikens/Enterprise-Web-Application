@@ -8,7 +8,7 @@ public class Message {
     public enum MessageType {
         TURN,
         JOIN,
-        LEAVE
+        LEAVE,
     }
 
     public MessageType getType() {

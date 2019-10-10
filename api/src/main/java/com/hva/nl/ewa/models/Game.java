@@ -1,0 +1,68 @@
+package com.hva.nl.ewa.models;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "game")
+public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    private long id;
+
+    @NotNull
+    @Size(min = 2, max = 4, message = "{maxPlayers.size}")
+    private int maxPlayers;
+
+    private int maxTurnTime;
+
+    private int maxPendingTime;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getMaxTurnTime() {
+        return maxTurnTime;
+    }
+
+    public void setMaxTurnTime(int maxTurnTime) {
+        this.maxTurnTime = maxTurnTime;
+    }
+
+    public int getMaxPendingTime() {
+        return maxPendingTime;
+    }
+
+    public void setMaxPendingTime(int maxPendingTime) {
+        this.maxPendingTime = maxPendingTime;
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+}

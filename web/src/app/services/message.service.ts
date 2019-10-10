@@ -15,16 +15,7 @@ export class MessageService {
   }
 
   public sendMessage() {
-    let roomId = 1;
-    let topic = `/app/chat/${roomId}`;
 
-
-    let currentSubscription = this.stompClient.subscribe(`/channel/${roomId}`, this.onMessageReceived);
-
-    this.stompClient.send(`${topic}/addUser`,
-      {},
-      JSON.stringify({sender: "Daan", type: 'JOIN'})
-    );
   }
 
   public onMessageReceived(): void {
