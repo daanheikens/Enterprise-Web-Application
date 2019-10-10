@@ -24,7 +24,7 @@ public class MessageController {
     /**
      * Endpoint used for notifying a turn
      */
-    @MessageMapping("/chat/{gameId}/notify")
+    @MessageMapping("/game/{gameId}/notify")
     public void sendMessage(@DestinationVariable String gameId, @Payload MessageDTO messageDTO) {
         messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
@@ -32,7 +32,7 @@ public class MessageController {
     /**
      * Endpoint used for joining a game
      */
-    @MessageMapping("/chat/{gameId}/join")
+    @MessageMapping("/game/{gameId}/join")
     public void addUser(@DestinationVariable String gameId, @Payload MessageDTO messageDTO,
                         SimpMessageHeaderAccessor headerAccessor) {
         // TODO: Build in access_token check

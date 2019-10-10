@@ -20,4 +20,14 @@ export class GameService {
         return game;
       }));
   }
+
+  /**
+   * Gets the current game of the user, if available
+   */
+  public getCurrentGame(): Observable<Game> {
+    return this.http.get<Game>(`${environment.apiUrl}/game`)
+      .pipe(map(game => {
+        return game;
+      }));
+  }
 }
