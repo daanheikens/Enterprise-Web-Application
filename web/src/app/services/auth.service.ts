@@ -3,29 +3,28 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
-import {User} from '../model/User';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-  public currentUser: Observable<User>;
-  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<Object>;
+  private currentUserSubject: BehaviorSubject<Object>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<Object>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): Object {
     return this.currentUserSubject.value;
   }
 
-  public login(body: HttpParams): Observable<User> {
+  public login(body: HttpParams): Observable<Object> {
     const headers = {
       'Authorization': 'Basic ' + btoa(environment.clientId + ':' + environment.clientSecret),
       'Content-type': 'application/x-www-form-urlencoded'
     };
 
-    return this.http.post<User>(environment.authUrl, body, {headers})
+    return this.http.post<Object>(environment.authUrl, body, {headers})
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);

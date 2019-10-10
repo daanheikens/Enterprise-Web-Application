@@ -2,7 +2,7 @@ package com.hva.nl.ewa.controllers;
 
 import static java.lang.String.format;
 
-import com.hva.nl.ewa.DTO.Message;
+import com.hva.nl.ewa.DTO.MessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,27 +25,27 @@ public class MessageController {
      * Endpoint used for notifying a turn
      */
     @MessageMapping("/chat/{gameId}/notify")
-    public void sendMessage(@DestinationVariable String gameId, @Payload Message message) {
-        messagingTemplate.convertAndSend(format("/channel/%s", gameId), message);
+    public void sendMessage(@DestinationVariable String gameId, @Payload MessageDTO messageDTO) {
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
 
     /**
      * Endpoint used for joining a game
      */
     @MessageMapping("/chat/{gameId}/join")
-    public void addUser(@DestinationVariable String gameId, @Payload Message message,
+    public void addUser(@DestinationVariable String gameId, @Payload MessageDTO messageDTO,
                         SimpMessageHeaderAccessor headerAccessor) {
         // TODO: Build in access_token check
         // TOOD: Build in maxPlayer check AND userId check (To not hijack game)
         String currentGameId = (String) headerAccessor.getSessionAttributes().put("game_id", gameId);
         // Leave other room (This is just in case another is still open)
         if (currentGameId != null) {
-            Message leaveMessage = new Message();
-            leaveMessage.setType(Message.MessageType.LEAVE);
-            leaveMessage.setSender(message.getSender());
-            messagingTemplate.convertAndSend(format("/channel/%s", currentGameId), leaveMessage);
+            MessageDTO leaveMessageDTO = new MessageDTO();
+            leaveMessageDTO.setType(MessageDTO.MessageType.LEAVE);
+            leaveMessageDTO.setSender(messageDTO.getSender());
+            messagingTemplate.convertAndSend(format("/channel/%s", currentGameId), leaveMessageDTO);
         }
-        headerAccessor.getSessionAttributes().put("username", message.getSender());
-        messagingTemplate.convertAndSend(format("/channel/%s", gameId), message);
+        headerAccessor.getSessionAttributes().put("username", messageDTO.getSender());
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
 }

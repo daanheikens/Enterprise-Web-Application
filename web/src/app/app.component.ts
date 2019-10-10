@@ -10,7 +10,7 @@ import {AuthService} from './services/auth.service';
 })
 export class AppComponent {
   title = 'EWA';
-  currentUser: User;
+  currentUser: Object;
 
   constructor(
     private router: Router,

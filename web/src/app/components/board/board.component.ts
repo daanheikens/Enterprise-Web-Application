@@ -45,7 +45,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    PawnFactory.createPawns(this.board);
+    setTimeout(() => {
+      PawnFactory.createPawns(this.board);
+    })
   }
 
   public insertTop(column: number): void {

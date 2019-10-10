@@ -15,11 +15,12 @@ public class Game {
     private long id;
 
     @NotNull
-    @Size(min = 2, max = 4, message = "{maxPlayers.size}")
     private int maxPlayers;
 
+    @NotNull
     private int maxTurnTime;
 
+    @NotNull
     private int maxPendingTime;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

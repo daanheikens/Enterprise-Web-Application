@@ -1,6 +1,6 @@
 package com.hva.nl.ewa.DTO;
 
-public class Message {
+public class MessageDTO {
     private MessageType type;
     private String content;
     private String sender;
