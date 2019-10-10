@@ -28,7 +28,7 @@ import { HeaderComponent } from './components/UI/welcome/header/header.component
     LoginComponent,
     RegisterComponent,
     ResetPasswordComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
     BoardComponent,
     WelcomeComponent,
     HeaderComponent

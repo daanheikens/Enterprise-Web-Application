@@ -3,6 +3,7 @@ import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
+import {Game} from '../../model/Game';
 
 @Component({
   selector: 'app-game',
@@ -12,6 +13,8 @@ import {first} from 'rxjs/operators';
 export class GameComponent implements OnInit {
 
   public placeAbleTile: Tile;
+
+  private game: Game;
 
   constructor(private gameService: GameService) {
   }
@@ -31,7 +34,7 @@ export class GameComponent implements OnInit {
     this.gameService.create(body).pipe(first())
       .subscribe(
         data => {
-          console.log(data);
+          this.game = data;
         },
         error => {
           console.log(error);

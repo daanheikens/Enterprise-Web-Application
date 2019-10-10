@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = new LoginFormFactory().createForm();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/game';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/home';
   }
 
   get formControls() {
