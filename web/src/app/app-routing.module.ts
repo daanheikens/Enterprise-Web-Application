@@ -13,11 +13,11 @@ const routes: Routes = [
   // Public routes
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: 'reset-password', component: ResetPasswordComponent, canActivate: [TokenGuard]},
   {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'reset-password', component: ResetPasswordComponent, canActivate: [TokenGuard]},
   // Authenticated routes (See guard)
-  {path: 'game', component: GameComponent, canActivate: [AuthGuard]},
   {path: 'home', component: WelcomeComponent, canActivate: [AuthGuard]},
+  {path: 'game', component: GameComponent, canActivate: [AuthGuard]},
   // Fallback route
   {path: '**', redirectTo: 'login'}
 ];
