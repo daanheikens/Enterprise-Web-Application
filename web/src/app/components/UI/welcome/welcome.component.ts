@@ -1,38 +1,33 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {HttpParams} from '@angular/common/http';
-import {first} from 'rxjs/operators';
 import {GameService} from '../../../services/game.service';
 import {Game} from '../../../model/Game';
-import {MessageService} from '../../../services/message.service';
-import {Message, MessageType} from '../../../model/Message';
+import {first} from 'rxjs/operators';
+import {HttpParams} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css']
 })
-export class WelcomeComponent implements OnInit, AfterViewInit {
+export class WelcomeComponent implements OnInit {
   private game: Game;
   private inGame = false;
 
   constructor(
     private readonly gameService: GameService,
-    private readonly messageService: MessageService) {
+    private readonly router: Router) {
+
   }
 
   ngOnInit() {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         this.game = data;
+        if (this.game !== null) {
+          this.inGame = true;
+        }
       });
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (this.game instanceof Game) {
-        this.inGame = true;
-      }
-    });
   }
 
   /**
@@ -40,8 +35,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
    */
   public onGameClick() {
     if (this.inGame) {
-      this.continueGame();
-      return;
+      return this.continueGame();
     }
 
     const body = new HttpParams()
@@ -53,16 +47,12 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           this.game = data;
+          return this.router.navigate(['/game']);
         });
 
-    console.log("sending message");
-    this.messageService.sendMessage(
-      new Message(MessageType.JOIN_GAME, "joost", "daan"),
-      this.game.id
-    )
   }
 
   private continueGame() {
-
+    return this.router.navigate(['/game']);
   }
 }

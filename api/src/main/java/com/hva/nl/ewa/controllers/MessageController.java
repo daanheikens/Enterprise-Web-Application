@@ -7,17 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Controller;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 public class MessageController {
 
-    private final SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public MessageController(SimpMessageSendingOperations messagingTemplate) {
+    public MessageController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -38,6 +42,11 @@ public class MessageController {
 
         // TODO: Build in access_token check
         // TOOD: Build in maxPlayer check AND userId check (To not hijack game)
+        Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
+        if (sessionAttributes == null) {
+            headerAccessor.setSessionAttributes(new HashMap<>());
+        }
+
         String currentGameId = (String) headerAccessor.getSessionAttributes().put("game_id", gameId);
         // Leave other room (This is just in case another is still open)
         if (currentGameId != null) {

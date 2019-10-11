@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
-import {HttpParams} from '@angular/common/http';
-import {first} from 'rxjs/operators';
 import {Game} from '../../model/Game';
 import {MessageService} from '../../services/message.service';
 
@@ -13,16 +11,27 @@ import {MessageService} from '../../services/message.service';
 })
 export class GameComponent implements OnInit {
 
+  public gamePending = true;
+
   public placeAbleTile: Tile;
 
-  private readonly game: Game;
+  private game: Game;
 
   constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService
-  ) {}
+  ) {
+    // TODO In game guard to check whetether a game is in progress else redirect to home
+  }
 
   ngOnInit() {
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        this.game = data;
+        if (this.game !== null) {
+          this.onGameInitialized();
+        }
+      });
     // For testing purposes we can create a room with just 1 person and play with 1 person
     // without turns to create the game mechanics
     // Load the game in steps:
@@ -37,5 +46,9 @@ export class GameComponent implements OnInit {
 
   public onPlaceableTileChanged(tile: Tile) {
     this.placeAbleTile = tile;
+  }
+
+  private onGameInitialized() {
+    this.messageService.connect(this.game.id);
   }
 }

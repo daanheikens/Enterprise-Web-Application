@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
@@ -15,6 +15,9 @@ import {PawnFactory} from '../../lib/factories/PawnFactory';
 export class BoardComponent implements OnInit, AfterViewInit {
   @Output()
   public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+
+  @Input()
+  public isPending: boolean;
 
   public currentState = {
     colTop2: 'initial',

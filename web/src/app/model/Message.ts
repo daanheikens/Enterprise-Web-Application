@@ -6,26 +6,26 @@ export enum MessageType {
 }
 
 export class Message {
-  private readonly _type: MessageType;
-  private readonly _content: string;
-  private readonly _sender: string;
+  private readonly type: MessageType;
+  private readonly content: string;
+  private readonly sender: string;
 
   constructor(type: MessageType, content: string, sender: string) {
-    this._type = type;
-    this._content = content;
-    this._sender = sender;
+    this.type = type;
+    this.content = content;
+    this.sender = sender;
   }
 
-  get type(): MessageType {
-    return this._type;
+  public getType(): MessageType {
+    return this.type;
   }
 
-  get content(): string {
-    return this._content;
+  public getContent(): string {
+    return this.content;
   }
 
-  get sender(): string {
-    return this._sender;
+  public getSender(): string {
+    return this.sender;
   }
 }
 

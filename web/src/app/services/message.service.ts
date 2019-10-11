@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {CompatClient, Stomp, StompSubscription} from '@stomp/stompjs';
+import {Injectable, OnInit} from '@angular/core';
+import {CompatClient, Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {Message, MessageType} from '../model/Message';
 import {GameService} from './game.service';
-import {first} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
+import {Game} from '../model/Game';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MessageService {
+export class MessageService implements OnInit {
   /**
    * Observables for messages
    */
@@ -27,10 +27,10 @@ export class MessageService {
 
   private static readonly BASE_PREFIX = '/app/game';
   private stompClient: CompatClient;
-  private currentSubscription: StompSubscription;
-  private isConnected = false;
+  private game: Game;
 
   constructor(private readonly gameService: GameService,) {
+    this.gameService = gameService;
     this.joinGameSubject = new Subject<Message>();
     this.turnEndedSubject = new Subject<Message>();
     this.leaveGameSubject = new Subject<Message>();
@@ -41,60 +41,64 @@ export class MessageService {
     this.movePawn = this.movePawnSubject.asObservable();
   }
 
+  ngOnInit(): void {
+    this.gameService.getCurrentGame().subscribe(
+      data => {
+        this.game = data;
+      }
+    );
+  }
+
+  public connect(gameId: number) {
+    this.stompClient = Stomp.over(new SockJS('http://localhost:8080/ws'));
+    this.stompClient.connect({}, () => {
+      this.stompClient.subscribe(`/channel/${gameId}`, (payload) => {
+        this.onMessageReceived(JSON.parse(payload.body));
+      });
+    }, (error) => {
+      this.stompClient.disconnect();
+    });
+  }
+
   public sendMessage(message: Message, gameId: number) {
-    if (!this.isConnected) {
-      this.stompClient = Stomp.over(new SockJS('http://localhost:8080/ws'));
-      this.stompClient.connect({}, this.onConnected, this.onError);
+    if (!this.stompClient.connected) {
+      return;
     }
 
-    console.log("Connected");
-
-    switch (message.type) {
+    switch (message.getType()) {
       case MessageType.JOIN_GAME:
-        console.log("Joining game......");
-        this.stompClient.send(`${MessageService.BASE_PREFIX}/join`, {}, JSON.stringify(message));
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/join`, {}, JSON.stringify(message));
         break;
       case MessageType.TURN_ENDED:
-        this.stompClient.send(`${MessageService.BASE_PREFIX}/notify`, {}, JSON.stringify(message));
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/notify`, {}, JSON.stringify(message));
         break;
       case MessageType.LEAVE_GAME:
-        this.stompClient.send(`${MessageService.BASE_PREFIX}/leave`, {}, JSON.stringify(message));
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/leave`, {}, JSON.stringify(message));
         break;
       case MessageType.MOVE_PAWN:
-        this.stompClient.send(`${MessageService.BASE_PREFIX}/move`, {}, JSON.stringify(message));
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/move`, {}, JSON.stringify(message));
         break;
       default:
         throw new Error('Unexpected type');
     }
   }
 
-  private onMessageReceived(payload): void {
-
-  }
-
-  private onConnected(): void {
-    let game;
-    this.gameService.getCurrentGame()
-      .pipe(first())
-      .subscribe(
-        data => {
-          game = data;
-        });
-
-    if (game == null) {
-      return;
+  private onMessageReceived(message: Message) {
+    switch (message.getType()) {
+      case MessageType.JOIN_GAME:
+        this.joinGameSubject.next(message);
+        break;
+      case MessageType.TURN_ENDED:
+        this.turnEndedSubject.next(message);
+        break;
+      case MessageType.LEAVE_GAME:
+        this.leaveGameSubject.next(message);
+        break;
+      case MessageType.MOVE_PAWN:
+        this.movePawnSubject.next(message);
+        break;
+      default:
+        throw new Error('Unexpected type');
     }
-
-    if (this.currentSubscription) {
-      this.currentSubscription.unsubscribe();
-    }
-
-    this.currentSubscription = this.stompClient.subscribe(`/channel/${game.getId()}`, this.onMessageReceived);
-
-    this.isConnected = true;
-  }
-
-  private onError(error): void {
-    this.stompClient.disconnect();
   }
 }
