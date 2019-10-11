@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Game} from '../model/Game';
 
 @Injectable({
@@ -11,7 +11,6 @@ import {Game} from '../model/Game';
 export class GameService {
 
   constructor(private readonly http: HttpClient) {
-
   }
 
   public create(body: HttpParams): Observable<Game> {
@@ -26,6 +25,16 @@ export class GameService {
    */
   public getCurrentGame(): Observable<Game> {
     return this.http.get<Game>(`${environment.apiUrl}/games/current`)
+      .pipe(map(game => {
+        return game;
+      }));
+  }
+
+  /**
+   * Gets all the games available
+   */
+  public getGames(): Observable<Game[]> {
+    return this.http.get<Game[]>(`${environment.apiUrl}/games`)
       .pipe(map(game => {
         return game;
       }));

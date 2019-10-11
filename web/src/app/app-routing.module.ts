@@ -8,6 +8,7 @@ import {ForgotPasswordComponent} from './components/forgot-password/forgot-passw
 import {TokenGuard} from './auth/token.guard';
 import {WelcomeComponent} from './components/UI/welcome/welcome.component';
 import {LoginComponent} from './components/login/login.component';
+import {GameListComponent} from './components/game-list/game-list.component';
 
 const routes: Routes = [
   // Public routes
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'reset-password', component: ResetPasswordComponent, canActivate: [TokenGuard]},
   // Authenticated routes (See guard)
   {path: 'home', component: WelcomeComponent, canActivate: [AuthGuard]},
+  {path: 'game-list', component: GameListComponent, canActivate: [AuthGuard]},
   {path: 'game', component: GameComponent, canActivate: [AuthGuard]},
   // Fallback route
   {path: '**', redirectTo: 'login'}
