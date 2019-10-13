@@ -14,12 +14,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-@Controller
+@RestController
 @Transactional
 public class MessageController {
 
@@ -69,7 +71,7 @@ public class MessageController {
 
         Set<User> users = game.getUsers();
 
-        if (!users.contains(user) || users.size() >= game.getMaxPlayers()) {
+        if (!users.contains(user) && users.size() >= game.getMaxPlayers()) {
             return;
         }
 

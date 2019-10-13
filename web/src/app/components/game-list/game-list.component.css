@@ -3,6 +3,11 @@
   src: url("/assets/font/PixelMiners.otf");
 }
 
+.game:hover {
+  cursor: pointer;
+  background-color: yellow;
+}
+
 .navbar{
   font-size: larger;
 }
@@ -10,24 +15,6 @@
   margin-top: 10%;
   margin-left: 25%;
 }
-.card {
-  min-height: 100px;
-  text-align: center;
-  position: relative;
-  opacity: .7;
-  background-color:transparent;
-  color: red;
-  font-family: myAtariFont;
-  border-color: transparent;
-  margin-top: 5px;
-}
-.card:hover{
-  color: yellow;
-  opacity: 1;
-}
-
-
-
 
 .fullscreen-bg {
   position: fixed;
@@ -60,9 +47,6 @@
     width: 300%;
     left: -100%;
   }
-  .card {
-    margin-top: 10px;
-  }
 }
 
 @media (max-width: 767px) {
@@ -73,10 +57,6 @@
   .fullscreen-bg__video {
     display: none;
   }
-  .card {
-    margin-top: 10px;
-    margin-left: 50px;
-  }
 }
 
 @media (max-width: 1023px ) {
@@ -86,9 +66,5 @@
 
   .fullscreen-bg__video {
     display: none;
-  }
-  .card {
-    margin-top: 10px;
-    margin-left: 50px;
   }
 }

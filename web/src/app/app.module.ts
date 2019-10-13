@@ -18,6 +18,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { WelcomeComponent } from './components/UI/welcome/welcome.component';
 import { HeaderComponent } from './components/UI/welcome/header/header.component';
 import { GameListComponent } from './components/game-list/game-list.component';
+import { OverlayComponent } from './components/overlay/overlay.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { GameListComponent } from './components/game-list/game-list.component';
     BoardComponent,
     WelcomeComponent,
     HeaderComponent,
-    GameListComponent
+    GameListComponent,
+    OverlayComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameService} from '../../services/game.service';
 import {Game} from '../../model/Game';
 import {Router} from '@angular/router';
@@ -9,9 +9,11 @@ import {HttpParams} from '@angular/common/http';
   templateUrl: './game-list.component.html',
   styleUrls: ['./game-list.component.css']
 })
-export class GameListComponent implements OnInit {
+export class GameListComponent implements OnInit, OnDestroy {
 
   public games: Game[];
+
+  private refreshInterval;
 
   constructor(
     private readonly gameService: GameService,
@@ -19,10 +21,14 @@ export class GameListComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.gameService.getGames()
-      .subscribe(data => {
-        this.games = data;
-      });
+    this.refresh();
+    this.refreshInterval = setInterval(() => {
+      this.refresh();
+    }, 5000);
+  }
+
+  public ngOnDestroy(): void {
+    clearInterval(this.refreshInterval);
   }
 
   public joinGame(id: number) {
@@ -36,6 +42,13 @@ export class GameListComponent implements OnInit {
     this.gameService.joinGame(body)
       .subscribe(result => {
         this.router.navigate(['/game']);
+      });
+  }
+
+  public refresh(): void {
+    this.gameService.getGames()
+      .subscribe(data => {
+        this.games = data;
       });
   }
 }

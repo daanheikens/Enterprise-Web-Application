@@ -1,16 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {Game} from '../../model/Game';
 import {MessageService} from '../../services/message.service';
-import {Message, MessageType} from '../../model/Message';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
   public gamePending = true;
 
@@ -32,39 +31,18 @@ export class GameComponent implements OnInit {
           this.onGameInitialized();
         }
       });
-    this.messageService.joinGame.subscribe(
-      (message: Message) => {
-
+    this.messageService.joinGame.subscribe(() => {
+        this.onPlayerJoinedGame();
       }
-      // A player joined, do something here....
+    );
+    this.messageService.turnEnded.subscribe(() => {
+        this.onTurnEnded();
+      }
+    );
+  }
 
-      /**
-       * Step 1 get players (refresh players)
-       * Step 2 Assign players somewhere in the dom
-       * Step 3 Check if max players is reached
-       * Step 4 if max players has reached, game can start
-       */
-    );
-    this.messageService.turnEnded.subscribe(
-      // A turn has ended, check if it is your turn
-      /**
-       * Step 1 message contains the user which turn has ended
-       * Step 2 fetch the user turn. (API call or?)
-       * Step 3 if it is somebody else turn, ignore response
-       * Step 4 if current user turn, then enable controls and notify user
-       */
-    );
-    // TODO In game guard to check whetether a game is in progress else redirect to home
-    // For testing purposes we can create a room with just 1 person and play with 1 person
-    // without turns to create the game mechanics
-    // Load the game in steps:
-    /**
-     * Step 1 fetch the game of the user
-     * Step 2 Connect to the correct room
-     * Step 3 Wait until (enough) players join the game
-     * Step 4 Fetch the board of this game when all players are joined
-     * Step 5 start the game (Current rule: Initiator starts first)
-     */
+  public ngOnDestroy(): void {
+    this.messageService.disconnect();
   }
 
   public onPlaceableTileChanged(tile: Tile): void {
@@ -75,11 +53,40 @@ export class GameComponent implements OnInit {
     this.messageService.connect(this.game.id);
   }
 
+  /**
+   * Step 1 get players (refresh players)
+   * Step 2 Assign players somewhere in the dom
+   * Step 3 Check if max players is reached
+   * Step 4 if max players has reached, game can start
+   */
   private onPlayerJoinedGame(): void {
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        this.game = data;
+        this.refreshPlayers();
+        if (this.game.currentPlayers >= this.game.maxPlayers) {
+          this.renderBoard();
+          this.gamePending = false;
+        }
+      });
+  }
+
+  // A turn has ended, check if it is your turn
+  /**
+   * Step 1 message contains the user which turn has ended
+   * Step 2 fetch the user turn. (API call or?)
+   * Step 3 if it is somebody else turn, ignore response
+   * Step 4 if current user turn, then enable controls and notify user
+   */
+  private onTurnEnded(): void {
 
   }
 
-  private onTurnEnded(): void {
+  private refreshPlayers(): void {
+
+  }
+
+  private renderBoard() {
 
   }
 }

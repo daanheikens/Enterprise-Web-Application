@@ -69,6 +69,10 @@ public class GameController {
         List<GameDTO> gameDTOs = new ArrayList<>();
 
         for (Game game : games) {
+            if (game.getUsers().size() >= game.getMaxPlayers()) {
+                continue;
+            }
+
             GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(game, GameDTO.class);
             dto.setCurrentPlayers(game.getUsers().size());
             gameDTOs.add(dto);
@@ -97,7 +101,10 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>((GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class), new HttpHeaders(), HttpStatus.OK);
+        GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
+        dto.setCurrentPlayers(currentGame.getUsers().size());
+
+        return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)

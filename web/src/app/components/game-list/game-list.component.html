@@ -9,7 +9,9 @@
     </div>
     <div class="col-sm-6">
       <ul class="list-group">
-        <li (click)="joinGame(game.id)" *ngFor="let game of games" class="list-group-item d-flex justify-content-between align-items-center">
+        <li (click)="joinGame(game.id)"
+            *ngFor="let game of games"
+            class="list-group-item d-flex justify-content-between align-items-center game">
           Game: {{game.id}}
           <span class="badge badge-primary badge-pill">{{game.currentPlayers}} / {{game.maxPlayers}}</span>
       </ul>
