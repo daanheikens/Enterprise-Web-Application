@@ -3,33 +3,53 @@ package com.hva.nl.ewa.controllers;
 import static java.lang.String.format;
 
 import com.hva.nl.ewa.DTO.MessageDTO;
+import com.hva.nl.ewa.models.Game;
+import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.GameService;
+import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.stereotype.Controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.transaction.Transactional;
+import java.util.Set;
 
-@RestController
+@Controller
+@Transactional
 public class MessageController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
+    private final GameService gameService;
+
+    private final UserService userService;
+
     @Autowired
-    public MessageController(SimpMessagingTemplate messagingTemplate) {
+    public MessageController(
+            SimpMessagingTemplate messagingTemplate,
+            GameService gameService,
+            UserService userService
+    ) {
         this.messagingTemplate = messagingTemplate;
+        this.gameService = gameService;
+        this.userService = userService;
     }
 
     /**
      * Endpoint used for notifying a turn
      */
     @MessageMapping("/game/{gameId}/notify")
-    public void sendMessage(@DestinationVariable String gameId, @Payload MessageDTO messageDTO) {
+    public void sendMessage(
+            OAuth2Authentication auth,
+            @DestinationVariable String gameId,
+            @Payload MessageDTO messageDTO
+    ) {
+        messageDTO.setSender(auth.getName());
         messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
 
@@ -37,25 +57,24 @@ public class MessageController {
      * Endpoint used for joining a game
      */
     @MessageMapping("/game/{gameId}/join")
-    public void addUser(@DestinationVariable String gameId, @Payload MessageDTO messageDTO,
-                        SimpMessageHeaderAccessor headerAccessor) {
-
-        // TODO: Build in access_token check
-        // TOOD: Build in maxPlayer check AND userId check (To not hijack game)
-        Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
-        if (sessionAttributes == null) {
-            headerAccessor.setSessionAttributes(new HashMap<>());
+    public void addUser(OAuth2Authentication auth,
+                        @DestinationVariable String gameId,
+                        @Payload MessageDTO messageDTO
+    ) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+        Game game = this.gameService.findOne(Long.parseLong(gameId));
+        if (game == null || user == null) {
+            return;
         }
 
-        String currentGameId = (String) headerAccessor.getSessionAttributes().put("game_id", gameId);
-        // Leave other room (This is just in case another is still open)
-        if (currentGameId != null) {
-            MessageDTO leaveMessageDTO = new MessageDTO();
-            leaveMessageDTO.setType(MessageDTO.MessageType.LEAVE);
-            leaveMessageDTO.setSender(messageDTO.getSender());
-            messagingTemplate.convertAndSend(format("/channel/%s", currentGameId), leaveMessageDTO);
+        Set<User> users = game.getUsers();
+
+        if (!users.contains(user) || users.size() >= game.getMaxPlayers()) {
+            return;
         }
-        headerAccessor.getSessionAttributes().put("username", messageDTO.getSender());
+
+        messageDTO.setSender(auth.getName());
+
         messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
 }

@@ -1,8 +1,8 @@
 export enum MessageType {
-  TURN_ENDED,
-  JOIN_GAME,
-  LEAVE_GAME,
-  MOVE_PAWN
+  TURN_ENDED = 'TURN_ENDED',
+  JOIN_GAME = 'JOIN_GAME',
+  LEAVE_GAME = 'LEAVE_GAME',
+  MOVE_PAWN = 'MOVE_PAWN'
 }
 
 export class Message {
@@ -10,7 +10,7 @@ export class Message {
   private readonly content: string;
   private readonly sender: string;
 
-  constructor(type: MessageType, content: string, sender: string) {
+  constructor(type: MessageType, content?: string, sender?: string) {
     this.type = type;
     this.content = content;
     this.sender = sender;

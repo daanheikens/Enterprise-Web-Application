@@ -39,4 +39,14 @@ export class GameService {
         return game;
       }));
   }
+
+  /**
+   * Joins a game
+   */
+  public joinGame(body: HttpParams): Observable<Game> {
+    return this.http.post<Game>(`${environment.apiUrl}/games/join`, body)
+      .pipe(map(game => {
+        return game;
+      }));
+  }
 }

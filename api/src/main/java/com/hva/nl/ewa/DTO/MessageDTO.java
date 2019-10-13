@@ -6,9 +6,9 @@ public class MessageDTO {
     private String sender;
 
     public enum MessageType {
-        TURN,
-        JOIN,
-        LEAVE,
+        TURN_ENDED,
+        JOIN_GAME,
+        LEAVE_GAME,
     }
 
     public MessageType getType() {

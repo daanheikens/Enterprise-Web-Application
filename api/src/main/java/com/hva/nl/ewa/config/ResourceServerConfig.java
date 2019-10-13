@@ -1,5 +1,6 @@
 package com.hva.nl.ewa.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,11 +10,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
 @Configuration
 @EnableResourceServer
+@EnableTransactionManagement
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private static final String RESOURCE_ID = "ewa_resource";
@@ -32,7 +35,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/oauth/token").permitAll()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/reset-password").permitAll()
-                .antMatchers("/ws/**").permitAll()
+                .antMatchers("/ws/**").authenticated()
                 .antMatchers("/api/**").authenticated();
     }
 
@@ -53,5 +56,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         props.put("mail.debug", "false");
 
         return mailSender;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

@@ -3,13 +3,14 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
+import {MessageService} from './message.service';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
   public currentUser: Observable<Object>;
   private currentUserSubject: BehaviorSubject<Object>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private messageService: MessageService) {
     this.currentUserSubject = new BehaviorSubject<Object>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -33,6 +34,7 @@ export class AuthService {
   }
 
   public logout(): void {
+    this.messageService.disconnect();
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }

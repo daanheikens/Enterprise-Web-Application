@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.services;
 
 import com.hva.nl.ewa.models.Game;
+import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

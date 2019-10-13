@@ -8,11 +8,14 @@ export class Game {
 
   private readonly _maxPendingTime: number;
 
-  constructor(id: number, maxPlayers: number, maxTurnTime: number, maxPendingTime: number) {
+  private readonly _currentPlayers: number;
+
+  constructor(id: number, maxPlayers: number, maxTurnTime: number, maxPendingTime: number, currentPlayers: number) {
     this._id = id;
     this._maxPlayers = maxPlayers;
     this._maxTurnTime = maxTurnTime;
     this._maxPendingTime = maxPendingTime;
+    this._currentPlayers = currentPlayers;
   }
 
   get id(): number {
@@ -29,5 +32,9 @@ export class Game {
 
   get maxPendingTime(): number {
     return this._maxPendingTime;
+  }
+
+  get currentPlayers(): number {
+    return this._currentPlayers;
   }
 }

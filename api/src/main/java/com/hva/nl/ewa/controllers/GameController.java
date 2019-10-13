@@ -1,5 +1,7 @@
 package com.hva.nl.ewa.controllers;
 
+import com.hva.nl.ewa.DTO.GameDTO;
+import com.hva.nl.ewa.helpers.ModelMapperHelper;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.services.GameService;
@@ -12,9 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
+@Transactional
 @RequestMapping(value = "/api/games", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GameController {
 
@@ -22,14 +28,17 @@ public class GameController {
 
     private final UserService userService;
 
+    private final ModelMapperHelper modelMapper;
+
     @Autowired
-    public GameController(GameService gameService, UserService userService) {
+    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper) {
         this.gameService = gameService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Game> create(
+    public ResponseEntity<GameDTO> create(
             OAuth2Authentication auth,
             @RequestParam(name = "maxPlayers") Integer maxPlayers,
             @RequestParam(name = "maxTurnTime") Integer maxTurnTime,
@@ -46,20 +55,34 @@ public class GameController {
         game.setMaxTurnTime(maxTurnTime);
         game.setMaxPendingTime(maxPendingTime);
         game.addUser(user);
-        return new ResponseEntity<>(this.gameService.save(game), new HttpHeaders(), HttpStatus.CREATED);
+
+        return new ResponseEntity<>(
+                (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                new HttpHeaders(),
+                HttpStatus.CREATED
+        );
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Game>> find() {
-        return new ResponseEntity<>(this.gameService.find(), new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<List<GameDTO>> find() {
+        List<Game> games = this.gameService.find();
+        List<GameDTO> gameDTOs = new ArrayList<>();
+
+        for (Game game : games) {
+            GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(game, GameDTO.class);
+            dto.setCurrentPlayers(game.getUsers().size());
+            gameDTOs.add(dto);
+        }
+
+        return new ResponseEntity<>(gameDTOs, new HttpHeaders(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public ResponseEntity<Game> getCurrentGame(OAuth2Authentication auth) {
+    public ResponseEntity<GameDTO> getCurrentGame(OAuth2Authentication auth) {
         User user = this.userService.loadUserByUsername(auth.getName());
 
         if (user == null) {
-            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
         }
 
         Game currentGame = null;
@@ -74,6 +97,32 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(this.gameService.findOne(currentGame.getId()), new HttpHeaders(), HttpStatus.OK);
+        return new ResponseEntity<>((GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class), new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+
+        if (user == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
+
+        Game game = this.gameService.findOne(gameId);
+
+        if (game == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        Set<User> users = game.getUsers();
+
+        if (users.size() >= game.getMaxPlayers()) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        game.addUser(user);
+        this.gameService.save(game);
+
+        return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }

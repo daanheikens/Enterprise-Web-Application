@@ -3,6 +3,7 @@ import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {Game} from '../../model/Game';
 import {MessageService} from '../../services/message.service';
+import {Message, MessageType} from '../../model/Message';
 
 @Component({
   selector: 'app-game',
@@ -32,7 +33,11 @@ export class GameComponent implements OnInit {
         }
       });
     this.messageService.joinGame.subscribe(
+      (message: Message) => {
+
+      }
       // A player joined, do something here....
+
       /**
        * Step 1 get players (refresh players)
        * Step 2 Assign players somewhere in the dom

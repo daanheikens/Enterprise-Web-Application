@@ -5,6 +5,7 @@ import {Message, MessageType} from '../model/Message';
 import {GameService} from './game.service';
 import {Observable, Subject} from 'rxjs';
 import {Game} from '../model/Game';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +30,10 @@ export class MessageService implements OnInit {
   private stompClient: CompatClient;
   private game: Game;
 
-  constructor(private readonly gameService: GameService,) {
-    this.gameService = gameService;
+  constructor(
+    private readonly authService: AuthService,
+    private readonly gameService: GameService
+  ) {
     this.joinGameSubject = new Subject<Message>();
     this.turnEndedSubject = new Subject<Message>();
     this.leaveGameSubject = new Subject<Message>();
@@ -50,14 +53,27 @@ export class MessageService implements OnInit {
   }
 
   public connect(gameId: number) {
-    this.stompClient = Stomp.over(new SockJS('http://localhost:8080/ws'));
+    const currentUser = this.authService.currentUserValue;
+    if (!currentUser || !currentUser['access_token']) {
+      this.authService.logout();
+      return;
+    }
+
+    this.stompClient = Stomp.over(new SockJS(`http://localhost:8080/ws?access_token=${currentUser['access_token']}`));
     this.stompClient.connect({}, () => {
+      this.sendMessage(new Message(MessageType.JOIN_GAME), gameId);
       this.stompClient.subscribe(`/channel/${gameId}`, (payload) => {
         this.onMessageReceived(JSON.parse(payload.body));
       });
     }, (error) => {
-      this.stompClient.disconnect();
+      this.disconnect();
     });
+  }
+
+  public disconnect(): void {
+    if (this.stompClient && this.stompClient.connected) {
+      this.stompClient.disconnect();
+    }
   }
 
   public sendMessage(message: Message, gameId: number) {
@@ -83,8 +99,8 @@ export class MessageService implements OnInit {
     }
   }
 
-  private onMessageReceived(message: Message) {
-    switch (message.getType()) {
+  private onMessageReceived(message) {
+    switch (message.type) {
       case MessageType.JOIN_GAME:
         this.joinGameSubject.next(message);
         break;

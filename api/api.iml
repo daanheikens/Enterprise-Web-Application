@@ -130,5 +130,6 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-websocket:2.1.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.1.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-websocket:5.1.9.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.3.2" level="project" />
   </component>
 </module>
