@@ -2,6 +2,7 @@ package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
 import com.hva.nl.ewa.helpers.ModelMapperHelper;
+import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.services.GameService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -56,6 +58,7 @@ public class GameController {
         game.setMaxPlayers(maxPlayers);
         game.setMaxTurnTime(maxTurnTime);
         game.setMaxPendingTime(maxPendingTime);
+        game.setCreationDate(new Date());
         game.addUser(user);
 
         return new ResponseEntity<>(
@@ -72,6 +75,11 @@ public class GameController {
 
         for (Game game : games) {
             if (game.getUsers().size() >= game.getMaxPlayers()) {
+                continue;
+            }
+
+            if (TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
+                this.gameService.delete(game);
                 continue;
             }
 
@@ -93,10 +101,16 @@ public class GameController {
 
         Game currentGame = null;
         for (Game game : user.getGames()) {
-            if (game != null) {
-                currentGame = game;
-                break;
+            if (game == null) {
+                continue;
             }
+
+            if (TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
+                this.gameService.delete(game);
+                continue;
+            }
+
+            currentGame = game;
         }
 
         if (currentGame == null) {

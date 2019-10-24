@@ -29,4 +29,8 @@ public class GameService {
     public Game save(Game game) {
         return this.gameRepository.save(game);
     }
+
+    public void delete(Game game) {
+        this.gameRepository.delete(game);
+    }
 }

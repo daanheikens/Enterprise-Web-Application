@@ -1,9 +1,12 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +30,12 @@ public class Game {
     @NotNull
     private int maxPendingTime;
 
+    @NotNull
+    @CreationTimestamp
+    private Date creationDate;
+
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
@@ -67,6 +74,10 @@ public class Game {
     public void setMaxPendingTime(int maxPendingTime) {
         this.maxPendingTime = maxPendingTime;
     }
+
+    public Date getCreationDate() { return creationDate; }
+
+    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
 
     public void addUser(User user) {
         this.users.add(user);
