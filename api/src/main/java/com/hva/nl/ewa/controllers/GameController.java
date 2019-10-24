@@ -105,7 +105,7 @@ public class GameController {
                 continue;
             }
 
-            if (TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
+            if (game.getUsers().size() < game.getMaxPlayers() && TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
                 this.gameService.delete(game);
                 continue;
             }
