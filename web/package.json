@@ -23,6 +23,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.24",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@stomp/stompjs": "^5.4.2",
+    "angular-bootstrap-md": "^8.4.0",
     "bootstrap": "~4.3.1",
     "jquery": "^3.4.1",
     "rxjs": "~6.4.0",

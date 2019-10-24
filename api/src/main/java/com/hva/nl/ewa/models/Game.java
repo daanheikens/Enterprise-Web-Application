@@ -16,6 +16,9 @@ public class Game {
     private long id;
 
     @NotNull
+    private String name;
+
+    @NotNull
     private int maxPlayers;
 
     @NotNull
@@ -36,6 +39,10 @@ public class Game {
     public void setId(long id) {
         this.id = id;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public int getMaxPlayers() {
         return maxPlayers;

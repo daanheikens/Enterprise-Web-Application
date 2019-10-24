@@ -13,12 +13,13 @@ import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
 import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
 import {AppRoutingModule} from './app-routing.module';
 import {RegisterComponent} from './components/register/register.component';
-import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { WelcomeComponent } from './components/UI/welcome/welcome.component';
-import { HeaderComponent } from './components/UI/welcome/header/header.component';
-import { GameListComponent } from './components/game-list/game-list.component';
-import { OverlayComponent } from './components/overlay/overlay.component';
+import {ResetPasswordComponent} from './components/reset-password/reset-password.component';
+import {ForgotPasswordComponent} from './components/forgot-password/forgot-password.component';
+import {WelcomeComponent} from './components/UI/welcome/welcome.component';
+import {HeaderComponent} from './components/UI/welcome/header/header.component';
+import {GameListComponent} from './components/game-list/game-list.component';
+import {OverlayComponent} from './components/overlay/overlay.component';
+import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
 
 
 @NgModule({
@@ -43,7 +44,10 @@ import { OverlayComponent } from './components/overlay/overlay.component';
     BrowserAnimationsModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    WavesModule,
+    ButtonsModule,
+    ModalModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

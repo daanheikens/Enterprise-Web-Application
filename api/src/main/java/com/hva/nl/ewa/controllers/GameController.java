@@ -40,6 +40,7 @@ public class GameController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<GameDTO> create(
             OAuth2Authentication auth,
+            @RequestParam(name = "name") String name,
             @RequestParam(name = "maxPlayers") Integer maxPlayers,
             @RequestParam(name = "maxTurnTime") Integer maxTurnTime,
             @RequestParam(name = "maxPendingTime") Integer maxPendingTime
@@ -51,6 +52,7 @@ public class GameController {
         }
 
         Game game = new Game();
+        game.setName(name);
         game.setMaxPlayers(maxPlayers);
         game.setMaxTurnTime(maxTurnTime);
         game.setMaxPendingTime(maxPendingTime);
