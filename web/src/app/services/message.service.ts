@@ -44,7 +44,7 @@ export class MessageService implements OnInit {
     this.movePawn = this.movePawnSubject.asObservable();
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.gameService.getCurrentGame().subscribe(
       data => {
         this.game = data;

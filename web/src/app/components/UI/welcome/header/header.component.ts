@@ -9,14 +9,14 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  user = 'Daan';
+  public user = 'Daan';
 
-  constructor(
+  public constructor(
     private readonly authService: AuthService,
     private readonly router: Router)
   {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
   }
 
   public logout(): void {

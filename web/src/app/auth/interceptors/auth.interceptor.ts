@@ -8,10 +8,13 @@ import {MessageService} from '../../services/message.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {
+ public  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private messageService: MessageService) {
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401 || err.status === 403) {
         this.messageService.disconnect();

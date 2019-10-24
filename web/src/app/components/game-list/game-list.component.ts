@@ -15,7 +15,7 @@ export class GameListComponent implements OnInit, OnDestroy {
 
   private refreshInterval;
 
-  constructor(
+  public constructor(
     private readonly gameService: GameService,
     private readonly router: Router) {
   }

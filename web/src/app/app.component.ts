@@ -8,10 +8,10 @@ import {AuthService} from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'EWA';
-  currentUser: Object;
+  public title = 'EWA';
+  public currentUser: Object;
 
-  constructor(
+  public constructor(
     private router: Router,
     private authService: AuthService
   ) {

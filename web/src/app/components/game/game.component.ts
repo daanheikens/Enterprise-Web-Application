@@ -17,13 +17,13 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private game: Game;
 
-  constructor(
+  public constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService
   ) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         this.game = data;

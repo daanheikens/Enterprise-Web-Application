@@ -7,7 +7,7 @@ export default class PawnCollection {
   private readonly _yellowPawn: Pawn;
   private readonly _greenPawn: Pawn;
 
-  constructor(redPawn: Pawn, bluePawn: Pawn, yellowPawn: Pawn, greenPawn: Pawn) {
+  public constructor(redPawn: Pawn, bluePawn: Pawn, yellowPawn: Pawn, greenPawn: Pawn) {
     this._redPawn = redPawn;
     this._bluePawn = bluePawn;
     this._yellowPawn = yellowPawn;

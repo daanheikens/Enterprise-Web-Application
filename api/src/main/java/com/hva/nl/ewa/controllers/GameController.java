@@ -99,19 +99,7 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
         }
 
-        Game currentGame = null;
-        for (Game game : user.getGames()) {
-            if (game == null) {
-                continue;
-            }
-
-            if (game.getUsers().size() < game.getMaxPlayers() && TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
-                this.gameService.delete(game);
-                continue;
-            }
-
-            currentGame = game;
-        }
+        Game currentGame = this.gameService.getCurrentGame(user);
 
         if (currentGame == null) {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);

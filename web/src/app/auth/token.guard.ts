@@ -6,18 +6,18 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '
 })
 export class TokenGuard implements CanActivate {
 
-  constructor(private router: Router) {
+  public constructor(private router: Router) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (route.queryParams.token) {
       return true;
     }
 
     this.router.navigate(['/login'])
-      .then(r => {
+      .then(() => {
         return false;
-      }).catch(r => {
+      }).catch(() => {
       return false;
     });
   }

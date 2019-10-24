@@ -8,7 +8,7 @@ export class Pawn {
 
   private _leftOffset: string;
 
-  constructor(playerId: number, imgSrc: string, topOffset: string, leftOffset: string) {
+  public constructor(playerId: number, imgSrc: string, topOffset: string, leftOffset: string) {
     this._playerId = playerId;
     this._imgSrc = imgSrc;
     this._topOffset = topOffset;

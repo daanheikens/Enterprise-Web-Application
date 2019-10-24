@@ -12,7 +12,7 @@ export class Game {
 
   private readonly _currentPlayers: number;
 
-  constructor(id: number, name: string, maxPlayers: number, maxTurnTime: number, maxPendingTime: number, currentPlayers: number) {
+  public constructor(id: number, name: string, maxPlayers: number, maxTurnTime: number, maxPendingTime: number, currentPlayers: number) {
     this._id = id;
     this._name = name;
     this._maxPlayers = maxPlayers;

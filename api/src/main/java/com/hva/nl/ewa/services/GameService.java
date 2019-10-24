@@ -1,5 +1,6 @@
 package com.hva.nl.ewa.services;
 
+import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.repositories.GameRepository;
@@ -32,5 +33,24 @@ public class GameService {
 
     public void delete(Game game) {
         this.gameRepository.delete(game);
+    }
+
+    public Game getCurrentGame(User user) {
+        Game currentGame = null;
+        for (Game game : user.getGames()) {
+            if (game == null) {
+                continue;
+            }
+
+            if (game.getUsers().size() < game.getMaxPlayers() && TimeHelper.timeElapsed(game.getCreationDate(), game.getMaxPendingTime())) {
+                this.delete(game);
+                continue;
+            }
+
+            currentGame = game;
+            break;
+        }
+
+        return currentGame;
     }
 }

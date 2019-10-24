@@ -10,7 +10,7 @@ import {Game} from '../model/Game';
 })
 export class GameService {
 
-  constructor(private readonly http: HttpClient) {
+  public constructor(private readonly http: HttpClient) {
   }
 
   public create(body: HttpParams): Observable<Game> {

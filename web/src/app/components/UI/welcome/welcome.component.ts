@@ -4,7 +4,7 @@ import {Game} from '../../../model/Game';
 import {first} from 'rxjs/operators';
 import {HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormGroup} from '@angular/forms';
 import {NewGameFormFactory} from '../../../forms/NewGameFormFactory';
 
 @Component({
@@ -40,11 +40,11 @@ export class WelcomeComponent implements OnInit {
       });
   }
 
-  get formControls() {
+  get formControls(): { [p: string]: AbstractControl } {
     return this.newGameForm.controls;
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.submitted = true;
 
     if (this.newGameForm.invalid) {
@@ -65,7 +65,7 @@ export class WelcomeComponent implements OnInit {
         });
   }
 
-  public continueGame() {
+  public continueGame(): void {
     this.router.navigate(['/game']);
   }
 }
