@@ -1,75 +1,9 @@
-<!--MODAL-->
-<div mdbModal #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
-          <span aria-hidden="true">×</span>
-        </button>
-        <h4 class="modal-title w-100" id="myModalLabel">New game</h4>
-      </div>
-      <form [formGroup]="newGameForm" (ngSubmit)="onSubmit()">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="maxPlayers">Name</label>
-            <input type="text" formControlName="name" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && formControls.name.errors }"/>
-            <div *ngIf="submitted && formControls.name.errors" class="invalid-feedback">
-              <div *ngIf="formControls.name.errors.required">Name is required</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="maxPlayers">Maximum players (2-4)</label>
-            <input type="number" formControlName="maxPlayers" class="form-control" [placeholder]="4"
-                   [ngClass]="{ 'is-invalid': submitted && formControls.maxPlayers.errors }"/>
-            <div *ngIf="submitted && formControls.maxPlayers.errors" class="invalid-feedback">
-              <div *ngIf="formControls.maxPlayers.errors.required">Maximum players is required</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="maxTurnTime">Maximum time per turn (in minutes)</label>
-            <input type="number" formControlName="maxTurnTime" class="form-control" [placeholder]="'60'"
-                   [ngClass]="{ 'is-invalid': submitted && formControls.maxTurnTime.errors }"/>
-            <div *ngIf="submitted && formControls.maxTurnTime.errors" class="invalid-feedback">
-              <div *ngIf="formControls.maxTurnTime.errors.required">Maximum time per turn is required</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="maxPendingTime">Maximum time waiting for players (in minutes)</label>
-            <input type="number" formControlName="maxPendingTime" class="form-control"
-                   [placeholder]="'720 (12 hours)'"
-                   [ngClass]="{ 'is-invalid': submitted && formControls.maxPendingTime.errors }"/>
-            <div *ngIf="submitted && formControls.maxPendingTime.errors" class="invalid-feedback">
-              <div *ngIf="formControls.maxPendingTime.errors.required">Maximum time waiting for players is required
-              </div>
-            </div>
-          </div>
-          <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-        </div>
-        <div class="modal-footer">
-          <div class="form-group">
-            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
-                    (click)="newGameForm.reset()" mdbWavesEffect>Clear
-            </button>
-            <button [disabled]="loading" type="submit" mdbBtn color="primary"
-                    class="relative waves-light" mdbWavesEffect>
-              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-              Create game
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!--/MODAL-->
 <app-header></app-header>
+<app-game-form></app-game-form>
 <div class="fullscreen-bg">
   <video [muted]="true" loop autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
     <source src="/assets/video/doolhof.mp4" type="video/mp4">
   </video>
-
   <div class="col-lg-12">
     <div class="col-lg-4">
     </div>
@@ -77,8 +11,8 @@
       <div class="card text-center">
         <div class="card-body">
           <div class="card-img-overlay">
-            <h1>{{inGame ? "Continue game" : "New game"}}</h1>
-            <a class="stretched-link" (click)="inGame ? continueGame() : basicModal.show()"></a>
+            <h1>{{game !== null ? "Continue game" : "New game"}}</h1>
+            <a class="stretched-link" (click)="game !== null ? continueGame() : showModal()"></a>
           </div>
         </div>
       </div>

@@ -20,6 +20,7 @@ import {HeaderComponent} from './components/UI/welcome/header/header.component';
 import {GameListComponent} from './components/game-list/game-list.component';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
+import { GameFormComponent } from './components/game-form/game-form.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
     WelcomeComponent,
     HeaderComponent,
     GameListComponent,
-    OverlayComponent
+    OverlayComponent,
+    GameFormComponent
   ],
   imports: [
     AppRoutingModule,

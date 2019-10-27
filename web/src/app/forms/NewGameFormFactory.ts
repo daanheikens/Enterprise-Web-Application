@@ -6,9 +6,9 @@ export class NewGameFormFactory extends AbstractFormFactory {
   public createForm(): FormGroup {
     return this.formBuilder.group({
       name: ['', Validators.required],
-      maxPlayers: ['', Validators.required],
-      maxTurnTime: ['', Validators.required],
-      maxPendingTime: ['', Validators.required]
+      maxPlayers: ['4', Validators.required],
+      maxTurnTime: ['60', Validators.required],
+      maxPendingTime: ['720', Validators.required]
     });
   }
 }

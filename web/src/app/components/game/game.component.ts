@@ -31,14 +31,8 @@ export class GameComponent implements OnInit, OnDestroy {
           this.onGameInitialized();
         }
       });
-    this.messageService.joinGame.subscribe(() => {
-        this.onPlayerJoinedGame();
-      }
-    );
-    this.messageService.turnEnded.subscribe(() => {
-        this.onTurnEnded();
-      }
-    );
+    this.messageService.joinGame.subscribe(() => this.onPlayerJoinedGame());
+    this.messageService.turnEnded.subscribe(() => this.onTurnEnded());
   }
 
   public ngOnDestroy(): void {
