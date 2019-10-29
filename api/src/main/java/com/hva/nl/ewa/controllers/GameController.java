@@ -61,6 +61,7 @@ public class GameController {
         game.setCreationDate(new Date());
         game.addUser(user);
 
+
         return new ResponseEntity<>(
                 (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
