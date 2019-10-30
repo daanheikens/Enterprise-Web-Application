@@ -5,6 +5,7 @@ import com.hva.nl.ewa.helpers.ModelMapperHelper;
 import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,14 @@ public class GameController {
     private final UserService userService;
 
     private final ModelMapperHelper modelMapper;
+    private BoardService boardService;
 
     @Autowired
-    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper) {
+    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper, BoardService boardService) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.boardService = boardService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -60,6 +63,10 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        var board = boardService.CreateBoard();
+        //todo implementeren multi level array storage in database.
+        game.setBoard(board.getBoard());
+        game.setPlayerHands(board.getPlayerTiles());
 
 
         return new ResponseEntity<>(

@@ -1,6 +1,9 @@
 package com.hva.nl.ewa.models;
 
+import com.hva.nl.ewa.helpers.ArrayHelper;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TileDefinition {
@@ -54,4 +57,30 @@ public class TileDefinition {
             new TileDefinition(29, false, true, true, true, false,TileStyle.STRAIGHT),
             new TileDefinition(30, true, true, false, false, true,TileStyle.UGLY_ASS)
     };
+
+    public static TileDefinition GetTile(int tileDefinitionId) {
+        return TileDefinitions[tileDefinitionId-1];
+    }
+
+    public static TileDefinition[] GetMovableTileDefinitions(){
+        var partOfMovableTiles = Arrays.copyOfRange(TileDefinitions,0,10);
+        return ArrayHelper.combine(partOfMovableTiles, Arrays.copyOfRange(TileDefinitions,27,29));
+    }
+
+    public static TileDefinition GetRandomNormalTile() {
+        if(Math.random() < 0.5){
+            return GetTile(29);
+        }
+        else{
+            return GetTile(28);
+        }
+    }
+
+    public int getTileDefinitionId() {
+        return tileDefinitionId;
+    }
+
+    boolean hasTreasure() {
+        return hasTreasure;
+    }
 }

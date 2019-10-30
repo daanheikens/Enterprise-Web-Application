@@ -39,6 +39,10 @@ public class Game {
     @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToOne()
+    private Set<Tile> playerTiles;
+
     public long getId() {
         return id;
     }
@@ -85,5 +89,9 @@ public class Game {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public void setPlayerHands(Tile[] playerTiles) {
+        this.playerTiles = playerTiles;
     }
 }
