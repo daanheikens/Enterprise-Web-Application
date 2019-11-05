@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PasswordResetService} from '../../services/password-reset.service';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
@@ -17,21 +17,21 @@ export class ForgotPasswordComponent implements OnInit {
   public submitted = false;
   public success = '';
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private passwordResetService: PasswordResetService
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.forgotPasswordForm = new ForgotPasswordFormFactory().createForm();
   }
 
-  get formControls() {
+  get formControls(): { [p: string]: AbstractControl } {
     return this.forgotPasswordForm.controls;
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.submitted = true;
 
     if (this.forgotPasswordForm.invalid) {
@@ -46,11 +46,11 @@ export class ForgotPasswordComponent implements OnInit {
     this.passwordResetService.requestNewPassword(body)
       .pipe(first())
       .subscribe(
-        data => {
+        () => {
           this.success = 'Password reset e-mail has been send';
           this.loading = false;
         },
-        error => {
+        () => {
           this.success = 'Password reset e-mail has been send';
           this.loading = false;
         });

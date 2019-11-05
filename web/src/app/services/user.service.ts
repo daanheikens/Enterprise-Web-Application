@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {}
 
   public register(body: FormData): Observable<User> {
     return this.http.post<User>(environment.registerUrl, body)

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {first} from 'rxjs/operators';
@@ -11,35 +11,35 @@ import {RegisterFormFactory} from '../../forms/RegisterFormFactory';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup;
-  loading = false;
-  submitted = false;
-  returnUrl: string;
-  error = '';
 
+  public registerForm: FormGroup;
+  public loading = false;
+  public submitted = false;
+  public returnUrl: string;
+  public error = '';
   private selectedFiles: FileList;
 
-  constructor(
+  public constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService
   ) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.registerForm = new RegisterFormFactory().createForm();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/game';
+    this.returnUrl = '/home';
   }
 
-  get formControls() {
+  get formControls(): { [p: string]: AbstractControl } {
     return this.registerForm.controls;
   }
 
-  public selectFile(event) {
+  public selectFile(event): void {
     this.selectedFiles = event.target.files;
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     this.submitted = true;
 
     if (this.registerForm.invalid) {
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     body.set('screenName', this.formControls.screenName.value);
     body.set('username', this.formControls.username.value);
     body.set('password', this.formControls.password.value);
-    body.set('email', this.formControls.password.value);
+    body.set('email', this.formControls.email.value);
     body.set('street', this.formControls.street.value);
     body.set('number', this.formControls.number.value);
     body.set('city', this.formControls.city.value);
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
     this.userService.register(body)
       .pipe(first())
       .subscribe(
-        data => {
+        () => {
           this.router.navigate([this.returnUrl]);
         },
         error => {

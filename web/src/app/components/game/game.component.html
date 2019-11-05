@@ -1,3 +1,5 @@
-<app-board (placeableTileChangedMessage)="onPlaceableTileChanged($event)"></app-board>
+<app-overlay *ngIf="gamePending"></app-overlay>
 
-<app-bottombar [placeableTile]="placeAbleTile"></app-bottombar>
+<app-board [isPending]="gamePending" (placeableTileChangedMessage)="onPlaceableTileChanged($event)"></app-board>
+
+<app-bottombar *ngIf="!gamePending" [placeableTile]="placeAbleTile"></app-bottombar>

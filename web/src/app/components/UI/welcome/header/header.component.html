@@ -1,0 +1,17 @@
+<nav class="navbar navbar-light bg-info">
+  <span>Made by EWA team 3</span>
+  <span>Welcome {{user}}</span>
+  <span (click)="logout()" href="#">Log out</span>
+  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <a class="dropdown-item active" href="#">Dashboard</a>
+    <a class="dropdown-item" href="#">Edit Profile</a>
+    <a class="dropdown-item" (click)="logout()">Log Out</a>
+  </div>
+<!--  <span *ngIf="loggedIn">Welcome {{userDisplayName}}</span>-->
+<!--  &lt;!&ndash;  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">&ndash;&gt;-->
+<!--  &lt;!&ndash;    &ndash;&gt;-->
+<!--  &lt;!&ndash;    <a class="dropdown-item" href="#">Dashboard</a>&ndash;&gt;-->
+<!--  &lt;!&ndash;    <a class="dropdown-item" href="#">Edit Profile</a>&ndash;&gt;-->
+<!--  &lt;!&ndash;    <a class="dropdown-item" href="#">Log Out</a>&ndash;&gt;-->
+<!--  &lt;!&ndash;  </div>&ndash;&gt;-->
+</nav>

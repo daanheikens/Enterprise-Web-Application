@@ -1,16 +1,19 @@
 import {Tile} from './Tile';
 import {log} from 'util';
 import {TileRotation} from './TileRotation';
+import PawnCollection from '../collections/PawnCollection';
 
 export class Board {
 
-  constructor(matrix: Tile[][] ) {
+  constructor(matrix: Tile[][]) {
     this.tiles = matrix;
   }
 
   public tiles: Tile[][] = [];
 
   public placeableTile: Tile;
+
+  public pawns: PawnCollection;
 
   public rotatePlacableTile() {
       const waltempRight = this.placeableTile.rightWall;

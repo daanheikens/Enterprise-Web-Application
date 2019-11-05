@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {User} from './model/User';
 import {Router} from '@angular/router';
 import {AuthService} from './services/auth.service';
 
@@ -9,10 +8,10 @@ import {AuthService} from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'EWA';
-  currentUser: User;
+  public title = 'EWA';
+  public currentUser: Object;
 
-  constructor(
+  public constructor(
     private router: Router,
     private authService: AuthService
   ) {
@@ -22,6 +21,7 @@ export class AppComponent {
   public logout(): void {
     this.authService.logout();
     this.router.navigate(['/login'])
-      .then(r => {});
+      .then(r => {
+      });
   }
 }

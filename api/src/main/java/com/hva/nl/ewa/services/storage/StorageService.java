@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,8 +45,7 @@ public class StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
-                        StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException | StorageException e) {
             throw new StorageException("Failed to store file " + filename, e);

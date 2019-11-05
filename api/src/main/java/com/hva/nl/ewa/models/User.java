@@ -6,9 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
+import java.util.*;
 
 @Entity
+@Table(name = "user")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,10 @@ public class User implements UserDetails {
 
     @Column
     private String image;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users")
+    private Set<Game> games = new HashSet<>();
 
     public void setId(long id) {
         this.id = id;
@@ -100,6 +105,14 @@ public class User implements UserDetails {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void addGame(Game game) {
+        this.games.add(game);
+    }
+
+    public Set<Game> getGames() {
+        return games;
     }
 
     @Override
