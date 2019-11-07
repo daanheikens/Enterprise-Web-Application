@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ModelMapperHelper<T, E> {
+public class ModelMapperHelper {
 
     private final ModelMapper mapper;
 
@@ -14,9 +14,11 @@ public class ModelMapperHelper<T, E> {
         this.mapper = modelMapper;
     }
 
-    public E ModelToDTO(T model, Class<E> target) { return this.mapper.map(model, target); }
+    public <T, E> E ModelToDTO(T model, Class<E> target) {
+        return this.mapper.map(model, target);
+    }
 
-    public E DTOToModel(T dto, Class<E> target) {
-       return this.mapper.map(dto, target);
+    public <T, E> E DTOToModel(T dto, Class<E> target) {
+        return this.mapper.map(dto, target);
     }
 }

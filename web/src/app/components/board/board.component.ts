@@ -5,6 +5,12 @@ import {Board} from '../../model/Board';
 import {BoardFactory} from '../../services/boardFactory';
 import {Tile} from '../../model/Tile';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
+import MovementHandler from '../../lib/movement/MovementHandler';
+import MoveUp from '../../lib/movement/strategies/MoveUp';
+import MoveLeft from '../../lib/movement/strategies/MoveLeft';
+import MoveRight from '../../lib/movement/strategies/MoveRight';
+import MoveDown from '../../lib/movement/strategies/MoveDown';
+import {MovementService} from '../../services/movement.service';
 
 @Component({
   selector: 'app-board',
@@ -13,12 +19,12 @@ import {PawnFactory} from '../../lib/factories/PawnFactory';
   animations: [TileAnimations]
 })
 export class BoardComponent implements OnInit, AfterViewInit {
-  @Output()
-  public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+  /** Board state properties **/
+  public board: Board;
+  @Output() public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+  @Input() public isPending: boolean;
 
-  @Input()
-  public isPending: boolean;
-
+  /** Animation properties **/
   public currentState = {
     colTop2: 'initial',
     colTop4: 'initial',
@@ -33,24 +39,34 @@ export class BoardComponent implements OnInit, AfterViewInit {
     colRowLeft4: 'initial',
     colRowLeft6: 'initial',
   };
+  private enableAnimation = false;
+
+  /** Icons **/
   public arrowUp: IconDefinition = faArrowUp;
   public arrowDown: IconDefinition = faArrowDown;
   public arrowRight: IconDefinition = faArrowRight;
   public arrowLeft: IconDefinition = faArrowLeft;
-  private enableAnimation: boolean;
 
-  public board: Board;
+  /** Movement properties **/
+  private movementHandler: MovementHandler;
+  private moveLeft = new MoveLeft();
+  private moveRight = new MoveRight();
+  private moveDown = new MoveDown();
+  private moveUp = new MoveUp();
+
+  public constructor(private readonly movementService: MovementService) {
+  }
 
   public ngOnInit(): void {
-    this.enableAnimation = false;
     this.board = new BoardFactory().CreateBoardTemp();
     this.onPlaceableTileChanged();
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      PawnFactory.createPawns(this.board);
-    })
+      let userPawn = PawnFactory.createPawns(this.board);
+      this.movementHandler = new MovementHandler(userPawn);
+    });
   }
 
   public insertTop(column: number): void {
@@ -103,12 +119,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('window:keyup', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('handleKeybaordEvent; alt key pressed ' + event.key);
+  public handleKeyboardEvent(event: KeyboardEvent) {
+    // Prevents arrows from firing scroll events
+    event.preventDefault();
     if (event.key === 'r') {
-      console.log('Found r key rotating!');
       this.board.rotatePlacableTile();
       this.onPlaceableTileChanged();
+    } else {
+      if (event.key === 'ArrowRight') {
+        this.movementHandler.handleMovement(this.moveRight);
+      } else if (event.key === 'ArrowLeft') {
+        this.movementHandler.handleMovement(this.moveLeft);
+      } else if (event.key === 'ArrowUp') {
+        this.movementHandler.handleMovement(this.moveUp);
+      } else if (event.key === 'ArrowDown') {
+        this.movementHandler.handleMovement(this.moveDown);
+      }
     }
   }
 }

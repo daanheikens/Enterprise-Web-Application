@@ -62,7 +62,7 @@ public class GameController {
         game.addUser(user);
 
         return new ResponseEntity<>(
-                (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
                 HttpStatus.CREATED
         );
@@ -83,7 +83,7 @@ public class GameController {
                 continue;
             }
 
-            GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(game, GameDTO.class);
+            GameDTO dto = this.modelMapper.ModelToDTO(game, GameDTO.class);
             dto.setCurrentPlayers(game.getUsers().size());
             gameDTOs.add(dto);
         }
@@ -105,7 +105,7 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
         }
 
-        GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
+        GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
         dto.setCurrentPlayers(currentGame.getUsers().size());
 
         return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);

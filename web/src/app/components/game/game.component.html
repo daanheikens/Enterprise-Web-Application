@@ -1,4 +1,4 @@
-<app-overlay *ngIf="gamePending"></app-overlay>
+<app-overlay *ngIf="!gamePending"></app-overlay>
 
 <app-board [isPending]="gamePending" (placeableTileChangedMessage)="onPlaceableTileChanged($event)"></app-board>
 
