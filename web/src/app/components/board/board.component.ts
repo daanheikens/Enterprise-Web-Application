@@ -11,6 +11,9 @@ import MoveLeft from '../../lib/movement/strategies/MoveLeft';
 import MoveRight from '../../lib/movement/strategies/MoveRight';
 import MoveDown from '../../lib/movement/strategies/MoveDown';
 import {MovementService} from '../../services/movement.service';
+import {map} from 'rxjs/operators';
+import {HttpParams} from '@angular/common/http';
+import {MovementDirections} from '../../lib/movement/MovementDirections';
 
 @Component({
   selector: 'app-board',
@@ -49,10 +52,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   /** Movement properties **/
   private movementHandler: MovementHandler;
+  private moveUp = new MoveUp();
+  private moveDown = new MoveDown();
   private moveLeft = new MoveLeft();
   private moveRight = new MoveRight();
-  private moveDown = new MoveDown();
-  private moveUp = new MoveUp();
 
   public constructor(private readonly movementService: MovementService) {
   }
@@ -120,21 +123,27 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent) {
-    // Prevents arrows from firing scroll events
-    event.preventDefault();
     if (event.key === 'r') {
       this.board.rotatePlacableTile();
       this.onPlaceableTileChanged();
-    } else {
-      if (event.key === 'ArrowRight') {
-        this.movementHandler.handleMovement(this.moveRight);
-      } else if (event.key === 'ArrowLeft') {
-        this.movementHandler.handleMovement(this.moveLeft);
-      } else if (event.key === 'ArrowUp') {
-        this.movementHandler.handleMovement(this.moveUp);
-      } else if (event.key === 'ArrowDown') {
-        this.movementHandler.handleMovement(this.moveDown);
-      }
+      return;
+    }
+
+    if (MovementDirections.includes(event.key)) {
+      this.movementService.movePawn(new HttpParams().set('direction', event.key))
+        .subscribe((result: boolean) => {
+          if (result === true) {
+            if (event.key === 'ArrowRight') {
+              this.movementHandler.handleMovement(this.moveRight);
+            } else if (event.key === 'ArrowLeft') {
+              this.movementHandler.handleMovement(this.moveLeft);
+            } else if (event.key === 'ArrowUp') {
+              this.movementHandler.handleMovement(this.moveUp);
+            } else if (event.key === 'ArrowDown') {
+              this.movementHandler.handleMovement(this.moveDown);
+            }
+          }
+        });
     }
   }
 }
