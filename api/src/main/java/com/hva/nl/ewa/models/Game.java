@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +37,11 @@ public class Game {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User initiator;
 
     public long getId() {
         return id;
@@ -85,5 +89,13 @@ public class Game {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public User getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(User initiator) {
+        this.initiator = initiator;
     }
 }
