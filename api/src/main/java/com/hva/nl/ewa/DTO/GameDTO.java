@@ -14,7 +14,7 @@ public class GameDTO {
 
     private int currentPlayers;
 
-    public GameDTO() {
+    public GameDTO(){
     }
 
     public long getId() {
