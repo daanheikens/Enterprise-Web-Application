@@ -40,6 +40,11 @@ public class Game {
     private Set<User> users = new HashSet<>();
 
     @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User initiator;
+
+    @JsonIgnore
     @ManyToOne()
     private Set<Tile> playerTiles;
 
@@ -89,9 +94,5 @@ public class Game {
 
     public Set<User> getUsers() {
         return users;
-    }
-
-    public void setPlayerHands(Tile[] playerTiles) {
-        this.playerTiles = playerTiles;
     }
 }

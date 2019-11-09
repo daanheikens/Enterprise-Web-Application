@@ -39,7 +39,6 @@ public class GameController {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.boardService = boardService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -68,6 +67,7 @@ public class GameController {
         game.setBoard(board.getBoard());
         game.setPlayerHands(board.getPlayerTiles());
 
+        game.setInitiator(user);
 
         return new ResponseEntity<>(
                 (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
