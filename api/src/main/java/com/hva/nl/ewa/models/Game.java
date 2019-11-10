@@ -36,7 +36,8 @@ public class Game {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "users_games",
+            joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
     @JsonIgnore
@@ -46,7 +47,8 @@ public class Game {
 
     @JsonIgnore
     @ManyToOne()
-    private Set<Tile> playerTiles;
+    private Set<Tile> tiles;
+
 
     public long getId() {
         return id;
@@ -94,5 +96,25 @@ public class Game {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public Tile[] playerTiles;
+
+    public void setInitiator(User user) {
+        initiator = user;
+    }
+
+    public Set<Tile> getTiles() {
+        return tiles;
+    }
+
+    public void setTiles(Set<Tile> tiles) {
+        this.tiles = tiles;
+    }
+
+    public void setBoard(Tile[][] board) {
+    }
+
+    public void setPlayerHands(Tile[] playerTiles) {
     }
 }

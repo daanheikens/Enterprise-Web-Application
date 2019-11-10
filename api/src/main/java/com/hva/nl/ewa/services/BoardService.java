@@ -18,25 +18,25 @@ public class BoardService {
 
     private static Tile[][] GetDefaultBoard() {
         var boardArray = new Tile[7][7];
-        boardArray[0][0] = new Tile(null, TileDefinition.GetTile(12));
-        boardArray[0][2] = new Tile(null, TileDefinition.GetTile(13));
-        boardArray[0][4] = new Tile(null, TileDefinition.GetTile(14));
-        boardArray[0][6] = new Tile(null, TileDefinition.GetTile(15));
+        boardArray[0][0] = new Tile(null, TileDefinition.GetTile(12),0,0);
+        boardArray[0][2] = new Tile(null, TileDefinition.GetTile(13),0,2);
+        boardArray[0][4] = new Tile(null, TileDefinition.GetTile(14),0,4);
+        boardArray[0][6] = new Tile(null, TileDefinition.GetTile(15),0,6);
 
-        boardArray[2][0] = new Tile(null, TileDefinition.GetTile(16);
-        boardArray[2][2] = new Tile(null, TileDefinition.GetTile(17));
-        boardArray[2][4] = new Tile(null, TileDefinition.GetTile(18));
-        boardArray[2][6] = new Tile(null, TileDefinition.GetTile(19));
+        boardArray[2][0] = new Tile(null, TileDefinition.GetTile(16),2,0);
+        boardArray[2][2] = new Tile(null, TileDefinition.GetTile(17),2,2);
+        boardArray[2][4] = new Tile(null, TileDefinition.GetTile(18),2,4);
+        boardArray[2][6] = new Tile(null, TileDefinition.GetTile(19),2,6);
 
-        boardArray[4][0] = new Tile(null, TileDefinition.GetTile(20));
-        boardArray[4][2] = new Tile(null, TileDefinition.GetTile(21));
-        boardArray[4][4] = new Tile(null, TileDefinition.GetTile(22));
-        boardArray[4][6] = new Tile(null, TileDefinition.GetTile(23));
+        boardArray[4][0] = new Tile(null, TileDefinition.GetTile(20),4,0);
+        boardArray[4][2] = new Tile(null, TileDefinition.GetTile(21),4,2);
+        boardArray[4][4] = new Tile(null, TileDefinition.GetTile(22), 4,4);
+        boardArray[4][6] = new Tile(null, TileDefinition.GetTile(23), 4,6 );
 
-        boardArray[6][0] = new Tile(null, TileDefinition.GetTile(24));
-        boardArray[6][2] = new Tile(null, TileDefinition.GetTile(25));
-        boardArray[6][4] = new Tile(null, TileDefinition.GetTile(26));
-        boardArray[6][6] = new Tile(null, TileDefinition.GetTile(27));
+        boardArray[6][0] = new Tile(null, TileDefinition.GetTile(24),6,0);
+        boardArray[6][2] = new Tile(null, TileDefinition.GetTile(25),6,2);
+        boardArray[6][4] = new Tile(null, TileDefinition.GetTile(26),6,4);
+        boardArray[6][6] = new Tile(null, TileDefinition.GetTile(27),6,6);
         return boardArray;
     }
 
@@ -48,11 +48,14 @@ public class BoardService {
 
     private BoardResult FillBoardRandomly(Tile[][] defaultBoard, Tile[] tilesToPlace) {
         Queue<Tile> randomQueue = new LinkedList<Tile>(Arrays.asList(ArrayHelper.shuffle(tilesToPlace)));
-        for (Tile[] tiles : defaultBoard) {
-            for (int i = 0; i < tiles.length; i++) {
-                Tile tile = tiles[i];
+        for (int y = 0; y < defaultBoard.length; y++) {
+            Tile[] tiles = defaultBoard[y];
+            for (int x = 0; x < tiles.length; x++) {
+                Tile tile = tiles[x];
                 if (tile == null) {
-                    tiles[i] = randomQueue.remove();
+                    tiles[x] = randomQueue.remove();
+                    tiles[x].setxCoordinate(x);
+                    tiles[x].setyCoordinate(y);
                 }
             }
         }

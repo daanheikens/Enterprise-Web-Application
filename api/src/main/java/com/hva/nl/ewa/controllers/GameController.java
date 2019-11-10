@@ -63,10 +63,8 @@ public class GameController {
         game.setCreationDate(new Date());
         game.addUser(user);
         var board = boardService.CreateBoard();
-        //todo implementeren multi level array storage in database.
         game.setBoard(board.getBoard());
         game.setPlayerHands(board.getPlayerTiles());
-
         game.setInitiator(user);
 
         return new ResponseEntity<>(
