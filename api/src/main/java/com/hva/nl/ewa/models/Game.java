@@ -6,9 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
@@ -47,7 +49,7 @@ public class Game {
 
     @JsonIgnore
     @ManyToOne()
-    private Set<Tile> tiles;
+    private Set<Tile> board;
 
 
     public long getId() {
@@ -104,17 +106,17 @@ public class Game {
         initiator = user;
     }
 
-    public Set<Tile> getTiles() {
-        return tiles;
-    }
-
-    public void setTiles(Set<Tile> tiles) {
-        this.tiles = tiles;
-    }
-
     public void setBoard(Tile[][] board) {
+        this.board = Arrays.stream(board)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toSet());
     }
 
     public void setPlayerHands(Tile[] playerTiles) {
+        this.playerTiles = playerTiles;
+    }
+
+    public Set<Tile> getBoard() {
+        return board;
     }
 }
