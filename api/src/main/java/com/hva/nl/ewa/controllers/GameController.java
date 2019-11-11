@@ -60,6 +60,7 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        game.setInitiator(user);
 
         return new ResponseEntity<>(
                 this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),

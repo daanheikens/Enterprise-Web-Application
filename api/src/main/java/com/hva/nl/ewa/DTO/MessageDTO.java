@@ -11,6 +11,9 @@ public class MessageDTO {
         LEAVE_GAME,
     }
 
+    public MessageDTO() {
+    }
+
     public MessageType getType() {
         return type;
     }
