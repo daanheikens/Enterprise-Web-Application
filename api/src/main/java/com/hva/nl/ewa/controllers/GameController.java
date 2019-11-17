@@ -3,7 +3,6 @@ package com.hva.nl.ewa.controllers;
 import com.hva.nl.ewa.DTO.GameDTO;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
-import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
@@ -139,6 +138,16 @@ public class GameController {
 
         game.addUser(user);
         this.gameService.save(game);
+
+        // Todo assign pawn to user.
+        /**
+         * game one-to-many game_user_data
+         *
+         * 1. id (Maybe not neccesairy but always easy to join)
+         * 2. gameId
+         * 3. userId
+         * 4. pawnId
+         */
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
