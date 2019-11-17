@@ -1,11 +1,12 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hva.nl.ewa.helpers.ArrayHelper;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -48,9 +49,9 @@ public class Game {
     private User initiator;
 
     @JsonIgnore
-    @ManyToOne()
-    private Set<Tile> board;
-
+    @OneToMany(mappedBy = "game")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Set<Tile> tiles = new HashSet<>();
 
     public long getId() {
         return id;
@@ -100,23 +101,21 @@ public class Game {
         return users;
     }
 
-    public Tile[] playerTiles;
 
     public void setInitiator(User user) {
         initiator = user;
     }
 
-    public void setBoard(Tile[][] board) {
-        this.board = Arrays.stream(board)
-                .flatMap(Arrays::stream)
-                .collect(Collectors.toSet());
+    public void setTiles(Tile[][] tiles) {
+        for (Tile[] tile : tiles) {
+            this.tiles.addAll(Arrays.asList(tile));
+            for (Tile tile1 : tile) {
+                tile1.setGame(this);
+            }
+        }
     }
 
-    public void setPlayerHands(Tile[] playerTiles) {
-        this.playerTiles = playerTiles;
-    }
-
-    public Set<Tile> getBoard() {
-        return board;
+    public Set<Tile> getTiles() {
+        return tiles;
     }
 }

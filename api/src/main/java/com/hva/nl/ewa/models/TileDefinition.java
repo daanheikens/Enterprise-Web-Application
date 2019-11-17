@@ -2,7 +2,6 @@ package com.hva.nl.ewa.models;
 
 import com.hva.nl.ewa.helpers.ArrayHelper;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class TileDefinition {
     private int tileDefinitionId;
     private boolean hasTreasure;
 
-    private TileDefinition(int tileDefinitionId, boolean topWall, boolean bottomWall, boolean rightWall, boolean leftWall,boolean hasTreasure, String imgSource) {
+    public TileDefinition(int tileDefinitionId, boolean topWall, boolean bottomWall, boolean rightWall, boolean leftWall,boolean hasTreasure, String imgSource) {
         this.topWall = topWall;
         this.bottomWall = bottomWall;
         this.rightWall = rightWall;
@@ -62,7 +61,7 @@ public class TileDefinition {
         return TileDefinitions[tileDefinitionId-1];
     }
 
-    public static TileDefinition[] GetMovableTileDefinitions(){
+    public static List<TileDefinition> GetMovableTileDefinitions(){
         var partOfMovableTiles = Arrays.copyOfRange(TileDefinitions,0,10);
         return ArrayHelper.combine(partOfMovableTiles, Arrays.copyOfRange(TileDefinitions,27,29));
     }
