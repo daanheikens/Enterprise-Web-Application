@@ -82,4 +82,20 @@ public class TileDefinition {
     boolean hasTreasure() {
         return hasTreasure;
     }
+
+    public boolean isTopWall() {
+        return topWall;
+    }
+
+    public boolean isBottomWall() {
+        return bottomWall;
+    }
+
+    public boolean isRightWall() {
+        return rightWall;
+    }
+
+    public boolean isLeftWall() {
+        return leftWall;
+    }
 }

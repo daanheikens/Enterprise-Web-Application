@@ -42,7 +42,7 @@ public class Game implements Model {
     private Set<User> users = new HashSet<>();
 
     @JsonIgnore
-    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
     private User initiator;
 
@@ -121,6 +121,6 @@ public class Game implements Model {
     }
 
     public Set<Tile> getTiles() {
-        return tiles;
+        return this.tiles;
     }
 }

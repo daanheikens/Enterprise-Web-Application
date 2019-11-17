@@ -18,7 +18,7 @@ export class PawnFactory {
 
     board.pawns = new PawnCollection(pawnRed, pawnBlue, pawnYellow, pawnGreen);
 
-    return pawnRed;
+    return pawnBlue;
   }
 
   private static getOffsetTop(element): number {

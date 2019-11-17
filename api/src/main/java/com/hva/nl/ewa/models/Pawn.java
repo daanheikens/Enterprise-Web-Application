@@ -3,16 +3,19 @@ package com.hva.nl.ewa.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pawn")
 public class Pawn implements Model {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private long pawnId;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

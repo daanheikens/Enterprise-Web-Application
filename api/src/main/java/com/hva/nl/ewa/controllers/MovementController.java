@@ -1,7 +1,8 @@
 package com.hva.nl.ewa.controllers;
 
+import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.services.MovementService;
-import com.hva.nl.ewa.validators.MovementDirectionValidator;
+import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,9 +22,12 @@ public class MovementController {
 
     private final MovementService movementService;
 
+    private final UserService userService;
+
     @Autowired
-    public MovementController(MovementService movementService) {
+    public MovementController(MovementService movementService, UserService userService) {
         this.movementService = movementService;
+        this.userService = userService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -34,14 +38,12 @@ public class MovementController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (!MovementDirectionValidator.isValidMovementDirection(direction)) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-        }
+        User user = this.userService.loadUserByUsername(username);
 
-        boolean validMove = this.movementService.move(direction);
+        boolean validMove = this.movementService.move(direction, user);
 
         if (!validMove) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(true);
