@@ -11,7 +11,6 @@ import MoveLeft from '../../lib/movement/strategies/MoveLeft';
 import MoveRight from '../../lib/movement/strategies/MoveRight';
 import MoveDown from '../../lib/movement/strategies/MoveDown';
 import {MovementService} from '../../services/movement.service';
-import {map} from 'rxjs/operators';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 

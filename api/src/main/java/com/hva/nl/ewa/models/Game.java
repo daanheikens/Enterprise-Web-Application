@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull

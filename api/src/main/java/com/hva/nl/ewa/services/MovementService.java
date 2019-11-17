@@ -12,9 +12,6 @@ public class MovementService {
     public boolean move(String direction) {
         /**
          * Steps:
-         * 1. Validate direction in controller
-         * 2. If valid fetch current user
-         * 3. If user then call service method with user
          * 4. Get the game of the user with pawn
          * 5. get the tile of that pawn
          * 6. get the target tile by index

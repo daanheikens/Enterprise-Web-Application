@@ -1,7 +1,7 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.helpers.ModelMapperHelper;
+import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
@@ -16,10 +16,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Transactional
@@ -30,10 +27,10 @@ public class GameController {
 
     private final UserService userService;
 
-    private final ModelMapperHelper modelMapper;
+    private final DefaultModelMapper modelMapper;
 
     @Autowired
-    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper) {
+    public GameController(GameService gameService, UserService userService, DefaultModelMapper modelMapper) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;

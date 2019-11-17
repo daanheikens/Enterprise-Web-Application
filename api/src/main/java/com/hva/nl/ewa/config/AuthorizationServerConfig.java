@@ -19,9 +19,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private static final String CLIENT_ID = "ewa_api";
     private static final String CLIENT_SECRET = "$2a$10$mHygCI./UFJJuL9nHycqMu2Ab2BXneAwpnwrGYpwYx7QQLuhh6fYm";
     private static final String GRANT_TYPE_PASSWORD = "password";
-    private static final String AUTHORIZATION_CODE = "authorization_code";
     private static final String REFRESH_TOKEN = "refresh_token";
-    private static final String IMPLICIT = "implicit";
     private static final String SCOPE_PLAYER = "player";
     private static final String SCOPE_ADMIN = "admin";
     private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
@@ -47,7 +45,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient(CLIENT_ID)
                 .secret("{bcrypt}" + CLIENT_SECRET)
                 .scopes(SCOPE_PLAYER, SCOPE_ADMIN)
-                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
+                .authorizedGrantTypes(GRANT_TYPE_PASSWORD, REFRESH_TOKEN)
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
                 .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS);
     }

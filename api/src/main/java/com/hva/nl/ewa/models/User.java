@@ -10,7 +10,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User implements Model, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
