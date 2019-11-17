@@ -1,18 +1,30 @@
 package com.hva.nl.ewa.models;
 
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Pawn {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "pawn")
+public class Pawn implements Model {
 
     @Id
-    @ManyToOne()
+    private long pawnId;
+
+    @JsonIgnore
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Id
-    private int gameId;
+    @JsonIgnore
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    private Game game;
 
-    private int tileId;
+    @JsonIgnore
+    @ManyToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "tile_id")
+    private Tile tile;
 
     public User getUser() {
         return user;
@@ -22,19 +34,27 @@ public class Pawn {
         this.user = user;
     }
 
-    public int getGameId() {
-        return gameId;
+    public Game getGame() {
+        return game;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
-    public int getTileId() {
-        return tileId;
+    public long getPawnId() {
+        return pawnId;
     }
 
-    public void setTileId(int tileId) {
-        this.tileId = tileId;
+    public void setPawnId(long pawnId) {
+        this.pawnId = pawnId;
+    }
+
+    public Tile getTile() {
+        return tile;
+    }
+
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 }

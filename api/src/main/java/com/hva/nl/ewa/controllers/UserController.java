@@ -25,7 +25,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public User update(@PathVariable long id, @RequestBody User user) {
-        user.setId(id);
+        user.setUserId(id);
         return userService.save(user);
     }
 }

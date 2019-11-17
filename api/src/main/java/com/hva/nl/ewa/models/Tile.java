@@ -1,21 +1,22 @@
 package com.hva.nl.ewa.models;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-public class Tile {
+@Entity
+@Table(name = "tile")
+public class Tile implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private int TileId;
+    private long tileId;
 
     @NotNull
     private TileRotation rotation;
 
+    @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pawn_id")
     @Null
     private Pawn pawn;
 
@@ -25,8 +26,8 @@ public class Tile {
     @NotNull
     private int tileDefinition;
 
-    @OneToMany
-    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "game_id")
     private Game game;
 
     @NotNull
@@ -99,12 +100,12 @@ public class Tile {
         this.xCoordinate = xCoordinate;
     }
 
-    public int getTileId() {
-        return TileId;
+    public long getTileId() {
+        return tileId;
     }
 
-    public void setTileId(int tileId) {
-        TileId = tileId;
+    public void setTileId(long tileId) {
+        this.tileId = tileId;
     }
 
     public Game getGame() {

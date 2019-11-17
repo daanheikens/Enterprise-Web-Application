@@ -9,7 +9,7 @@ public class BoardResult {
         this.playerTiles = playerTiles;
     }
 
-    public Tile[][] getBoard() {
+    public Tile[][] getTiles() {
         return board;
     }
 

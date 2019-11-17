@@ -1,15 +1,11 @@
 package com.hva.nl.ewa.services;
 
-import com.hva.nl.ewa.helpers.ArrayHelper;
 import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Tile;
 import com.hva.nl.ewa.models.TileDefinition;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 @Service
 public class BoardService {
@@ -46,8 +42,9 @@ public class BoardService {
         return FillBoardRandomly(defaultBoard, tilesToPlace);
     }
 
-    private BoardResult FillBoardRandomly(Tile[][] defaultBoard, Tile[] tilesToPlace) {
-        Queue<Tile> randomQueue = new LinkedList<Tile>(Arrays.asList(ArrayHelper.shuffle(tilesToPlace)));
+    private BoardResult FillBoardRandomly(Tile[][] defaultBoard, List<Tile> tilesToPlace) {
+        Collections.shuffle(tilesToPlace);
+        Queue<Tile> randomQueue = new LinkedList<>(tilesToPlace);
         for (int y = 0; y < defaultBoard.length; y++) {
             Tile[] tiles = defaultBoard[y];
             for (int x = 0; x < tiles.length; x++) {
@@ -62,7 +59,7 @@ public class BoardService {
         return new BoardResult(defaultBoard, randomQueue.toArray(new Tile[4]));
     }
 
-    private Tile[] GetTilesToPlace() {
+    private List<Tile> GetTilesToPlace() {
         var moveAbleTileDefinitions = TileDefinition.GetMovableTileDefinitions();
         var tiles = new ArrayList<Tile>(movableTiles);
         for (TileDefinition tileDefiniton : moveAbleTileDefinitions) {
@@ -71,7 +68,7 @@ public class BoardService {
         while(tiles.size() <= movableTiles){
            tiles.add(GetRandomTile());
         }
-        return tiles.toArray(new Tile[movableTiles]);
+        return tiles;
     }
 
     private Tile GetRandomTile() {
