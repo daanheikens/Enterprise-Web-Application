@@ -3,7 +3,7 @@ package com.hva.nl.ewa.helpers;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ArrayHelper {
+public class CollectionHelper {
 
     public static <T> List<T> combine(T[] a, T[] b){
         List<T> list = new ArrayList<T>(Arrays.asList(a));

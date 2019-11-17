@@ -1,7 +1,6 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.helpers.ArrayHelper;
 import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.models.BoardResult;

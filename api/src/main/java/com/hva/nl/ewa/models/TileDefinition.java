@@ -1,6 +1,6 @@
 package com.hva.nl.ewa.models;
 
-import com.hva.nl.ewa.helpers.ArrayHelper;
+import com.hva.nl.ewa.helpers.CollectionHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +63,7 @@ public class TileDefinition {
 
     public static List<TileDefinition> GetMovableTileDefinitions(){
         var partOfMovableTiles = Arrays.copyOfRange(TileDefinitions,0,10);
-        return ArrayHelper.combine(partOfMovableTiles, Arrays.copyOfRange(TileDefinitions,27,29));
+        return CollectionHelper.combine(partOfMovableTiles, Arrays.copyOfRange(TileDefinitions,27,29));
     }
 
     public static TileDefinition GetRandomNormalTile() {

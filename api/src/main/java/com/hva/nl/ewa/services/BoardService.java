@@ -1,6 +1,5 @@
 package com.hva.nl.ewa.services;
 
-import com.hva.nl.ewa.helpers.ArrayHelper;
 import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Tile;
 import com.hva.nl.ewa.models.TileDefinition;

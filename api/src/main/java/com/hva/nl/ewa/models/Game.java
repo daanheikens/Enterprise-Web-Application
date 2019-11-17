@@ -1,7 +1,6 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hva.nl.ewa.helpers.ArrayHelper;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -11,7 +10,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
@@ -49,8 +47,7 @@ public class Game implements Model {
     private User initiator;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "game")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<Tile> tiles = new HashSet<>();
 
     public long getId() {
