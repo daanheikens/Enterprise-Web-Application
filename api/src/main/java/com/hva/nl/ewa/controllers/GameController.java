@@ -3,8 +3,11 @@ package com.hva.nl.ewa.controllers;
 import com.hva.nl.ewa.DTO.GameDTO;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
+import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
+import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +32,14 @@ public class GameController {
 
     private final DefaultModelMapper modelMapper;
 
+    private final BoardService boardService;
+
     @Autowired
-    public GameController(GameService gameService, UserService userService, DefaultModelMapper modelMapper) {
+    public GameController(GameService gameService, UserService userService, DefaultModelMapper modelMapper, BoardService boardService) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.boardService = boardService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -57,6 +63,8 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        BoardResult board = boardService.CreateBoard();
+        game.setTiles(board.getTiles());
         game.setInitiator(user);
 
         return new ResponseEntity<>(
