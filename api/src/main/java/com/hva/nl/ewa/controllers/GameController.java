@@ -1,10 +1,12 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.helpers.ModelMapperHelper;
 import com.hva.nl.ewa.helpers.TimeHelper;
+import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
+import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Game;
 import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Transactional
@@ -30,13 +29,16 @@ public class GameController {
 
     private final UserService userService;
 
-    private final ModelMapperHelper modelMapper;
+    private final DefaultModelMapper modelMapper;
+
+    private final BoardService boardService;
 
     @Autowired
-    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper) {
+    public GameController(GameService gameService, UserService userService, DefaultModelMapper modelMapper, BoardService boardService) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.boardService = boardService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -60,10 +62,12 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        BoardResult board = boardService.CreateBoard();
+        game.setTiles(board.getTiles());
         game.setInitiator(user);
 
         return new ResponseEntity<>(
-                (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
                 HttpStatus.CREATED
         );
@@ -84,7 +88,7 @@ public class GameController {
                 continue;
             }
 
-            GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(game, GameDTO.class);
+            GameDTO dto = this.modelMapper.ModelToDTO(game, GameDTO.class);
             dto.setCurrentPlayers(game.getUsers().size());
             gameDTOs.add(dto);
         }
@@ -106,7 +110,7 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
         }
 
-        GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
+        GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
         dto.setCurrentPlayers(currentGame.getUsers().size());
 
         return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);

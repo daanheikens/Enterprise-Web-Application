@@ -10,11 +10,11 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User implements UserDetails, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private long id;
+    private long userId;
 
     @Column
     @NotNull
@@ -51,12 +51,12 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
     public String getScreenName() {

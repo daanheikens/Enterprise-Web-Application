@@ -1,17 +1,19 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "game")
-public class Game {
+public class Game implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -35,13 +37,18 @@ public class Game {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "users_games",
+            joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
     private User initiator;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private Set<Tile> tiles = new HashSet<>();
 
     public long getId() {
         return id;
@@ -91,11 +98,21 @@ public class Game {
         return users;
     }
 
-    public User getInitiator() {
-        return initiator;
+
+    public void setInitiator(User user) {
+        initiator = user;
     }
 
-    public void setInitiator(User initiator) {
-        this.initiator = initiator;
+    public void setTiles(Tile[][] tiles) {
+        for (Tile[] tile : tiles) {
+            this.tiles.addAll(Arrays.asList(tile));
+            for (Tile tile1 : tile) {
+                tile1.setGame(this);
+            }
+        }
+    }
+
+    public Set<Tile> getTiles() {
+        return tiles;
     }
 }
