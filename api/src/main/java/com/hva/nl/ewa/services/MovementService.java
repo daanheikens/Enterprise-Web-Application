@@ -1,10 +1,7 @@
 package com.hva.nl.ewa.services;
 
 import com.hva.nl.ewa.helpers.Offset;
-import com.hva.nl.ewa.models.Game;
-import com.hva.nl.ewa.models.Pawn;
-import com.hva.nl.ewa.models.Tile;
-import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +85,7 @@ public class MovementService {
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
+        TileDefinition tileDefinition =  targetTile.getTileDefinition();
 
         if (offsetModdifier == -1 && targetTile.getTileDefinition().isBottomWall() && userTile.getTileDefinition().isTopWall()) {
             return false;

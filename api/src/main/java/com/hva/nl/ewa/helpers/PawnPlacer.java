@@ -41,10 +41,9 @@ public class PawnPlacer {
             tilesArray[t.getxCoordinate()][t.getyCoordinate()] = t;
         }
 
-        coordinates.get(totalUsers).forEach((key, value) -> {
-            tilesArray[key][value].setPawn(pawn);
-            pawn.setTile(tilesArray[key][value]);
-        });
-
+        for (Map.Entry<Integer, Integer> position : coordinates.get(totalUsers).entrySet()) {
+            tilesArray[position.getKey()][position.getValue()].setPawn(pawn);
+            pawn.setTile(tilesArray[position.getKey()][position.getValue()]);
+        }
     }
 }

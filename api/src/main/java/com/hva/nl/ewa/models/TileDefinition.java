@@ -53,7 +53,7 @@ public class TileDefinition {
             new TileDefinition(26, false, true, false, false, true,TileStyle.BOOK),
             new TileDefinition(27, false, true, true, true, false, TileStyle.CORNER_RED),
             new TileDefinition(28, false, true, true, true, false,TileStyle.CORNER),
-            new TileDefinition(29, false, true, true, true, false,TileStyle.STRAIGHT),
+            new TileDefinition(29, true, true, false, false, false,TileStyle.STRAIGHT),
             new TileDefinition(30, true, true, false, false, true,TileStyle.UGLY_ASS)
     };
 
