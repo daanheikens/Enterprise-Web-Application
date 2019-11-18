@@ -43,7 +43,7 @@ public class MovementController {
         boolean validMove = this.movementService.move(direction, user);
 
         if (!validMove) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.OK).body(false);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(true);

@@ -85,7 +85,6 @@ public class MovementService {
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
         }
-        TileDefinition tileDefinition =  targetTile.getTileDefinition();
 
         if (offsetModdifier == -1 && targetTile.getTileDefinition().isBottomWall() && userTile.getTileDefinition().isTopWall()) {
             return false;
