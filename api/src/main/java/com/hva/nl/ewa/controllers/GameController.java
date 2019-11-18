@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
+import com.hva.nl.ewa.DTO.TileDTO;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
 import com.hva.nl.ewa.helpers.PawnPlacer;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
@@ -10,6 +11,8 @@ import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
 import com.hva.nl.ewa.services.PawnService;
 import com.hva.nl.ewa.services.UserService;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -140,6 +143,21 @@ public class GameController {
 
         GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
         dto.setCurrentPlayers(currentGame.getUsers().size());
+
+        TileDTO[][] tilesArray = new TileDTO[7][7];
+
+        for (Tile t : currentGame.getTiles()) {
+            TileDTO tileDTO = this.modelMapper.ModelToDTO(t, TileDTO.class);
+            Pawn pawn = t.getPawn();
+            if (pawn != null) {
+                pawn.setUser(pawn.getUser());
+                tileDTO.setPawn(pawn);
+            }
+            tileDTO.setImgSrc(t.getTileDefinition().getImgSrc());
+            tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
+        }
+
+        dto.setMatrix(tilesArray);
 
         return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);
     }

@@ -4,9 +4,9 @@ import {Pawn} from './Pawn';
 
 export class Tile {
 
-  constructor(id: number, topWall = false, bottomWall = false, rightWall = false, leftWall = false,
+  constructor(tileId: number, topWall = false, bottomWall = false, rightWall = false, leftWall = false,
               imgSrc = TileStyle.EMPTY, pawn: Pawn = null) {
-    this.id = id;
+    this.tileId = tileId;
     this.topWall = topWall;
     this.bottomWall = bottomWall;
     this.rightWall = rightWall;
@@ -15,7 +15,7 @@ export class Tile {
     this.pawn = pawn;
   }
 
-  public readonly id;
+  public readonly tileId;
   public topWall: boolean;
   public bottomWall: boolean;
   public rightWall: boolean;

@@ -13,6 +13,7 @@ import MoveDown from '../../lib/movement/strategies/MoveDown';
 import {MovementService} from '../../services/movement.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
+import {GameService} from '../../services/game.service';
 
 @Component({
   selector: 'app-board',
@@ -56,12 +57,20 @@ export class BoardComponent implements OnInit, AfterViewInit {
   private moveLeft = new MoveLeft();
   private moveRight = new MoveRight();
 
-  public constructor(private readonly movementService: MovementService) {
+  public constructor(
+    private readonly gameService: GameService,
+    private readonly movementService: MovementService
+  ) {
   }
 
   public ngOnInit(): void {
-    this.board = new BoardFactory().CreateBoardTemp();
-    this.onPlaceableTileChanged();
+    setTimeout(() => {
+      this.gameService.getCurrentGame()
+        .subscribe(data => {
+          this.board = new Board(data.matrix);
+          this.onPlaceableTileChanged();
+        });
+    });
   }
 
   public ngAfterViewInit(): void {

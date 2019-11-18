@@ -6,10 +6,10 @@ export class PawnFactory {
 
   public static createPawns(board: Board): Pawn {
 
-    const blueTile = document.getElementById(board.tiles[0][0].id);
-    const greenTile = document.getElementById(board.tiles[0][6].id);
-    const yellowTile = document.getElementById(board.tiles[6][0].id);
-    const redTile = document.getElementById(board.tiles[6][6].id);
+    const blueTile = document.getElementById(board.tiles[0][0].tileId);
+    const greenTile = document.getElementById(board.tiles[0][6].tileId);
+    const yellowTile = document.getElementById(board.tiles[6][0].tileId);
+    const redTile = document.getElementById(board.tiles[6][6].tileId);
 
     let pawnBlue = new Pawn(1, '/assets/images/pawn.png', PawnFactory.getOffsetTop(blueTile).toString(), (blueTile.offsetLeft + 23).toString());
     let pawnGreen = new Pawn(2, '/assets/images/pawn.png', PawnFactory.getOffsetTop(greenTile).toString(), (greenTile.offsetLeft + 23).toString());

@@ -14,6 +14,8 @@ public class GameDTO {
 
     private int currentPlayers;
 
+    private TileDTO[][] matrix;
+
     public GameDTO(){
     }
 
@@ -63,5 +65,13 @@ public class GameDTO {
 
     public void setCurrentPlayers(int currentPlayers) {
         this.currentPlayers = currentPlayers;
+    }
+
+    public TileDTO[][] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(TileDTO[][] matrix) {
+        this.matrix = matrix;
     }
 }
