@@ -50,9 +50,9 @@ export class GameComponent implements OnInit, OnDestroy {
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.refreshPlayers();
-        if (data.currentPlayers >= data.maxPlayers) {
+        if (data.currentPlayers.length >= data.maxPlayers) {
           this.gamePending = false;
+          this.refreshPlayers();
         }
       });
   }

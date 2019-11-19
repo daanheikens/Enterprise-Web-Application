@@ -2,7 +2,6 @@ import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Out
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
-import {BoardFactory} from '../../services/boardFactory';
 import {Tile} from '../../model/Tile';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
 import MovementHandler from '../../lib/movement/MovementHandler';
@@ -14,6 +13,7 @@ import {MovementService} from '../../services/movement.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-board',
@@ -58,6 +58,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
   private moveRight = new MoveRight();
 
   public constructor(
+    private readonly authService: AuthService,
     private readonly gameService: GameService,
     private readonly movementService: MovementService
   ) {
@@ -67,16 +68,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.gameService.getCurrentGame()
         .subscribe(data => {
-          this.board = new Board(data.matrix);
+          console.log(data);
+          this.board = new Board(data.matrix, data.currentPlayers, data.currentUser);
           this.onPlaceableTileChanged();
+        }, error => {
+          console.log(error);
         });
     });
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      let userPawn = PawnFactory.createPawns(this.board);
-      this.movementHandler = new MovementHandler(userPawn);
+      this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
     });
   }
 

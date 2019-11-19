@@ -29,6 +29,9 @@ public class Pawn implements Model {
     @JoinColumn(name = "tile_id")
     private Tile tile;
 
+    @NotNull
+    private PawnType pawnType;
+
     public User getUser() {
         return user;
     }
@@ -59,5 +62,13 @@ public class Pawn implements Model {
 
     public void setTile(Tile tile) {
         this.tile = tile;
+    }
+
+    public PawnType getPawnType() {
+        return pawnType;
+    }
+
+    public void setPawnType(PawnType pawnType) {
+        this.pawnType = pawnType;
     }
 }

@@ -1,5 +1,9 @@
 package com.hva.nl.ewa.DTO;
 
+import com.hva.nl.ewa.models.User;
+
+import java.util.Set;
+
 public class GameDTO {
 
     private long id;
@@ -12,9 +16,11 @@ public class GameDTO {
 
     private int maxPendingTime;
 
-    private int currentPlayers;
+    private Set<User> currentPlayers;
 
     private TileDTO[][] matrix;
+
+    private User user;
 
     public GameDTO(){
     }
@@ -59,11 +65,11 @@ public class GameDTO {
         this.maxPendingTime = maxPendingTime;
     }
 
-    public int getCurrentPlayers() {
+    public Set<User> getCurrentPlayers() {
         return currentPlayers;
     }
 
-    public void setCurrentPlayers(int currentPlayers) {
+    public void setCurrentPlayers(Set<User> currentPlayers) {
         this.currentPlayers = currentPlayers;
     }
 
@@ -73,5 +79,13 @@ public class GameDTO {
 
     public void setMatrix(TileDTO[][] matrix) {
         this.matrix = matrix;
+    }
+
+    public void setCurrentUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

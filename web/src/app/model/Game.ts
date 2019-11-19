@@ -1,4 +1,5 @@
 import {Tile} from './Tile';
+import {User} from './User';
 
 export class Game {
 
@@ -12,17 +13,29 @@ export class Game {
 
   private readonly _maxPendingTime: number;
 
-  private readonly _currentPlayers: number;
+  private readonly _currentPlayers: User[];
+
+  private readonly _user: User;
 
   private readonly _matrix: Tile[][];
 
-  public constructor(id: number, name: string, maxPlayers: number, maxTurnTime: number, maxPendingTime: number, currentPlayers: number, matrix: Tile[][]) {
+  public constructor(
+    id: number,
+    name: string,
+    maxPlayers: number,
+    maxTurnTime: number,
+    maxPendingTime: number,
+    currentPlayers: User[],
+    user: User,
+    matrix: Tile[][]
+  ) {
     this._id = id;
     this._name = name;
     this._maxPlayers = maxPlayers;
     this._maxTurnTime = maxTurnTime;
     this._maxPendingTime = maxPendingTime;
     this._currentPlayers = currentPlayers;
+    this._user = user;
     this._matrix = matrix;
   }
 
@@ -46,8 +59,12 @@ export class Game {
     return this._maxPendingTime;
   }
 
-  get currentPlayers(): number {
+  get currentPlayers(): User[] {
     return this._currentPlayers;
+  }
+
+  get currentUser(): User {
+    return this._user;
   }
 
   get matrix(): Tile[][] {
