@@ -9,10 +9,14 @@ import {Tile} from '../../model/Tile';
 export class BottombarComponent implements OnInit {
 
   @Input()
-  public placeableTile: Tile;
+  public placeAbleTile: Tile;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.placeAbleTile);
   }
+
+  // TODO add button to end the turn.
+  // TODO add output event emitter to output and endTurn message whenever the turn is ended.
 }

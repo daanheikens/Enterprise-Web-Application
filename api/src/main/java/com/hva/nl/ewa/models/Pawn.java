@@ -3,16 +3,19 @@ package com.hva.nl.ewa.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pawn")
 public class Pawn implements Model {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private long pawnId;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -25,6 +28,9 @@ public class Pawn implements Model {
     @ManyToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "tile_id")
     private Tile tile;
+
+    @NotNull
+    private PawnType pawnType;
 
     public User getUser() {
         return user;
@@ -56,5 +62,13 @@ public class Pawn implements Model {
 
     public void setTile(Tile tile) {
         this.tile = tile;
+    }
+
+    public PawnType getPawnType() {
+        return pawnType;
+    }
+
+    public void setPawnType(PawnType pawnType) {
+        this.pawnType = pawnType;
     }
 }

@@ -1,102 +1,62 @@
 import {Tile} from './Tile';
-import {log} from 'util';
 import {TileRotation} from './TileRotation';
-import PawnCollection from '../collections/PawnCollection';
+import {User} from './User';
+import {Pawn} from './Pawn';
 
 export class Board {
 
-  constructor(matrix: Tile[][]) {
-    this.tiles = matrix;
-  }
-
   public tiles: Tile[][] = [];
 
-  public placeableTile: Tile;
+  public placeAbleTile: Tile;
 
-  public pawns: PawnCollection;
+  public pawns: Pawn[];
+
+  private readonly _user: User;
+
+  private readonly _currentPlayers: User[];
+
+  private readonly _gameId: number;
+
+  constructor(matrix: Tile[][], currentPlayers: User[], currentUser: User, placeAbleTile: Tile, gameId: number) {
+    this.tiles = matrix;
+    this._currentPlayers = currentPlayers;
+    this._user = currentUser;
+    this.placeAbleTile = placeAbleTile;
+    this._gameId = gameId;
+  }
+
+  get currentPlayers(): User[] {
+    return this._currentPlayers;
+  }
+
+  get currentUser(): User {
+    return this._user;
+  }
+
+  get gameId(): number {
+    return this._gameId;
+  }
 
   public rotatePlacableTile() {
-      const waltempRight = this.placeableTile.rightWall;
-      const waltempLeft = this.placeableTile.leftWall;
-      const waltempBottom = this.placeableTile.bottomWall;
-      const waltempTop = this.placeableTile.topWall;
-
-      this.placeableTile.rightWall = waltempTop;
-      this.placeableTile.bottomWall = waltempRight;
-      this.placeableTile.leftWall = waltempBottom;
-      this.placeableTile.topWall = waltempLeft;
-
-      switch (this.placeableTile.tileRotation) {
-
-        case TileRotation.Zero: {
-            this.placeableTile.tileRotation = TileRotation.Ninety;
-            break;
-        }
-        case TileRotation.Ninety: {
-          this.placeableTile.tileRotation = TileRotation.OneEighty;
-          break;
-        }
-        case TileRotation.OneEighty: {
-          this.placeableTile.tileRotation = TileRotation.TwoHundredSeventy;
-          break;
-        }
-        case TileRotation.TwoHundredSeventy: {
-          this.placeableTile.tileRotation = TileRotation.Zero;
-        }
+    switch (this.placeAbleTile.tileRotation) {
+      case TileRotation.Zero: {
+        this.placeAbleTile.tileRotation = TileRotation.Ninety;
+        break;
       }
-
-  }
-
-  public insertTop(col: number) {
-      let tileToMoveDown = this.placeableTile;
-      let currentTile;
-      for (let i = 0; i < 7; i++) {
-         currentTile = this.tiles[i][col];
-         this.tiles[i][col] = tileToMoveDown;
-         tileToMoveDown = currentTile;
+      case TileRotation.Ninety: {
+        this.placeAbleTile.tileRotation = TileRotation.OneEighty;
+        break;
       }
-      this.placeableTile = currentTile;
-  }
-
-  public insertBottom(col: number) {
-    if (col % 2 !== 1 ) { console.error('Tried to insert into an even col'); return; }
-    if (col > 5) { console.error('Tried to insert item from top into not existing col' + col); return; }
-
-    let tileToMoveUp = this.placeableTile;
-    let currentTile;
-    for (let i = 6; i >= 0; i--) {
-      currentTile = this.tiles[i][col];
-      this.tiles[i][col] = tileToMoveUp;
-      tileToMoveUp = currentTile;
+      case TileRotation.OneEighty: {
+        this.placeAbleTile.tileRotation = TileRotation.TwoHundredSeventy;
+        break;
+      }
+      case TileRotation.TwoHundredSeventy: {
+        this.placeAbleTile.tileRotation = TileRotation.Zero;
+        break;
+      }
+      default:
+        throw new Error('Invalid tile rotation');
     }
-    this.placeableTile = currentTile;
-  }
-
-  public insertRight(row: number) {
-    if (row % 2 !== 1 ) { console.error('Tried to insert into an even col'); return; }
-    if (row > 5) { console.error('Tried to insert item from top into not existing col' + row); return; }
-
-    let tileToMoveRight = this.placeableTile;
-    let currentTile;
-    for (let i = 6; i >= 0; i--) {
-      currentTile = this.tiles[row][i];
-      this.tiles[row][i] = tileToMoveRight;
-      tileToMoveRight = currentTile;
-    }
-    this.placeableTile = currentTile;
-  }
-
-  public insertLeft(row: number) {
-    if (row % 2 !== 1 ) { log.Error('Tried to insert into an even col'); return; }
-    if (row > 5) { log.error('Tried to insert item from top into not existing col' + row); return; }
-
-    let tileToMoveRight = this.placeableTile;
-    let currentTile;
-    for (let i = 0; i < 7; i++) {
-      currentTile = this.tiles[row][i];
-      this.tiles[row][i] = tileToMoveRight;
-      tileToMoveRight = currentTile;
-    }
-    this.placeableTile = currentTile;
   }
 }

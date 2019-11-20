@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -50,6 +51,14 @@ public class Game implements Model {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<Tile> tiles = new HashSet<>();
 
+    @JsonIgnore
+    @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
+    private Tile placeableTile;
+
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    private User userTurn;
+
     public long getId() {
         return id;
     }
@@ -58,9 +67,13 @@ public class Game implements Model {
         this.id = id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -86,9 +99,13 @@ public class Game implements Model {
         this.maxPendingTime = maxPendingTime;
     }
 
-    public Date getCreationDate() { return creationDate; }
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public void addUser(User user) {
         this.users.add(user);
@@ -113,6 +130,22 @@ public class Game implements Model {
     }
 
     public Set<Tile> getTiles() {
-        return tiles;
+        return this.tiles;
+    }
+
+    public Tile getPlaceableTile() {
+        return placeableTile;
+    }
+
+    public void setPlaceableTile(Tile placeableTile) {
+        this.placeableTile = placeableTile;
+    }
+
+    public User getUserTurn() {
+        return userTurn;
+    }
+
+    public void setUserTurn(User userTurn) {
+        this.userTurn = userTurn;
     }
 }

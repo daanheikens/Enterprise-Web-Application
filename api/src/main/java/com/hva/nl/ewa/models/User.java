@@ -1,8 +1,10 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +12,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements UserDetails, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +31,7 @@ public class User implements UserDetails, Model {
     @Column
     @NotNull
     @JsonIgnore
-    @Size(min = 5, max = 80,message = "{password.size}")
+    @Size(min = 5, max = 80, message = "{password.size}")
     private String password;
 
     @Column
@@ -50,6 +53,10 @@ public class User implements UserDetails, Model {
     @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Pawn pawn;
 
     public void setUserId(long userId) {
         this.userId = userId;
@@ -115,37 +122,48 @@ public class User implements UserDetails, Model {
         return games;
     }
 
+    public Pawn getPawn() {
+        return this.pawn;
+    }
+
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.username;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

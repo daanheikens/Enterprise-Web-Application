@@ -1,11 +1,14 @@
 package com.hva.nl.ewa.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "tile")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tile implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +18,9 @@ public class Tile implements Model {
     @NotNull
     private TileRotation rotation;
 
+    @JsonIgnore
     @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "pawn_id")
-    @Null
     private Pawn pawn;
 
     @NotNull
@@ -26,15 +29,24 @@ public class Tile implements Model {
     @NotNull
     private int tileDefinition;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;
 
-    @NotNull
-    private int xCoordinate;
+    private Integer xCoordinate;
 
-    @NotNull
-    private int yCoordinate;
+    private Integer yCoordinate;
+
+    public Tile() {
+    }
+
+    public Tile(Pawn pawn, TileDefinition tileDefinition) {
+        this.rotation = TileRotation.Zero;
+        this.pawn = pawn;
+        this.treasure = tileDefinition.hasTreasure();
+        this.tileDefinition = tileDefinition.getTileDefinitionId();
+    }
 
     public Tile(Pawn pawn, TileDefinition tileDefinition, int initialYCoordinate, int initialXCoordinate) {
         this.rotation = TileRotation.Zero;
@@ -43,13 +55,6 @@ public class Tile implements Model {
         this.tileDefinition = tileDefinition.getTileDefinitionId();
         this.xCoordinate = initialXCoordinate;
         this.yCoordinate = initialYCoordinate;
-    }
-
-    public Tile(Pawn pawn, TileDefinition tileDefinition) {
-        this.rotation = TileRotation.Zero;
-        this.pawn = pawn;
-        this.treasure = tileDefinition.hasTreasure();
-        this.tileDefinition = tileDefinition.getTileDefinitionId();
     }
 
     public TileRotation getRotation() {
@@ -84,19 +89,19 @@ public class Tile implements Model {
         this.tileDefinition = tileDefinition.getTileDefinitionId();
     }
 
-    public int getyCoordinate() {
+    public Integer getyCoordinate() {
         return yCoordinate;
     }
 
-    public void setyCoordinate(int yCoordinate) {
+    public void setyCoordinate(Integer yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
 
-    public int getxCoordinate() {
+    public Integer getxCoordinate() {
         return xCoordinate;
     }
 
-    public void setxCoordinate(int xCoordinate) {
+    public void setxCoordinate(Integer xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
 

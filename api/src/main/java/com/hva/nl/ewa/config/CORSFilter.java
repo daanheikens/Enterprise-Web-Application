@@ -3,6 +3,7 @@ package com.hva.nl.ewa.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,20 +15,13 @@ public class CORSFilter implements Filter {
 
     private FilterConfig config;
 
-    public static final String CREDENTIALS_NAME = "Access-Control-Allow-Credentials";
-    public static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
-    public static final String METHODS_NAME = "Access-Control-Allow-Methods";
-    public static final String HEADERS_NAME = "Access-Control-Allow-Headers";
-    public static final String MAX_AGE_NAME = "Access-Control-Max-Age";
-
     @Override
-    public void destroy() {
-
+    public void init(FilterConfig filterConfig) {
+        config = filterConfig;
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
@@ -42,10 +36,5 @@ public class CORSFilter implements Filter {
             chain.doFilter(req, resp);
         }
 
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) {
-        config = filterConfig;
     }
 }

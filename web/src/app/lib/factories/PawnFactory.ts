@@ -1,31 +1,62 @@
 import {Board} from '../../model/Board';
-import PawnCollection from '../../collections/PawnCollection';
 import {Pawn} from '../../model/Pawn';
+import {Tile} from '../../model/Tile';
 
 export class PawnFactory {
 
-  public static createPawns(board: Board): void {
+  public static createPawns(board: Board): Pawn {
 
-    const blueTile = document.getElementById(board.tiles[0][0].id);
-    const greenTile = document.getElementById(board.tiles[0][6].id);
-    const yellowTile = document.getElementById(board.tiles[6][0].id);
-    const redTile = document.getElementById(board.tiles[6][6].id);
+    let pawns = [];
+    let playerPawn = null;
 
-    let pawnBlue = new Pawn(1, '/assets/images/pawn.png', PawnFactory.getOffsetTop(blueTile).toString(), (blueTile.offsetLeft + 23).toString());
-    let pawnGreen = new Pawn(2, '/assets/images/pawn.png', PawnFactory.getOffsetTop(greenTile).toString(), (greenTile.offsetLeft + 23).toString());
-    let pawnYellow = new Pawn(3, '/assets/images/pawn.png', (10 + PawnFactory.getOffsetTop(yellowTile) * 2.5).toString(), (yellowTile.offsetLeft + 23).toString());
-    let pawnRed = new Pawn(4, '/assets/images/pawn.png', (10 + PawnFactory.getOffsetTop(redTile) * 2.5).toString(), (redTile.offsetLeft + 23).toString());
+    board.tiles.forEach((tile: Tile[]) => {
+      tile.forEach((tile: Tile) => {
+        if (tile.pawnDTO === null) {
+          return;
+        }
 
-    board.pawns = new PawnCollection(pawnRed, pawnBlue, pawnYellow, pawnGreen);
+        if (playerPawn === null && tile.pawnDTO.user.userId === board.currentUser.userId) {
+          playerPawn = tile.pawnDTO;
+        }
+
+        this.placePawn(pawns, board, tile);
+      });
+    });
+
+    board.pawns = pawns;
+
+    return playerPawn;
   }
 
   private static getOffsetTop(element): number {
     let offsetTop = 0;
+
     do {
-      if (!isNaN(element.offsetTop)) {
+      if (element !== null && !isNaN(element.offsetTop)) {
         offsetTop += element.offsetTop;
       }
-    } while (element == element.offsetParent);
+    } while (element !== null && element == element.offsetParent);
+
     return offsetTop;
+  }
+
+  private static getOffsetLeft(element): number {
+    let offsetLeft = 0;
+    do {
+      if (element !== null && !isNaN(element.offsetLeft)) {
+        offsetLeft += element.offsetLeft;
+      }
+    } while (element !== null && element == element.offsetParent);
+    return offsetLeft;
+  }
+
+  private static placePawn(pawns: Pawn[], board: Board, tile: Tile): void {
+    const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
+
+    tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
+    tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
+    tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
+
+    pawns.push(tile.pawnDTO);
   }
 }
