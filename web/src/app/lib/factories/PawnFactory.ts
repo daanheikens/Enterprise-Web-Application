@@ -1,7 +1,6 @@
 import {Board} from '../../model/Board';
-import {Pawn, PawnType} from '../../model/Pawn';
+import {Pawn} from '../../model/Pawn';
 import {Tile} from '../../model/Tile';
-import PawnCollection from '../../collections/PawnCollection';
 
 export class PawnFactory {
 
@@ -12,24 +11,15 @@ export class PawnFactory {
 
     board.tiles.forEach((tile: Tile[]) => {
       tile.forEach((tile: Tile) => {
-        if (playerPawn === null && tile.pawnDTO !== null && tile.pawnDTO.user.userId === board.currentUser.userId) {
-          playerPawn = tile.pawnDTO;
-          const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
-
-          tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
-          tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
-          tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
-
-          pawns.push(playerPawn);
-        } else if (tile.pawnDTO !== null) {
-          const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
-
-          tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
-          tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
-
-          tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
-          pawns.push(tile.pawnDTO);
+        if (tile.pawnDTO === null) {
+          return;
         }
+
+        if (playerPawn === null && tile.pawnDTO.user.userId === board.currentUser.userId) {
+          playerPawn = tile.pawnDTO;
+        }
+
+        this.placePawn(pawns, board, tile);
       });
     });
 
@@ -58,5 +48,15 @@ export class PawnFactory {
       }
     } while (element == element.offsetParent);
     return offsetLeft;
+  }
+
+  private static placePawn(pawns: Pawn[], board: Board, tile: Tile): void {
+    const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
+
+    tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
+    tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
+    tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
+
+    pawns.push(tile.pawnDTO);
   }
 }
