@@ -14,6 +14,7 @@ import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game.service';
 import {AuthService} from '../../services/auth.service';
+import PawnCollection from '../../collections/PawnCollection';
 
 @Component({
   selector: 'app-board',
@@ -24,6 +25,7 @@ import {AuthService} from '../../services/auth.service';
 export class BoardComponent implements OnInit, AfterViewInit {
   /** Board state properties **/
   public board: Board;
+  public boardLoaded = false;
   @Output() public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
   @Input() public isPending: boolean;
 
@@ -65,22 +67,22 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   public ngOnInit(): void {
-    setTimeout(() => {
-      this.gameService.getCurrentGame()
-        .subscribe(data => {
-          console.log(data);
-          this.board = new Board(data.matrix, data.currentPlayers, data.currentUser);
-          this.onPlaceableTileChanged();
-        }, error => {
-          console.log(error);
-        });
-    });
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        let board = new Board(data.matrix, data.currentPlayers, data.user);
+        const playerPawn = PawnFactory.createPawns(board);
+        this.board = board;
+        this.onPlaceableTileChanged();
+        this.movementHandler = new MovementHandler(playerPawn);
+      }, () => {
+      });
   }
 
   public ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
-    });
+    // setTimeout(() => {
+    //   const playerPawn = PawnFactory.createPawns(this.board);
+    //   this.movementHandler = new MovementHandler(playerPawn);
+    // }, 500);
   }
 
   public insertTop(column: number): void {
@@ -156,5 +158,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
           }
         });
     }
+  }
+
+  private applyStyles(pawns: PawnCollection) {
+
   }
 }

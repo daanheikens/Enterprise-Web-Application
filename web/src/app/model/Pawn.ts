@@ -18,7 +18,7 @@ export class Pawn {
 
   private readonly _user: User;
 
-  public constructor(pawnId: number, pawnType: PawnType, user: User) {
+  public constructor(pawnId: number, pawnType: PawnType, user?: User) {
     this._pawnId = pawnId;
     this._pawnType = pawnType;
     this._user = user;

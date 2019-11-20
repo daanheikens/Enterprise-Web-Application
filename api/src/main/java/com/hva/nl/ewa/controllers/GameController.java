@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
+import com.hva.nl.ewa.DTO.PawnDTO;
 import com.hva.nl.ewa.DTO.TileDTO;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
 import com.hva.nl.ewa.helpers.PawnPlacer;
@@ -149,8 +150,9 @@ public class GameController {
             TileDTO tileDTO = this.modelMapper.ModelToDTO(t, TileDTO.class);
             Pawn pawn = t.getPawn();
             if (pawn != null) {
-                pawn.setUser(pawn.getUser());
-                tileDTO.setPawn(pawn);
+                PawnDTO pawnDTO = this.modelMapper.ModelToDTO(pawn, PawnDTO.class);
+                pawnDTO.setUser(pawn.getUser());
+                tileDTO.setPawnDTO(pawnDTO);
             }
             tileDTO.setImgSrc(t.getTileDefinition().getImgSrc());
             tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;

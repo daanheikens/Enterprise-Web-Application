@@ -1,20 +1,20 @@
 export class User {
-  private readonly _id: number;
+  private readonly _userId: number;
   private _username: string;
   private _password?: string;
   private _image?: string;
   private readonly _token?: string;
 
-  constructor(id: number, username: string, password?: string, image?: string, token?: string) {
-    this._id = id;
+  constructor(userId: number, username: string, password?: string, image?: string, token?: string) {
+    this._userId = userId;
     this._username = username;
     this._password = password;
     this._image = image;
     this._token = token;
   }
 
-  get id(): number {
-    return this._id;
+  get userId(): number {
+    return this._userId;
   }
 
   get username(): string {

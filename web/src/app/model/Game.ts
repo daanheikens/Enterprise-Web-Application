@@ -63,7 +63,7 @@ export class Game {
     return this._currentPlayers;
   }
 
-  get currentUser(): User {
+  get user(): User {
     return this._user;
   }
 

@@ -1,8 +1,8 @@
 import {Tile} from './Tile';
 import {log} from 'util';
-import {TileRotation} from './TileRotation';
-import PawnCollection from '../collections/PawnCollection';
+import {TileRotation} from './TileRotation'
 import {User} from './User';
+import {Pawn} from './Pawn';
 
 export class Board {
 
@@ -10,7 +10,7 @@ export class Board {
 
   public placeableTile: Tile;
 
-  public pawns: PawnCollection;
+  public pawns: Pawn[];
 
   private readonly _user: User;
 
@@ -58,7 +58,7 @@ export class Board {
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = this.tiles[i][col];
-      this.tiles[i][col] = tileToMoveDown;
+      this.tiles[col][i] = tileToMoveDown;
       tileToMoveDown = currentTile;
     }
     this.placeableTile = currentTile;
@@ -78,7 +78,7 @@ export class Board {
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = this.tiles[i][col];
-      this.tiles[i][col] = tileToMoveUp;
+      this.tiles[col][i] = tileToMoveUp;
       tileToMoveUp = currentTile;
     }
     this.placeableTile = currentTile;
@@ -98,7 +98,7 @@ export class Board {
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = this.tiles[row][i];
-      this.tiles[row][i] = tileToMoveRight;
+      this.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }
     this.placeableTile = currentTile;
@@ -118,7 +118,7 @@ export class Board {
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = this.tiles[row][i];
-      this.tiles[row][i] = tileToMoveRight;
+      this.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }
     this.placeableTile = currentTile;

@@ -1,37 +1,34 @@
 import {Board} from '../../model/Board';
-import {Pawn, PawnType} from '../../model/Pawn';
+import {Pawn} from '../../model/Pawn';
+import {Tile} from '../../model/Tile';
 
 export class PawnFactory {
 
   public static createPawns(board: Board): Pawn {
 
-    // Loop over tiles
+    let pawns = [];
+    let playerPawn = null;
 
-    // If pawn on a tile then check if the pawnUserId === currentUser id.
-    // If equal, this is the pawn of the current user else check position in players array.
-    /**
-     * Check if this is actually viable?
-     *
-     * 1 = blue
-     * 2 = green
-     * 3 = yellow
-     * 4 = red
-     */
-    const blueTile = document.getElementById(board.tiles[0][0].tileId);
-    const greenTile = document.getElementById(board.tiles[0][6].tileId);
-    const yellowTile = document.getElementById(board.tiles[6][0].tileId);
-    const redTile = document.getElementById(board.tiles[6][6].tileId);
+    board.tiles.forEach((tile: Tile[]) => {
+      tile.forEach((tile: Tile) => {
+        if (playerPawn === null && tile.pawnDTO !== null && tile.pawnDTO.user.userId === board.currentUser.userId) {
+          playerPawn = tile.pawnDTO;
 
-    // let pawnBlue = new Pawn(1, '/assets/images/pawn.png', PawnFactory.getOffsetTop(blueTile).toString(), (blueTile.offsetLeft + 23).toString());
-    // let pawnGreen = new Pawn(2, '/assets/images/pawn.png', PawnFactory.getOffsetTop(greenTile).toString(), (greenTile.offsetLeft + 23).toString());
-    // let pawnYellow = new Pawn(3, '/assets/images/pawn.png', (10 + PawnFactory.getOffsetTop(yellowTile) * 2.5).toString(), (yellowTile.offsetLeft + 23).toString());
-    // let pawnRed = new Pawn(4, '/assets/images/pawn.png', (10 + PawnFactory.getOffsetTop(redTile) * 2.5).toString(), (redTile.offsetLeft + 23).toString());
+          // calculate topoffset and left offset:
+          tile.pawnDTO.topOffset = ((tile.xCoordinate * 90) + 265).toString();
+          tile.pawnDTO.leftOffset = ((tile.yCoordinate * 90) - 10).toString();
+          tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
 
-    // board.pawns = new PawnCollection(pawnRed, pawnBlue, pawnYellow, pawnGreen);
-    //
-    // return pawnBlue;
+          pawns.push(playerPawn);
+        } else if (tile.pawnDTO !== null) {
+          pawns.push(tile.pawnDTO);
+        }
+      });
+    });
 
-    return new Pawn(1, PawnType.BLUE);
+    board.pawns = pawns;
+
+    return playerPawn;
   }
 
   private static getOffsetTop(element): number {
@@ -42,5 +39,15 @@ export class PawnFactory {
       }
     } while (element == element.offsetParent);
     return offsetTop;
+  }
+
+  private static getOffsetLeft(element): number {
+    let offsetLeft = 0;
+    do {
+      if (!isNaN(element.offsetLeft)) {
+        offsetLeft += element.offsetLeft;
+      }
+    } while (element == element.offsetParent);
+    return offsetLeft;
   }
 }

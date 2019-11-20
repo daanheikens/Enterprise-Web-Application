@@ -1,6 +1,5 @@
 package com.hva.nl.ewa.DTO;
 
-import com.hva.nl.ewa.models.Pawn;
 import com.hva.nl.ewa.models.TileRotation;
 
 public class TileDTO {
@@ -9,7 +8,7 @@ public class TileDTO {
 
     private TileRotation rotation;
 
-    private Pawn pawn;
+    private PawnDTO pawn;
 
     private String imgSrc;
 
@@ -40,11 +39,11 @@ public class TileDTO {
         this.rotation = rotation;
     }
 
-    public Pawn getPawn() {
+    public PawnDTO getPawnDTO() {
         return pawn;
     }
 
-    public void setPawn(Pawn pawn) {
+    public void setPawnDTO(PawnDTO pawn) {
         this.pawn = pawn;
     }
 
