@@ -29,6 +29,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
   @Input()
   public isPending: boolean;
 
+  private isTurn = false;
+
+  private placedTile = false;
+
   /** Animation properties **/
   public currentState = {
     colTop2: 'initial',
@@ -69,9 +73,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.board = new Board(data.matrix, data.currentPlayers, data.user);
+        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile);
         if (data.userTurn.userId === data.user.userId) {
-          this.board.placeAbleTile = data.placeAbleTile;
+          this.isTurn = true;
           this.onPlaceableTileChanged();
         }
       }, () => {
@@ -86,24 +90,40 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   public insertTop(column: number): void {
+    if (!this.isTurn) {
+      return;
+    }
+
     this.changeState('colTop' + column);
     this.board.insertTop(column - 1);
     this.onPlaceableTileChanged();
   }
 
   public insertRight(row: number): void {
+    if (!this.isTurn) {
+      return;
+    }
+
     this.changeState('rowRight' + row);
     this.board.insertLeft(row - 1);
     this.onPlaceableTileChanged();
   }
 
   public insertBottom(column: number): void {
+    if (!this.isTurn) {
+      return;
+    }
+
     this.changeState('colBottom' + column);
     this.board.insertBottom(column - 1);
     this.onPlaceableTileChanged();
   }
 
   public insertLeft(row: number): void {
+    if (!this.isTurn) {
+      return;
+    }
+
     this.changeState('rowLeft' + row);
     this.board.insertRight(row - 1);
     this.onPlaceableTileChanged();
@@ -116,8 +136,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // Also here, we only want to call this when we are in the animation
     if (this.enableAnimation) {
       this.enableAnimation = false;
-      // Reset state to prepare for next tur
+      // Reset state to prepare for next turn
       this.currentState[position] = 'initial';
+
+      this.placedTile = true;
     }
   }
 
@@ -131,12 +153,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   private onPlaceableTileChanged(): void {
-    console.log(this.board.placeAbleTile);
     this.placeableTileChangedMessage.emit(this.board.placeAbleTile);
   }
 
   @HostListener('window:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent) {
+    if (!this.isTurn && !this.placedTile) {
+      return;
+    }
+
     if (event.key === 'r') {
       this.board.rotatePlacableTile();
       this.onPlaceableTileChanged();

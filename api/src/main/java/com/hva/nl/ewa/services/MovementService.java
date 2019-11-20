@@ -23,7 +23,7 @@ public class MovementService {
     public boolean move(String direction, User user) {
         Game game = this.gameService.getCurrentGame(user);
 
-        if (game == null) {
+        if (game == null || game.getUserTurn() == null || !game.getUserTurn().equals(user)) {
             return false;
         }
 

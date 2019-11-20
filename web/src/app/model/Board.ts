@@ -16,10 +16,11 @@ export class Board {
 
   private readonly _currentPlayers: User[];
 
-  constructor(matrix: Tile[][], currentPlayers: User[], currentUser: User) {
+  constructor(matrix: Tile[][], currentPlayers: User[], currentUser: User, placeAbleTile: Tile) {
     this.tiles = matrix;
     this._currentPlayers = currentPlayers;
     this._user = currentUser;
+    this.placeAbleTile = placeAbleTile
   }
 
   get currentPlayers(): User[] {
