@@ -1,6 +1,7 @@
 import {Board} from '../../model/Board';
-import {Pawn} from '../../model/Pawn';
+import {Pawn, PawnType} from '../../model/Pawn';
 import {Tile} from '../../model/Tile';
+import PawnCollection from '../../collections/PawnCollection';
 
 export class PawnFactory {
 
@@ -13,20 +14,24 @@ export class PawnFactory {
       tile.forEach((tile: Tile) => {
         if (playerPawn === null && tile.pawnDTO !== null && tile.pawnDTO.user.userId === board.currentUser.userId) {
           playerPawn = tile.pawnDTO;
+          const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
 
           // calculate topoffset and left offset:
-          tile.pawnDTO.topOffset = ((tile.xCoordinate * 90) + 265).toString();
-          tile.pawnDTO.leftOffset = ((tile.yCoordinate * 90) - 10).toString();
+          tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
+          tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
           tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
 
           pawns.push(playerPawn);
         } else if (tile.pawnDTO !== null) {
+          const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
+
           pawns.push(tile.pawnDTO);
         }
       });
     });
 
     board.pawns = pawns;
+    // return pawnBlue;
 
     return playerPawn;
   }

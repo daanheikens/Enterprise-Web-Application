@@ -69,20 +69,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        let board = new Board(data.matrix, data.currentPlayers, data.user);
-        const playerPawn = PawnFactory.createPawns(board);
-        this.board = board;
+        this.board = new Board(data.matrix, data.currentPlayers, data.user);
         this.onPlaceableTileChanged();
-        this.movementHandler = new MovementHandler(playerPawn);
+        this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
       }, () => {
       });
   }
 
   public ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   const playerPawn = PawnFactory.createPawns(this.board);
-    //   this.movementHandler = new MovementHandler(playerPawn);
-    // }, 500);
+    setTimeout(() => {
+      const playerPawn = PawnFactory.createPawns(this.board);
+      this.movementHandler = new MovementHandler(playerPawn);
+    }, 500);
   }
 
   public insertTop(column: number): void {

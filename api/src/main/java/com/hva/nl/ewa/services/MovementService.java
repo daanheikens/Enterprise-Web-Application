@@ -12,9 +12,12 @@ public class MovementService {
 
     private final GameService gameService;
 
+    private final PawnService pawnService;
+
     @Autowired
-    public MovementService(GameService gameService) {
+    public MovementService(GameService gameService, PawnService pawnService) {
         this.gameService = gameService;
+        this.pawnService = pawnService;
     }
 
     public boolean move(String direction, User user) {
@@ -29,16 +32,16 @@ public class MovementService {
 
         switch (direction) {
             case MOVEMENT_UP:
-                xOffset = -1;
-                break;
-            case MOVEMENT_DOWN:
-                xOffset = 1;
-                break;
-            case MOVEMENT_LEFT:
                 yOffset = -1;
                 break;
-            case MOVEMENT_RIGHT:
+            case MOVEMENT_DOWN:
                 yOffset = 1;
+                break;
+            case MOVEMENT_LEFT:
+                xOffset = -1;
+                break;
+            case MOVEMENT_RIGHT:
+                xOffset = 1;
                 break;
             default:
                 return false;
@@ -59,7 +62,11 @@ public class MovementService {
             return false;
         }
 
-        if ((xOffset > 0 && this.movePawn(userTile, tilesArray, xOffset, Offset.X)) || (yOffset > 0 && this.movePawn(userTile, tilesArray, yOffset, Offset.Y))) {
+        Pawn pawn = userTile.getPawn();
+
+        if ((xOffset != 0 && this.movePawn(userTile, tilesArray, xOffset, Offset.X, pawn)) ||
+                (yOffset != 0 && this.movePawn(userTile, tilesArray, yOffset, Offset.Y, pawn))) {
+            this.pawnService.save(pawn);
             this.gameService.save(game);
             return true;
         }
@@ -67,17 +74,17 @@ public class MovementService {
         return false;
     }
 
-    private boolean movePawn(Tile userTile, Tile[][] tilesArray, int offsetModdifier, Offset offset) {
+    private boolean movePawn(Tile userTile, Tile[][] tilesArray, int offsetModdifier, Offset offset, Pawn pawn) {
         if (Offset.isXOffset(offset)) {
-            return this.moveX(tilesArray, userTile, offsetModdifier);
+            return this.moveX(tilesArray, userTile, offsetModdifier, pawn);
         } else if (Offset.isYOffset(offset)) {
-            return this.moveY(tilesArray, userTile, offsetModdifier);
+            return this.moveY(tilesArray, userTile, offsetModdifier, pawn);
         }
 
         return false;
     }
 
-    private boolean moveX(Tile[][] tilesArray, Tile userTile, int offsetModdifier) {
+    private boolean moveX(Tile[][] tilesArray, Tile userTile, int offsetModdifier, Pawn pawn) {
         Tile targetTile = null;
 
         try {
@@ -86,21 +93,22 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && targetTile.getTileDefinition().isBottomWall() && userTile.getTileDefinition().isTopWall()) {
+        if (offsetModdifier == -1 && (targetTile.getTileDefinition().isRightWall() || userTile.getTileDefinition().isLeftWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && targetTile.getTileDefinition().isTopWall() && userTile.getTileDefinition().isBottomWall()) {
+        if (offsetModdifier == 1 && (targetTile.getTileDefinition().isLeftWall() || userTile.getTileDefinition().isRightWall())) {
             return false;
         }
 
-        targetTile.setPawn(userTile.getPawn());
+        targetTile.setPawn(pawn);
         userTile.setPawn(null);
+        pawn.setTile(targetTile);
 
         return true;
     }
 
-    private boolean moveY(Tile[][] tilesArray, Tile userTile, int offsetModdifier) {
+    private boolean moveY(Tile[][] tilesArray, Tile userTile, int offsetModdifier, Pawn pawn) {
         Tile targetTile = null;
 
         try {
@@ -109,16 +117,18 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && targetTile.getTileDefinition().isRightWall() && userTile.getTileDefinition().isLeftWall()) {
+        if (offsetModdifier == -1 && (targetTile.getTileDefinition().isBottomWall() || userTile.getTileDefinition().isTopWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && targetTile.getTileDefinition().isLeftWall() && userTile.getTileDefinition().isRightWall()) {
+        if (offsetModdifier == 1 && (targetTile.getTileDefinition().isTopWall() || userTile.getTileDefinition().isBottomWall())) {
             return false;
         }
 
-        targetTile.setPawn(userTile.getPawn());
+        // expect not able to move at all
+        targetTile.setPawn(pawn);
         userTile.setPawn(null);
+        pawn.setTile(targetTile);
 
         return true;
     }
