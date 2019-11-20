@@ -16,7 +16,6 @@ export class PawnFactory {
           playerPawn = tile.pawnDTO;
           const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
 
-          // calculate topoffset and left offset:
           tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
           tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
           tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
@@ -25,24 +24,29 @@ export class PawnFactory {
         } else if (tile.pawnDTO !== null) {
           const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
 
+          tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
+          tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
+
+          tile.pawnDTO.imgSrc = '/assets/images/pawn.png';
           pawns.push(tile.pawnDTO);
         }
       });
     });
 
     board.pawns = pawns;
-    // return pawnBlue;
 
     return playerPawn;
   }
 
   private static getOffsetTop(element): number {
     let offsetTop = 0;
+
     do {
       if (!isNaN(element.offsetTop)) {
         offsetTop += element.offsetTop;
       }
     } while (element == element.offsetParent);
+
     return offsetTop;
   }
 
