@@ -1,5 +1,5 @@
 import {Tile} from './Tile';
-import {TileRotation} from './TileRotation'
+import {TileRotation} from './TileRotation';
 import {User} from './User';
 import {Pawn} from './Pawn';
 
@@ -15,11 +15,14 @@ export class Board {
 
   private readonly _currentPlayers: User[];
 
-  constructor(matrix: Tile[][], currentPlayers: User[], currentUser: User, placeAbleTile: Tile) {
+  private readonly _gameId: number;
+
+  constructor(matrix: Tile[][], currentPlayers: User[], currentUser: User, placeAbleTile: Tile, gameId: number) {
     this.tiles = matrix;
     this._currentPlayers = currentPlayers;
     this._user = currentUser;
-    this.placeAbleTile = placeAbleTile
+    this.placeAbleTile = placeAbleTile;
+    this._gameId = gameId;
   }
 
   get currentPlayers(): User[] {
@@ -28,6 +31,10 @@ export class Board {
 
   get currentUser(): User {
     return this._user;
+  }
+
+  get gameId(): number {
+    return this._gameId;
   }
 
   public rotatePlacableTile() {

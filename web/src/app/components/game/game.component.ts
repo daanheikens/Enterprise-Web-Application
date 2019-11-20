@@ -40,6 +40,10 @@ export class GameComponent implements OnInit, OnDestroy {
     this.placeableTile = tile;
   }
 
+  public onTurnEnded(): void {
+    // TODO send message to notify a turn end.
+  }
+
   /**
    * Step 1 get players (refresh players)
    * Step 2 Assign players somewhere in the dom
@@ -63,7 +67,7 @@ export class GameComponent implements OnInit, OnDestroy {
    * Step 3 if it is somebody else turn, ignore response
    * Step 4 if current user turn, then enable controls and notify user
    */
-  private onTurnEnded(): void {
+  private onTurnChanged(): void {
 
   }
 

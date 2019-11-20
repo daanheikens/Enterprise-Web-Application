@@ -30,7 +30,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
   /** Board state properties **/
   public board: Board;
   @Output()
-  public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+  public placeableTileMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
   @Input()
   public isPending: boolean;
 
@@ -53,6 +53,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     colRowLeft4: 'initial',
     colRowLeft6: 'initial',
   };
+
   private enableAnimation = false;
 
   /** Icons **/
@@ -75,7 +76,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
   private insertLefStrategy = new InsertLeft();
   private insertRightStrategy = new InsertRight();
 
-
   public constructor(
     private readonly authService: AuthService,
     private readonly gameService: GameService,
@@ -86,11 +86,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile);
-        this.insertionHandler = new InsertionHandler(this.board);
+        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
+        this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
         if (data.userTurn.userId === data.user.userId) {
           this.isTurn = true;
-          this.onPlaceableTileChanged();
+          this.placeableTileMessage.emit(this.board.placeAbleTile);
         }
       }, () => {
       });
@@ -104,43 +104,39 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   public insertTop(column: number): void {
-    if (!this.isTurn) {
+    if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('colTop' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
-    this.onPlaceableTileChanged();
   }
 
   public insertRight(row: number): void {
-    if (!this.isTurn) {
+    if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('rowRight' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
-    this.onPlaceableTileChanged();
   }
 
   public insertBottom(column: number): void {
-    if (!this.isTurn) {
+    if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('colBottom' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
-    this.onPlaceableTileChanged();
   }
 
   public insertLeft(row: number): void {
-    if (!this.isTurn) {
+    if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('rowLeft' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
-    this.onPlaceableTileChanged();
   }
 
   /**
@@ -166,10 +162,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private onPlaceableTileChanged(): void {
-    this.placeableTileChangedMessage.emit(this.board.placeAbleTile);
-  }
-
   @HostListener('window:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent) {
     if (!this.isTurn) {
@@ -178,7 +170,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     if (event.key === 'r') {
       this.board.rotatePlacableTile();
-      this.onPlaceableTileChanged();
+      this.placeableTileMessage.emit(this.board.placeAbleTile);
       return;
     }
 

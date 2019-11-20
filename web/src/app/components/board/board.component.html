@@ -47,7 +47,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-right]="currentState.colRowRight2"
                    (@replaceImg-right.done)="onDone($event, 'colRowRight2')"
-                   [icon]="arrowRight" [size]="'2x'" (click)="insertRight(2)"></fa-icon>
+                   [icon]="arrowRight" [size]="'2x'" (click)="insertLeft(2)"></fa-icon>
         </div>
         <!--  Row 2-->
         <img id="{{board.tiles[0][1].tileId}}" src="{{board.tiles[0][1].imgSrc}}"
@@ -68,7 +68,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-left]="currentState.colRowLeft2"
                    (@replaceImg-left.done)="onDone($event, 'colRowLeft2')"
-                   [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(2)"></fa-icon>
+                   [icon]="arrowLeft" [size]="'2x'" (click)="insertRight(2)"></fa-icon>
         </div>
         <div class="cell-empty"></div>
         <!--  Row 3-->
@@ -91,7 +91,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-right]="currentState.colRowRight4"
                    (@replaceImg-right.done)="onDone($event, 'colRowRight4')"
-                   [icon]="arrowRight" [size]="'2x'" (click)="insertRight(4)"></fa-icon>
+                   [icon]="arrowRight" [size]="'2x'" (click)="insertLeft(4)"></fa-icon>
         </div>
         <!--  Row 4-->
         <img id="{{board.tiles[0][3].tileId}}" src="{{board.tiles[0][3].imgSrc}}"
@@ -112,7 +112,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-left]="currentState.colRowLeft4"
                    (@replaceImg-left.done)="onDone($event, 'colRowLeft4')"
-                   [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(4)"></fa-icon>
+                   [icon]="arrowLeft" [size]="'2x'" (click)="insertRight(4)"></fa-icon>
         </div>
         <div class="cell-empty"></div>
         <!--  Row 5-->
@@ -135,7 +135,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-right]="currentState.colRowRight6"
                    (@replaceImg-right.done)="onDone($event, 'colRowRight6')"
-                   [icon]="arrowRight" [size]="'2x'" (click)="insertRight(6)"></fa-icon>
+                   [icon]="arrowRight" [size]="'2x'" (click)="insertLeft(6)"></fa-icon>
         </div>
         <!--  Row 6-->
         <img id="{{board.tiles[0][5].tileId}}" src="{{board.tiles[0][5].imgSrc}}"
@@ -156,7 +156,7 @@
           <fa-icon class="arrow-horizontal"
                    [@replaceImg-left]="currentState.colRowLeft6"
                    (@replaceImg-left.done)="onDone($event, 'colRowLeft6')"
-                   [icon]="arrowLeft" [size]="'2x'" (click)="insertLeft(6)"></fa-icon>
+                   [icon]="arrowLeft" [size]="'2x'" (click)="insertRight(6)"></fa-icon>
         </div>
         <!--  Row 7-->
         <img id="{{board.tiles[0][6].tileId}}" src="{{board.tiles[0][6].imgSrc}}"

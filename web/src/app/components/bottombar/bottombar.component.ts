@@ -16,4 +16,7 @@ export class BottombarComponent implements OnInit {
   ngOnInit() {
     console.log(this.placeAbleTile);
   }
+
+  // TODO add button to end the turn.
+  // TODO add output event emitter to output and endTurn message whenever the turn is ended.
 }

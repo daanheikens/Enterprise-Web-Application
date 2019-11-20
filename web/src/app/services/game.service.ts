@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {map, tap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Game} from '../model/Game';
+import {Board} from '../model/Board';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,20 @@ export class GameService {
    */
   public joinGame(body: HttpParams): Observable<Game> {
     return this.http.post<Game>(`${environment.apiUrl}/games/join`, body)
+      .pipe(tap(game => {
+        return game;
+      }, error => {
+        console.log(error);
+      }));
+  }
+
+  /**
+   * Updates the board after movement.
+   *
+   * @param board Board
+   */
+  public updateBoard(board: Board): Observable<Game> {
+    return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, board.tiles)
       .pipe(tap(game => {
         return game;
       }, error => {

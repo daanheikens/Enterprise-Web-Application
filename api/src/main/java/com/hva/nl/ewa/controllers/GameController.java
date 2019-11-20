@@ -191,4 +191,25 @@ public class GameController {
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
+
+    @PatchMapping(value = "/{gameId}")
+    public ResponseEntity update(OAuth2Authentication auth, @PathVariable(value = "gameId") Long gameId, Tile[][] tiles) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+        // TODO: Add placeableTile to request and save it.
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Game currentGame = this.gameService.findOne(gameId);
+
+        if (currentGame == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
+
+        currentGame.setTiles(tiles);
+
+        this.gameService.save(currentGame);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
