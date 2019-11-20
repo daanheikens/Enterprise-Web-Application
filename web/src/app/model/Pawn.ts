@@ -23,6 +23,14 @@ export class Pawn {
     return this._imgSrc;
   }
 
+  get topOffset(): string {
+    return this._topOffset;
+  }
+
+  get leftOffset(): string {
+    return this._leftOffset;
+  }
+
   set topOffset(value: string) {
     this._topOffset = value;
   }

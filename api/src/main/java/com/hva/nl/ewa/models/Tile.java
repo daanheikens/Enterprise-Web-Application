@@ -17,7 +17,6 @@ public class Tile implements Model {
 
     @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "pawn_id")
-    @Null
     private Pawn pawn;
 
     @NotNull
@@ -35,6 +34,9 @@ public class Tile implements Model {
 
     @NotNull
     private int yCoordinate;
+
+    public Tile() {
+    }
 
     public Tile(Pawn pawn, TileDefinition tileDefinition, int initialYCoordinate, int initialXCoordinate) {
         this.rotation = TileRotation.Zero;

@@ -1,13 +1,14 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.helpers.TimeHelper;
+import com.hva.nl.ewa.exceptions.PawnPlacerException;
+import com.hva.nl.ewa.helpers.PawnPlacer;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
-import com.hva.nl.ewa.models.BoardResult;
-import com.hva.nl.ewa.models.Game;
-import com.hva.nl.ewa.models.User;
+import com.hva.nl.ewa.helpers.TimeHelper;
+import com.hva.nl.ewa.models.*;
 import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
+import com.hva.nl.ewa.services.PawnService;
 import com.hva.nl.ewa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,12 +34,21 @@ public class GameController {
 
     private final BoardService boardService;
 
+    private final PawnService pawnService;
+
     @Autowired
-    public GameController(GameService gameService, UserService userService, DefaultModelMapper modelMapper, BoardService boardService) {
+    public GameController(
+            GameService gameService,
+            UserService userService,
+            DefaultModelMapper modelMapper,
+            BoardService boardService,
+            PawnService pawnService
+    ) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.boardService = boardService;
+        this.pawnService = pawnService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -63,9 +73,27 @@ public class GameController {
         game.setCreationDate(new Date());
         game.addUser(user);
         BoardResult board = boardService.CreateBoard();
-        game.setTiles(board.getTiles());
+
+        Tile[][] tiles = board.getTiles();
+        Pawn pawn = new Pawn();
+
+        pawn.setUser(user);
+        pawn.setGame(game);
+
+        pawn.setTile(tiles[0][0]);
+        this.pawnService.save(pawn);
+
+        tiles[0][0].setPawn(pawn);
+        game.setTiles(tiles);
         game.setInitiator(user);
 
+
+        /**
+         * 1. Create a new pawn and attach this game and current user to it
+         * 2. This pawn should be attached to the tile top-left: that's index 0-0
+         * 3. Save the pawn
+         * 4. Save the game
+         */
         return new ResponseEntity<>(
                 this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
@@ -117,7 +145,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) {
+    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) throws PawnPlacerException {
         User user = this.userService.loadUserByUsername(auth.getName());
 
         if (user == null) {
@@ -137,6 +165,14 @@ public class GameController {
         }
 
         game.addUser(user);
+        Set<Tile> tiles = game.getTiles();
+
+        Pawn pawn = new Pawn();
+        pawn.setGame(game);
+        pawn.setUser(user);
+        PawnPlacer.placePawnOnInitialTile(pawn, tiles, users.size());
+
+        this.pawnService.save(pawn);
         this.gameService.save(game);
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);

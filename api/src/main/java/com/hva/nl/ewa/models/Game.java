@@ -58,9 +58,13 @@ public class Game implements Model {
         this.id = id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getMaxPlayers() {
         return maxPlayers;
@@ -86,9 +90,13 @@ public class Game implements Model {
         this.maxPendingTime = maxPendingTime;
     }
 
-    public Date getCreationDate() { return creationDate; }
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-    public void setCreationDate(Date creationDate) { this.creationDate = creationDate; }
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public void addUser(User user) {
         this.users.add(user);
@@ -113,6 +121,6 @@ public class Game implements Model {
     }
 
     public Set<Tile> getTiles() {
-        return tiles;
+        return this.tiles;
     }
 }

@@ -1,4 +1,9 @@
-<div class="container row-boxed">
+<div
+  (keydown.arrowLeft)="onMove(moveLeft)"
+  (keydown.arrowRight)="onMove(moveRight)"
+  (keydown.arrowDown)="onMove(moveDown)"
+  (keydown.arrowUp)="onMove(moveUp)"
+  class="container row-boxed">
   <div class="row ">
     <div class="col-1">
       <!--  Left space for more content. (Also serves as spacing)-->
@@ -172,9 +177,12 @@
              class="cell  {{board.tiles[6][6].tileRotation}}"/>
 
         <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn" [ngStyle]="board.pawns.redPawn.style">
-        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-blue" [ngStyle]="board.pawns.bluePawn.style"/>
-        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-yellow" [ngStyle]="board.pawns.yellowPawn.style"/>
-        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-green" [ngStyle]="board.pawns.greenPawn.style"/>
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-blue"
+             [ngStyle]="board.pawns.bluePawn.style"/>
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-yellow"
+             [ngStyle]="board.pawns.yellowPawn.style"/>
+        <img *ngIf="board.pawns" src="/assets/images/pawn.png" class="pawn pawn-green"
+             [ngStyle]="board.pawns.greenPawn.style"/>
         <!--   Bottom controls   -->
         <div class="text-center">
           <div class="cell"></div>

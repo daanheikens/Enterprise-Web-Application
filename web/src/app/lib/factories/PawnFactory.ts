@@ -4,7 +4,7 @@ import {Pawn} from '../../model/Pawn';
 
 export class PawnFactory {
 
-  public static createPawns(board: Board): void {
+  public static createPawns(board: Board): Pawn {
 
     const blueTile = document.getElementById(board.tiles[0][0].id);
     const greenTile = document.getElementById(board.tiles[0][6].id);
@@ -17,6 +17,8 @@ export class PawnFactory {
     let pawnRed = new Pawn(4, '/assets/images/pawn.png', (10 + PawnFactory.getOffsetTop(redTile) * 2.5).toString(), (redTile.offsetLeft + 23).toString());
 
     board.pawns = new PawnCollection(pawnRed, pawnBlue, pawnYellow, pawnGreen);
+
+    return pawnBlue;
   }
 
   private static getOffsetTop(element): number {
