@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
-import {Game} from '../../model/Game';
 import {MessageService} from '../../services/message.service';
 
 @Component({
@@ -13,9 +12,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public gamePending = true;
 
-  public placeAbleTile: Tile;
-
-  private game: Game;
+  public placeableTile: Tile;
 
   public constructor(
     private readonly gameService: GameService,
@@ -26,11 +23,11 @@ export class GameComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.game = data;
-        if (this.game !== null) {
-          this.onGameInitialized();
+        if (data !== null) {
+          this.messageService.connect(data.id);
         }
       });
+
     this.messageService.joinGame.subscribe(() => this.onPlayerJoinedGame());
     this.messageService.turnEnded.subscribe(() => this.onTurnEnded());
   }
@@ -40,11 +37,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public onPlaceableTileChanged(tile: Tile): void {
-    this.placeAbleTile = tile;
+    this.placeableTile = tile;
   }
 
-  private onGameInitialized(): void {
-    this.messageService.connect(this.game.id);
+  public onTurnEnded(): void {
+    // TODO send message to notify a turn end.
   }
 
   /**
@@ -56,11 +53,9 @@ export class GameComponent implements OnInit, OnDestroy {
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.game = data;
-        this.refreshPlayers();
-        if (this.game.currentPlayers >= this.game.maxPlayers) {
-          this.renderBoard();
+        if (data.currentPlayers.length >= data.maxPlayers) {
           this.gamePending = false;
+          this.refreshPlayers();
         }
       });
   }
@@ -72,7 +67,7 @@ export class GameComponent implements OnInit, OnDestroy {
    * Step 3 if it is somebody else turn, ignore response
    * Step 4 if current user turn, then enable controls and notify user
    */
-  private onTurnEnded(): void {
+  private onTurnChanged(): void {
 
   }
 

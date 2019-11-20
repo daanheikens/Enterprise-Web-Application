@@ -59,13 +59,13 @@ export class MessageService implements OnInit {
       return;
     }
 
-    this.stompClient = Stomp.over(new SockJS(`http://localhost:8080/ws?access_token=${currentUser['access_token']}`));
+    this.stompClient = Stomp.client(`ws://localhost:8080/ws?access_token=${currentUser['access_token']}`);
     this.stompClient.connect({}, () => {
       this.sendMessage(new Message(MessageType.JOIN_GAME), gameId);
       this.stompClient.subscribe(`/channel/${gameId}`, (payload) => {
         this.onMessageReceived(JSON.parse(payload.body));
       });
-    }, (error) => {
+    }, () => {
       this.disconnect();
     });
   }

@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-public class PasswordResetToken {
+public class PasswordResetToken implements Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

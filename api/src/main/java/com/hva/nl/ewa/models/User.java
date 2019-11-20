@@ -1,8 +1,10 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,11 +12,12 @@ import java.util.*;
 
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements UserDetails, Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private long id;
+    private long userId;
 
     @Column
     @NotNull
@@ -28,7 +31,7 @@ public class User implements UserDetails {
     @Column
     @NotNull
     @JsonIgnore
-    @Size(min = 5, max = 80,message = "{password.size}")
+    @Size(min = 5, max = 80, message = "{password.size}")
     private String password;
 
     @Column
@@ -51,12 +54,16 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
 
-    public void setId(long id) {
-        this.id = id;
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Pawn pawn;
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
     public String getScreenName() {
@@ -115,37 +122,48 @@ public class User implements UserDetails {
         return games;
     }
 
+    public Pawn getPawn() {
+        return this.pawn;
+    }
+
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return this.username;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

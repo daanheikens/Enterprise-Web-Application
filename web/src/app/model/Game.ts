@@ -1,3 +1,6 @@
+import {Tile} from './Tile';
+import {User} from './User';
+
 export class Game {
 
   private readonly _id: number;
@@ -10,15 +13,38 @@ export class Game {
 
   private readonly _maxPendingTime: number;
 
-  private readonly _currentPlayers: number;
+  private readonly _currentPlayers: User[];
 
-  public constructor(id: number, name: string, maxPlayers: number, maxTurnTime: number, maxPendingTime: number, currentPlayers: number) {
+  private readonly _user: User;
+
+  private readonly _matrix: Tile[][];
+
+  private readonly _placeAbleTile: Tile;
+
+  private readonly _userTurn: User;
+
+  public constructor(
+    id: number,
+    name: string,
+    maxPlayers: number,
+    maxTurnTime: number,
+    maxPendingTime: number,
+    currentPlayers: User[],
+    user: User,
+    matrix: Tile[][],
+    userTurn: User,
+    placeAbleTile: Tile
+  ) {
     this._id = id;
     this._name = name;
     this._maxPlayers = maxPlayers;
     this._maxTurnTime = maxTurnTime;
     this._maxPendingTime = maxPendingTime;
     this._currentPlayers = currentPlayers;
+    this._user = user;
+    this._matrix = matrix;
+    this._placeAbleTile = placeAbleTile;
+    this._userTurn = userTurn;
   }
 
   get id(): number {
@@ -41,7 +67,23 @@ export class Game {
     return this._maxPendingTime;
   }
 
-  get currentPlayers(): number {
+  get currentPlayers(): User[] {
     return this._currentPlayers;
+  }
+
+  get user(): User {
+    return this._user;
+  }
+
+  get matrix(): Tile[][] {
+    return this._matrix;
+  }
+
+  get userTurn(): User {
+    return this._userTurn;
+  }
+
+  get placeAbleTile(): Tile {
+    return this._placeAbleTile;
   }
 }

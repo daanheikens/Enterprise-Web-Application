@@ -1,25 +1,19 @@
 package com.hva.nl.ewa.controllers;
 
-import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.helpers.ModelMapperHelper;
+import com.hva.nl.ewa.DTO.*;
+import com.hva.nl.ewa.exceptions.PawnPlacerException;
+import com.hva.nl.ewa.helpers.PawnPlacer;
+import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
-import com.hva.nl.ewa.models.Game;
-import com.hva.nl.ewa.models.User;
-import com.hva.nl.ewa.services.GameService;
-import com.hva.nl.ewa.services.UserService;
+import com.hva.nl.ewa.models.*;
+import com.hva.nl.ewa.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @Transactional
@@ -30,16 +24,28 @@ public class GameController {
 
     private final UserService userService;
 
-    private final ModelMapperHelper modelMapper;
+    private final DefaultModelMapper modelMapper;
+
+    private final BoardService boardService;
+
+    private final PawnService pawnService;
 
     @Autowired
-    public GameController(GameService gameService, UserService userService, ModelMapperHelper modelMapper) {
+    public GameController(
+            GameService gameService,
+            UserService userService,
+            DefaultModelMapper modelMapper,
+            BoardService boardService,
+            PawnService pawnService
+    ) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.boardService = boardService;
+        this.pawnService = pawnService;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<GameDTO> create(
             OAuth2Authentication auth,
             @RequestParam(name = "name") String name,
@@ -60,16 +66,26 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        BoardResult board = boardService.CreateBoard();
+
+        Tile[][] tiles = board.getTiles();
+
+        Pawn pawn = this.pawnService.create(user, game, tiles[0][0], PawnType.BLUE);
+
+        tiles[0][0].setPawn(pawn);
+        game.setTiles(tiles);
         game.setInitiator(user);
+        game.setPlaceableTile(board.getPlaceableTile());
+        game.setUserTurn(user);
 
         return new ResponseEntity<>(
-                (GameDTO) this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
                 HttpStatus.CREATED
         );
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<GameDTO>> find() {
         List<Game> games = this.gameService.find();
         List<GameDTO> gameDTOs = new ArrayList<>();
@@ -84,15 +100,15 @@ public class GameController {
                 continue;
             }
 
-            GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(game, GameDTO.class);
-            dto.setCurrentPlayers(game.getUsers().size());
+            GameDTO dto = this.modelMapper.ModelToDTO(game, GameDTO.class);
+            dto.setCurrentPlayers(game.getUsers());
             gameDTOs.add(dto);
         }
 
         return new ResponseEntity<>(gameDTOs, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    @GetMapping(value = "/current")
     public ResponseEntity<GameDTO> getCurrentGame(OAuth2Authentication auth) {
         User user = this.userService.loadUserByUsername(auth.getName());
 
@@ -106,14 +122,42 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
         }
 
-        GameDTO dto = (GameDTO) this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
-        dto.setCurrentPlayers(currentGame.getUsers().size());
+        GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
+        dto.setCurrentPlayers(currentGame.getUsers());
+
+        TileDTO[][] tilesArray = new TileDTO[7][7];
+
+        /**
+         * This is a temporary fix since it is pain in the ass to serialize relations. (Probably DTO can be replaced and
+         * use of jackson serializer will help to remove all this overhead)
+         */
+        for (Tile t : currentGame.getTiles()) {
+            TileDTO tileDTO = this.modelMapper.ModelToDTO(t, TileDTO.class);
+            Pawn pawn = t.getPawn();
+            if (pawn != null) {
+                PawnDTO pawnDTO = this.modelMapper.ModelToDTO(pawn, PawnDTO.class);
+                pawnDTO.setUser(pawn.getUser());
+                tileDTO.setPawnDTO(pawnDTO);
+            }
+            tileDTO.setImgSrc(t.getTileDefinition().getImgSrc());
+            tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
+        }
+
+        dto.setUser(user);
+        dto.setUserTurn(currentGame.getUserTurn());
+
+        Tile tile = currentGame.getPlaceableTile();
+        TileDTO tileDTO = this.modelMapper.ModelToDTO(tile, TileDTO.class);
+        tileDTO.setImgSrc(tile.getTileDefinition().getImgSrc());
+
+        dto.setPlaceAbleTile(tileDTO);
+        dto.setMatrix(tilesArray);
 
         return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/join", method = RequestMethod.POST)
-    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) {
+    @PostMapping(value = "/join")
+    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) throws PawnPlacerException {
         User user = this.userService.loadUserByUsername(auth.getName());
 
         if (user == null) {
@@ -133,8 +177,39 @@ public class GameController {
         }
 
         game.addUser(user);
+        Set<Tile> tiles = game.getTiles();
+
+        Pawn pawn = new Pawn();
+        pawn.setGame(game);
+        pawn.setUser(user);
+        // If 2 users, then index 1 will be returned which is the second
+        pawn.setPawnType(PawnType.values()[users.size() - 1]);
+        PawnPlacer.placePawnOnInitialTile(pawn, tiles, users.size());
+
+        this.pawnService.save(pawn);
         this.gameService.save(game);
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/{gameId}")
+    public ResponseEntity update(OAuth2Authentication auth, @PathVariable(value = "gameId") Long gameId, Tile[][] tiles) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+        // TODO: Add placeableTile to request and save it.
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Game currentGame = this.gameService.findOne(gameId);
+
+        if (currentGame == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
+
+        currentGame.setTiles(tiles);
+
+        this.gameService.save(currentGame);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -2,9 +2,23 @@ import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Out
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
-import {BoardFactory} from '../../services/boardFactory';
 import {Tile} from '../../model/Tile';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
+import MovementHandler from '../../lib/movement/MovementHandler';
+import MoveUp from '../../lib/movement/strategies/MoveUp';
+import MoveLeft from '../../lib/movement/strategies/MoveLeft';
+import MoveRight from '../../lib/movement/strategies/MoveRight';
+import MoveDown from '../../lib/movement/strategies/MoveDown';
+import {MovementService} from '../../services/movement.service';
+import {HttpParams} from '@angular/common/http';
+import {MovementDirections} from '../../lib/movement/MovementDirections';
+import {GameService} from '../../services/game.service';
+import {AuthService} from '../../services/auth.service';
+import InsertionHandler from '../../lib/board/InsertionHandler';
+import InsertTop from '../../lib/board/insertionStrategies/InsertTop';
+import InsertBottom from '../../lib/board/insertionStrategies/InsertBottom';
+import InsertLeft from '../../lib/board/insertionStrategies/InsertLeft';
+import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
 
 @Component({
   selector: 'app-board',
@@ -13,12 +27,18 @@ import {PawnFactory} from '../../lib/factories/PawnFactory';
   animations: [TileAnimations]
 })
 export class BoardComponent implements OnInit, AfterViewInit {
+  /** Board state properties **/
+  public board: Board;
   @Output()
-  public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
-
+  public placeableTileMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
   @Input()
   public isPending: boolean;
 
+  private isTurn = false;
+
+  private placedTile = false;
+
+  /** Animation properties **/
   public currentState = {
     colTop2: 'initial',
     colTop4: 'initial',
@@ -33,48 +53,90 @@ export class BoardComponent implements OnInit, AfterViewInit {
     colRowLeft4: 'initial',
     colRowLeft6: 'initial',
   };
+
+  private enableAnimation = false;
+
+  /** Icons **/
   public arrowUp: IconDefinition = faArrowUp;
   public arrowDown: IconDefinition = faArrowDown;
   public arrowRight: IconDefinition = faArrowRight;
   public arrowLeft: IconDefinition = faArrowLeft;
-  private enableAnimation: boolean;
 
-  public board: Board;
+  /** Movement properties **/
+  private movementHandler: MovementHandler;
+  private moveUp = new MoveUp();
+  private moveDown = new MoveDown();
+  private moveLeft = new MoveLeft();
+  private moveRight = new MoveRight();
+
+  /** Insertion properties **/
+  private insertionHandler: InsertionHandler;
+  private insertTopStrategy = new InsertTop();
+  private insertBottomStrategy = new InsertBottom();
+  private insertLefStrategy = new InsertLeft();
+  private insertRightStrategy = new InsertRight();
+
+  public constructor(
+    private readonly authService: AuthService,
+    private readonly gameService: GameService,
+    private readonly movementService: MovementService
+  ) {
+  }
 
   public ngOnInit(): void {
-    this.enableAnimation = false;
-    this.board = new BoardFactory().CreateBoardTemp();
-    this.onPlaceableTileChanged();
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
+        this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
+        if (data.userTurn.userId === data.user.userId) {
+          this.isTurn = true;
+          this.placeableTileMessage.emit(this.board.placeAbleTile);
+        }
+      }, () => {
+      });
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      PawnFactory.createPawns(this.board);
-    })
+      const playerPawn = PawnFactory.createPawns(this.board);
+      this.movementHandler = new MovementHandler(playerPawn);
+    }, 750);
   }
 
   public insertTop(column: number): void {
+    if (!this.isTurn || this.placedTile) {
+      return;
+    }
+
     this.changeState('colTop' + column);
-    this.board.insertTop(column - 1);
-    this.onPlaceableTileChanged();
+    this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
   }
 
   public insertRight(row: number): void {
+    if (!this.isTurn || this.placedTile) {
+      return;
+    }
+
     this.changeState('rowRight' + row);
-    this.board.insertLeft(row - 1);
-    this.onPlaceableTileChanged();
+    this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
   }
 
   public insertBottom(column: number): void {
+    if (!this.isTurn || this.placedTile) {
+      return;
+    }
+
     this.changeState('colBottom' + column);
-    this.board.insertBottom(column - 1);
-    this.onPlaceableTileChanged();
+    this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
   }
 
   public insertLeft(row: number): void {
+    if (!this.isTurn || this.placedTile) {
+      return;
+    }
+
     this.changeState('rowLeft' + row);
-    this.board.insertRight(row - 1);
-    this.onPlaceableTileChanged();
+    this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
   }
 
   /**
@@ -84,8 +146,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     // Also here, we only want to call this when we are in the animation
     if (this.enableAnimation) {
       this.enableAnimation = false;
-      // Reset state to prepare for next tur
+      // Reset state to prepare for next turn
       this.currentState[position] = 'initial';
+
+      this.placedTile = true;
     }
   }
 
@@ -98,17 +162,33 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private onPlaceableTileChanged(): void {
-    this.placeableTileChangedMessage.emit(this.board.placeableTile);
-  }
-
   @HostListener('window:keyup', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log('handleKeybaordEvent; alt key pressed ' + event.key);
+  public handleKeyboardEvent(event: KeyboardEvent) {
+    if (!this.isTurn) {
+      return;
+    }
+
     if (event.key === 'r') {
-      console.log('Found r key rotating!');
       this.board.rotatePlacableTile();
-      this.onPlaceableTileChanged();
+      this.placeableTileMessage.emit(this.board.placeAbleTile);
+      return;
+    }
+
+    if (this.placedTile && MovementDirections.includes(event.key)) {
+      this.movementService.movePawn(new HttpParams().set('direction', event.key))
+        .subscribe((result: boolean) => {
+          if (result === true) {
+            if (event.key === 'ArrowRight') {
+              this.movementHandler.handleMovement(this.moveRight);
+            } else if (event.key === 'ArrowLeft') {
+              this.movementHandler.handleMovement(this.moveLeft);
+            } else if (event.key === 'ArrowUp') {
+              this.movementHandler.handleMovement(this.moveUp);
+            } else if (event.key === 'ArrowDown') {
+              this.movementHandler.handleMovement(this.moveDown);
+            }
+          }
+        });
     }
   }
 }
