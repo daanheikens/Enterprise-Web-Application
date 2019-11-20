@@ -14,7 +14,6 @@ import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game.service';
 import {AuthService} from '../../services/auth.service';
-import PawnCollection from '../../collections/PawnCollection';
 
 @Component({
   selector: 'app-board',
@@ -156,9 +155,5 @@ export class BoardComponent implements OnInit, AfterViewInit {
           }
         });
     }
-  }
-
-  private applyStyles(pawns: PawnCollection) {
-
   }
 }
