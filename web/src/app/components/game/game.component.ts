@@ -15,8 +15,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public placeAbleTile: Tile;
 
-  private game: Game;
-
   public constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService
@@ -26,11 +24,11 @@ export class GameComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.game = data;
-        if (this.game !== null) {
-          this.onGameInitialized();
+        if (data !== null) {
+          this.messageService.connect(data.id);
         }
       });
+
     this.messageService.joinGame.subscribe(() => this.onPlayerJoinedGame());
     this.messageService.turnEnded.subscribe(() => this.onTurnEnded());
   }
@@ -43,10 +41,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.placeAbleTile = tile;
   }
 
-  private onGameInitialized(): void {
-    this.messageService.connect(this.game.id);
-  }
-
   /**
    * Step 1 get players (refresh players)
    * Step 2 Assign players somewhere in the dom
@@ -56,11 +50,9 @@ export class GameComponent implements OnInit, OnDestroy {
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
-        this.game = data;
-        this.refreshPlayers();
-        if (this.game.currentPlayers >= this.game.maxPlayers) {
-          this.renderBoard();
+        if (data.currentPlayers.length >= data.maxPlayers) {
           this.gamePending = false;
+          this.refreshPlayers();
         }
       });
   }

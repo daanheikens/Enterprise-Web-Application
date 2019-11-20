@@ -4,23 +4,27 @@ import {Pawn} from './Pawn';
 
 export class Tile {
 
-  constructor(id: number, topWall = false, bottomWall = false, rightWall = false, leftWall = false,
-              imgSrc = TileStyle.EMPTY, pawn: Pawn = null) {
-    this.id = id;
+  constructor(tileId: number, xCoordinate: number, yCoordinate: number, topWall = false, bottomWall = false, rightWall = false, leftWall = false,
+              imgSrc = TileStyle.EMPTY, pawnDTO: Pawn = null) {
+    this.tileId = tileId;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
     this.topWall = topWall;
     this.bottomWall = bottomWall;
     this.rightWall = rightWall;
     this.leftWall = leftWall;
     this.imgSrc = imgSrc;
-    this.pawn = pawn;
+    this.pawnDTO = pawnDTO;
   }
 
-  public readonly id;
+  public readonly tileId: number;
+  public xCoordinate: number;
+  public yCoordinate: number;
   public topWall: boolean;
   public bottomWall: boolean;
   public rightWall: boolean;
   public leftWall: boolean;
   public imgSrc: TileStyle;
   public tileRotation: TileRotation = TileRotation.Zero;
-  public pawn: Pawn;
+  public pawnDTO: Pawn;
 }

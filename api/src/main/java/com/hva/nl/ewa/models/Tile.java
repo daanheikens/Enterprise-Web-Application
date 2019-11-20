@@ -1,8 +1,9 @@
 package com.hva.nl.ewa.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "tile")
@@ -15,6 +16,7 @@ public class Tile implements Model {
     @NotNull
     private TileRotation rotation;
 
+    @JsonIgnore
     @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "pawn_id")
     private Pawn pawn;
@@ -25,6 +27,7 @@ public class Tile implements Model {
     @NotNull
     private int tileDefinition;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "game_id")
     private Game game;

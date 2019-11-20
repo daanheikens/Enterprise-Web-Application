@@ -1,6 +1,8 @@
 package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.GameDTO;
+import com.hva.nl.ewa.DTO.PawnDTO;
+import com.hva.nl.ewa.DTO.TileDTO;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
 import com.hva.nl.ewa.helpers.PawnPlacer;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
@@ -10,6 +12,8 @@ import com.hva.nl.ewa.services.BoardService;
 import com.hva.nl.ewa.services.GameService;
 import com.hva.nl.ewa.services.PawnService;
 import com.hva.nl.ewa.services.UserService;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -79,6 +83,8 @@ public class GameController {
 
         pawn.setUser(user);
         pawn.setGame(game);
+        // First pawn will always be blue since it's top left
+        pawn.setPawnType(PawnType.BLUE);
 
         pawn.setTile(tiles[0][0]);
         this.pawnService.save(pawn);
@@ -87,13 +93,6 @@ public class GameController {
         game.setTiles(tiles);
         game.setInitiator(user);
 
-
-        /**
-         * 1. Create a new pawn and attach this game and current user to it
-         * 2. This pawn should be attached to the tile top-left: that's index 0-0
-         * 3. Save the pawn
-         * 4. Save the game
-         */
         return new ResponseEntity<>(
                 this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
                 new HttpHeaders(),
@@ -117,7 +116,7 @@ public class GameController {
             }
 
             GameDTO dto = this.modelMapper.ModelToDTO(game, GameDTO.class);
-            dto.setCurrentPlayers(game.getUsers().size());
+            dto.setCurrentPlayers(game.getUsers());
             gameDTOs.add(dto);
         }
 
@@ -139,7 +138,28 @@ public class GameController {
         }
 
         GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
-        dto.setCurrentPlayers(currentGame.getUsers().size());
+        dto.setCurrentPlayers(currentGame.getUsers());
+
+        TileDTO[][] tilesArray = new TileDTO[7][7];
+
+        /**
+         * This is a temporary fix since it is pain in the ass to serialize relations. (Probably DTO can be replaced and
+         * use of jackson serializer will help to remove all this overhead)
+         */
+        for (Tile t : currentGame.getTiles()) {
+            TileDTO tileDTO = this.modelMapper.ModelToDTO(t, TileDTO.class);
+            Pawn pawn = t.getPawn();
+            if (pawn != null) {
+                PawnDTO pawnDTO = this.modelMapper.ModelToDTO(pawn, PawnDTO.class);
+                pawnDTO.setUser(pawn.getUser());
+                tileDTO.setPawnDTO(pawnDTO);
+            }
+            tileDTO.setImgSrc(t.getTileDefinition().getImgSrc());
+            tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
+        }
+
+        dto.setCurrentUser(user);
+        dto.setMatrix(tilesArray);
 
         return new ResponseEntity<>(dto, new HttpHeaders(), HttpStatus.OK);
     }
@@ -170,6 +190,8 @@ public class GameController {
         Pawn pawn = new Pawn();
         pawn.setGame(game);
         pawn.setUser(user);
+        // If 2 users, then index 1 will be returned which is the second
+        pawn.setPawnType(PawnType.values()[users.size() - 1]);
         PawnPlacer.placePawnOnInitialTile(pawn, tiles, users.size());
 
         this.pawnService.save(pawn);

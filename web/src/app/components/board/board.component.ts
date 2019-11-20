@@ -2,7 +2,6 @@ import {AfterViewInit, Component, EventEmitter, HostListener, Input, OnInit, Out
 import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
-import {BoardFactory} from '../../services/boardFactory';
 import {Tile} from '../../model/Tile';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
 import MovementHandler from '../../lib/movement/MovementHandler';
@@ -13,6 +12,9 @@ import MoveDown from '../../lib/movement/strategies/MoveDown';
 import {MovementService} from '../../services/movement.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
+import {GameService} from '../../services/game.service';
+import {AuthService} from '../../services/auth.service';
+import PawnCollection from '../../collections/PawnCollection';
 
 @Component({
   selector: 'app-board',
@@ -23,6 +25,7 @@ import {MovementDirections} from '../../lib/movement/MovementDirections';
 export class BoardComponent implements OnInit, AfterViewInit {
   /** Board state properties **/
   public board: Board;
+  public boardLoaded = false;
   @Output() public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
   @Input() public isPending: boolean;
 
@@ -56,19 +59,28 @@ export class BoardComponent implements OnInit, AfterViewInit {
   private moveLeft = new MoveLeft();
   private moveRight = new MoveRight();
 
-  public constructor(private readonly movementService: MovementService) {
+  public constructor(
+    private readonly authService: AuthService,
+    private readonly gameService: GameService,
+    private readonly movementService: MovementService
+  ) {
   }
 
   public ngOnInit(): void {
-    this.board = new BoardFactory().CreateBoardTemp();
-    this.onPlaceableTileChanged();
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        this.board = new Board(data.matrix, data.currentPlayers, data.user);
+        this.onPlaceableTileChanged();
+        this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
+      }, () => {
+      });
   }
 
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      let userPawn = PawnFactory.createPawns(this.board);
-      this.movementHandler = new MovementHandler(userPawn);
-    });
+      const playerPawn = PawnFactory.createPawns(this.board);
+      this.movementHandler = new MovementHandler(playerPawn);
+    }, 500);
   }
 
   public insertTop(column: number): void {
@@ -144,5 +156,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
           }
         });
     }
+  }
+
+  private applyStyles(pawns: PawnCollection) {
+
   }
 }
