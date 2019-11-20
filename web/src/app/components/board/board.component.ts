@@ -14,6 +14,11 @@ import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game.service';
 import {AuthService} from '../../services/auth.service';
+import InsertionHandler from '../../lib/board/InsertionHandler';
+import InsertTop from '../../lib/board/insertionStrategies/InsertTop';
+import InsertBottom from '../../lib/board/insertionStrategies/InsertBottom';
+import InsertLeft from '../../lib/board/insertionStrategies/InsertLeft';
+import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
 
 @Component({
   selector: 'app-board',
@@ -63,6 +68,14 @@ export class BoardComponent implements OnInit, AfterViewInit {
   private moveLeft = new MoveLeft();
   private moveRight = new MoveRight();
 
+  /** Insertion properties **/
+  private insertionHandler: InsertionHandler;
+  private insertTopStrategy = new InsertTop();
+  private insertBottomStrategy = new InsertBottom();
+  private insertLefStrategy = new InsertLeft();
+  private insertRightStrategy = new InsertRight();
+
+
   public constructor(
     private readonly authService: AuthService,
     private readonly gameService: GameService,
@@ -74,6 +87,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile);
+        this.insertionHandler = new InsertionHandler(this.board);
         if (data.userTurn.userId === data.user.userId) {
           this.isTurn = true;
           this.onPlaceableTileChanged();
@@ -95,7 +109,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     this.changeState('colTop' + column);
-    this.board.insertTop(column - 1);
+    this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
     this.onPlaceableTileChanged();
   }
 
@@ -105,7 +119,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     this.changeState('rowRight' + row);
-    this.board.insertLeft(row - 1);
+    this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
     this.onPlaceableTileChanged();
   }
 
@@ -115,7 +129,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     this.changeState('colBottom' + column);
-    this.board.insertBottom(column - 1);
+    this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
     this.onPlaceableTileChanged();
   }
 
@@ -125,7 +139,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     }
 
     this.changeState('rowLeft' + row);
-    this.board.insertRight(row - 1);
+    this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
     this.onPlaceableTileChanged();
   }
 
@@ -158,7 +172,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:keyup', ['$event'])
   public handleKeyboardEvent(event: KeyboardEvent) {
-    if (!this.isTurn && !this.placedTile) {
+    if (!this.isTurn) {
       return;
     }
 
@@ -168,7 +182,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (MovementDirections.includes(event.key)) {
+    if (this.placedTile && MovementDirections.includes(event.key)) {
       this.movementService.movePawn(new HttpParams().set('direction', event.key))
         .subscribe((result: boolean) => {
           if (result === true) {
