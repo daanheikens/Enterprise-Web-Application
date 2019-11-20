@@ -19,6 +19,10 @@ export class Game {
 
   private readonly _matrix: Tile[][];
 
+  private readonly _placeAbleTile: Tile;
+
+  private readonly _userTurn: User;
+
   public constructor(
     id: number,
     name: string,
@@ -27,7 +31,9 @@ export class Game {
     maxPendingTime: number,
     currentPlayers: User[],
     user: User,
-    matrix: Tile[][]
+    matrix: Tile[][],
+    userTurn: User,
+    placeAbleTile: Tile
   ) {
     this._id = id;
     this._name = name;
@@ -37,6 +43,8 @@ export class Game {
     this._currentPlayers = currentPlayers;
     this._user = user;
     this._matrix = matrix;
+    this._placeAbleTile = placeAbleTile;
+    this._userTurn = userTurn;
   }
 
   get id(): number {
@@ -69,5 +77,13 @@ export class Game {
 
   get matrix(): Tile[][] {
     return this._matrix;
+  }
+
+  get userTurn(): User {
+    return this._userTurn;
+  }
+
+  get placeAbleTile(): Tile {
+    return this._placeAbleTile;
   }
 }

@@ -8,7 +8,7 @@ export class Board {
 
   public tiles: Tile[][] = [];
 
-  public placeableTile: Tile;
+  public placeAbleTile: Tile;
 
   public pawns: Pawn[];
 
@@ -31,21 +31,21 @@ export class Board {
   }
 
   public rotatePlacableTile() {
-    switch (this.placeableTile.tileRotation) {
+    switch (this.placeAbleTile.tileRotation) {
       case TileRotation.Zero: {
-        this.placeableTile.tileRotation = TileRotation.Ninety;
+        this.placeAbleTile.tileRotation = TileRotation.Ninety;
         break;
       }
       case TileRotation.Ninety: {
-        this.placeableTile.tileRotation = TileRotation.OneEighty;
+        this.placeAbleTile.tileRotation = TileRotation.OneEighty;
         break;
       }
       case TileRotation.OneEighty: {
-        this.placeableTile.tileRotation = TileRotation.TwoHundredSeventy;
+        this.placeAbleTile.tileRotation = TileRotation.TwoHundredSeventy;
         break;
       }
       case TileRotation.TwoHundredSeventy: {
-        this.placeableTile.tileRotation = TileRotation.Zero;
+        this.placeAbleTile.tileRotation = TileRotation.Zero;
         break;
       }
       default:
@@ -54,14 +54,14 @@ export class Board {
   }
 
   public insertTop(col: number) {
-    let tileToMoveDown = this.placeableTile;
+    let tileToMoveDown = this.placeAbleTile;
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = this.tiles[i][col];
       this.tiles[col][i] = tileToMoveDown;
       tileToMoveDown = currentTile;
     }
-    this.placeableTile = currentTile;
+    this.placeAbleTile = currentTile;
   }
 
   public insertBottom(col: number) {
@@ -74,14 +74,14 @@ export class Board {
       return;
     }
 
-    let tileToMoveUp = this.placeableTile;
+    let tileToMoveUp = this.placeAbleTile;
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = this.tiles[i][col];
       this.tiles[col][i] = tileToMoveUp;
       tileToMoveUp = currentTile;
     }
-    this.placeableTile = currentTile;
+    this.placeAbleTile = currentTile;
   }
 
   public insertRight(row: number) {
@@ -94,14 +94,14 @@ export class Board {
       return;
     }
 
-    let tileToMoveRight = this.placeableTile;
+    let tileToMoveRight = this.placeAbleTile;
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = this.tiles[row][i];
       this.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }
-    this.placeableTile = currentTile;
+    this.placeAbleTile = currentTile;
   }
 
   public insertLeft(row: number) {
@@ -114,13 +114,13 @@ export class Board {
       return;
     }
 
-    let tileToMoveRight = this.placeableTile;
+    let tileToMoveRight = this.placeAbleTile;
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = this.tiles[row][i];
       this.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }
-    this.placeableTile = currentTile;
+    this.placeAbleTile = currentTile;
   }
 }

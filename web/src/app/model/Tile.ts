@@ -18,8 +18,8 @@ export class Tile {
   }
 
   public readonly tileId: number;
-  public xCoordinate: number;
-  public yCoordinate: number;
+  public xCoordinate: number | null;
+  public yCoordinate: number | null;
   public topWall: boolean;
   public bottomWall: boolean;
   public rightWall: boolean;

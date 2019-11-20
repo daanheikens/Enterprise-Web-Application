@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Game} from '../model/Game';
 
@@ -13,10 +13,12 @@ export class GameService {
   public constructor(private readonly http: HttpClient) {
   }
 
-  public create(body: HttpParams): Observable<Game> {
-    return this.http.post<Game>(`${environment.apiUrl}/games`, body)
-      .pipe(map(game => {
+  public create(body: HttpParams): Observable<Object> {
+    return this.http.post<Object>(`${environment.apiUrl}/games`, body)
+      .pipe(tap(game => {
         return game;
+      }, error => {
+        console.log(error);
       }));
   }
 
@@ -25,8 +27,10 @@ export class GameService {
    */
   public getCurrentGame(): Observable<Game> {
     return this.http.get<Game>(`${environment.apiUrl}/games/current`)
-      .pipe(map(game => {
+      .pipe(tap(game => {
         return game;
+      }, error => {
+        console.log(error);
       }));
   }
 
@@ -35,8 +39,10 @@ export class GameService {
    */
   public getGames(): Observable<Game[]> {
     return this.http.get<Game[]>(`${environment.apiUrl}/games`)
-      .pipe(map(game => {
-        return game;
+      .pipe(tap(games => {
+        return games;
+      }, error => {
+        console.log(error);
       }));
   }
 
@@ -45,8 +51,10 @@ export class GameService {
    */
   public joinGame(body: HttpParams): Observable<Game> {
     return this.http.post<Game>(`${environment.apiUrl}/games/join`, body)
-      .pipe(map(game => {
+      .pipe(tap(game => {
         return game;
+      }, error => {
+        console.log(error);
       }));
   }
 }

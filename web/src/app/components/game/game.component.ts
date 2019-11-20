@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
-import {Game} from '../../model/Game';
 import {MessageService} from '../../services/message.service';
 
 @Component({
@@ -13,7 +12,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public gamePending = true;
 
-  public placeAbleTile: Tile;
+  public placeableTile: Tile;
 
   public constructor(
     private readonly gameService: GameService,
@@ -38,7 +37,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public onPlaceableTileChanged(tile: Tile): void {
-    this.placeAbleTile = tile;
+    this.placeableTile = tile;
   }
 
   /**

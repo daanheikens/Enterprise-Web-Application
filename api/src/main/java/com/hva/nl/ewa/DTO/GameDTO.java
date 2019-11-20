@@ -1,5 +1,6 @@
 package com.hva.nl.ewa.DTO;
 
+import com.hva.nl.ewa.models.Tile;
 import com.hva.nl.ewa.models.User;
 
 import java.util.Set;
@@ -21,6 +22,10 @@ public class GameDTO {
     private TileDTO[][] matrix;
 
     private User user;
+
+    private User userTurn;
+
+    private TileDTO placeAbleTile;
 
     public GameDTO(){
     }
@@ -81,11 +86,27 @@ public class GameDTO {
         this.matrix = matrix;
     }
 
-    public void setCurrentUser(User user) {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public User getUser() {
-        return user;
+    public User getUserTurn() {
+        return userTurn;
+    }
+
+    public void setUserTurn(User userTurn) {
+        this.userTurn = userTurn;
+    }
+
+    public TileDTO getPlaceAbleTile() {
+        return placeAbleTile;
+    }
+
+    public void setPlaceAbleTile(TileDTO placeAbleTile) {
+        this.placeAbleTile = placeAbleTile;
     }
 }

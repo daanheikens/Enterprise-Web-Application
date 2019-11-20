@@ -24,9 +24,10 @@ import {AuthService} from '../../services/auth.service';
 export class BoardComponent implements OnInit, AfterViewInit {
   /** Board state properties **/
   public board: Board;
-  public boardLoaded = false;
-  @Output() public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
-  @Input() public isPending: boolean;
+  @Output()
+  public placeableTileChangedMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+  @Input()
+  public isPending: boolean;
 
   /** Animation properties **/
   public currentState = {
@@ -69,8 +70,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         this.board = new Board(data.matrix, data.currentPlayers, data.user);
-        this.onPlaceableTileChanged();
-        this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
+        if (data.userTurn.userId === data.user.userId) {
+          this.board.placeAbleTile = data.placeAbleTile;
+          this.onPlaceableTileChanged();
+        }
       }, () => {
       });
   }
@@ -79,7 +82,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       const playerPawn = PawnFactory.createPawns(this.board);
       this.movementHandler = new MovementHandler(playerPawn);
-    }, 500);
+    }, 750);
   }
 
   public insertTop(column: number): void {
@@ -128,7 +131,8 @@ export class BoardComponent implements OnInit, AfterViewInit {
   }
 
   private onPlaceableTileChanged(): void {
-    this.placeableTileChangedMessage.emit(this.board.placeableTile);
+    console.log(this.board.placeAbleTile);
+    this.placeableTileChangedMessage.emit(this.board.placeAbleTile);
   }
 
   @HostListener('window:keyup', ['$event'])

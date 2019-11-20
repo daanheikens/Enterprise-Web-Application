@@ -32,10 +32,10 @@ export class PawnFactory {
     let offsetTop = 0;
 
     do {
-      if (!isNaN(element.offsetTop)) {
+      if (element !== null && !isNaN(element.offsetTop)) {
         offsetTop += element.offsetTop;
       }
-    } while (element == element.offsetParent);
+    } while (element !== null && element == element.offsetParent);
 
     return offsetTop;
   }
@@ -43,10 +43,10 @@ export class PawnFactory {
   private static getOffsetLeft(element): number {
     let offsetLeft = 0;
     do {
-      if (!isNaN(element.offsetLeft)) {
+      if (element !== null && !isNaN(element.offsetLeft)) {
         offsetLeft += element.offsetLeft;
       }
-    } while (element == element.offsetParent);
+    } while (element !== null && element == element.offsetParent);
     return offsetLeft;
   }
 

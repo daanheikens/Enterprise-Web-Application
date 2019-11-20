@@ -9,10 +9,11 @@ import {Tile} from '../../model/Tile';
 export class BottombarComponent implements OnInit {
 
   @Input()
-  public placeableTile: Tile;
+  public placeAbleTile: Tile;
 
   constructor() { }
 
   ngOnInit() {
+    console.log(this.placeAbleTile);
   }
 }

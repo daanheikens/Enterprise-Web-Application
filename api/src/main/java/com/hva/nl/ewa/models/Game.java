@@ -51,6 +51,14 @@ public class Game implements Model {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<Tile> tiles = new HashSet<>();
 
+    @JsonIgnore
+    @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
+    private Tile placeableTile;
+
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    private User userTurn;
+
     public long getId() {
         return id;
     }
@@ -123,5 +131,21 @@ public class Game implements Model {
 
     public Set<Tile> getTiles() {
         return this.tiles;
+    }
+
+    public Tile getPlaceableTile() {
+        return placeableTile;
+    }
+
+    public void setPlaceableTile(Tile placeableTile) {
+        this.placeableTile = placeableTile;
+    }
+
+    public User getUserTurn() {
+        return userTurn;
+    }
+
+    public void setUserTurn(User userTurn) {
+        this.userTurn = userTurn;
     }
 }
