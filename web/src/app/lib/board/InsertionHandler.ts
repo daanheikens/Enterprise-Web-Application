@@ -23,5 +23,6 @@ export default class InsertionHandler {
    */
   private notify() {
     this.placeableTileMessage.emit(null);
+    console.log(this.board);
   }
 }

@@ -16,7 +16,7 @@ export default class InsertRight implements InsertionStrategy {
     let tileToMoveRight = board.placeAbleTile;
     let currentTile;
     for (let i = 6; i >= 0; i--) {
-      currentTile = board.tiles[row][i];
+      currentTile = board.tiles[i][row];
       board.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }

@@ -91,9 +91,6 @@ export class MessageService implements OnInit {
       case MessageType.LEAVE_GAME:
         this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/leave`, {}, JSON.stringify(message));
         break;
-      case MessageType.MOVE_PAWN:
-        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/move`, {}, JSON.stringify(message));
-        break;
       default:
         throw new Error('Unexpected type');
     }
@@ -109,9 +106,6 @@ export class MessageService implements OnInit {
         break;
       case MessageType.LEAVE_GAME:
         this.leaveGameSubject.next(message);
-        break;
-      case MessageType.MOVE_PAWN:
-        this.movePawnSubject.next(message);
         break;
       default:
         throw new Error('Unexpected type');

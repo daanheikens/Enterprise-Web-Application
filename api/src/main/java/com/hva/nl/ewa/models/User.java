@@ -58,6 +58,9 @@ public class User implements UserDetails, Model {
     @OneToOne(mappedBy = "user")
     private Pawn pawn;
 
+    public User() {
+    }
+
     public void setUserId(long userId) {
         this.userId = userId;
     }

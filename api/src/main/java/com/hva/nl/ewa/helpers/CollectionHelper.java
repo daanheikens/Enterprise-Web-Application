@@ -1,5 +1,8 @@
 package com.hva.nl.ewa.helpers;
 
+import com.hva.nl.ewa.DTO.TileDTO;
+import com.hva.nl.ewa.models.Tile;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -27,5 +30,13 @@ public class CollectionHelper {
 
     public static <T> Set<T> ToSet(T[] ar) {
         return new HashSet<>(Arrays.asList(ar));
+    }
+
+    public static <T> Set<T> toSet(T[][] twoDArray) {
+        Set<T> set = new HashSet<>();
+        for (T[] array : twoDArray) {
+            set.addAll(Arrays.asList(array));
+        }
+        return set;
     }
 }

@@ -26,17 +26,26 @@ import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
   styleUrls: ['./board.component.css'],
   animations: [TileAnimations]
 })
-export class BoardComponent implements OnInit, AfterViewInit {
+export class BoardComponent implements AfterViewInit {
   /** Board state properties **/
+  @Input()
   public board: Board;
-  @Output()
-  public placeableTileMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+
   @Input()
   public isPending: boolean;
 
-  private isTurn = false;
+  @Input()
+  public isTurn = false;
+
+  @Output()
+  private placeableTileMessage = new EventEmitter<Tile>();
+
+  @Output()
+  private canEndTurnMessage = new EventEmitter<Event>();
 
   private placedTile = false;
+
+  private turnEndMessageSent = false;
 
   /** Animation properties **/
   public currentState = {
@@ -83,24 +92,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
   ) {
   }
 
-  public ngOnInit(): void {
-    this.gameService.getCurrentGame()
-      .subscribe(data => {
-        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
-        this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
-        if (data.userTurn.userId === data.user.userId) {
-          this.isTurn = true;
-          this.placeableTileMessage.emit(this.board.placeAbleTile);
-        }
-      }, () => {
-      });
-  }
-
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      const playerPawn = PawnFactory.createPawns(this.board);
-      this.movementHandler = new MovementHandler(playerPawn);
-    }, 750);
+      if (this.isTurn) {
+        this.placeableTileMessage.emit(this.board.placeAbleTile);
+      }
+
+      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
+      this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
+    }, 500);
   }
 
   public insertTop(column: number): void {
@@ -186,6 +186,11 @@ export class BoardComponent implements OnInit, AfterViewInit {
               this.movementHandler.handleMovement(this.moveUp);
             } else if (event.key === 'ArrowDown') {
               this.movementHandler.handleMovement(this.moveDown);
+            }
+
+            if (this.turnEndMessageSent === false) {
+              this.canEndTurnMessage.emit();
+              this.turnEndMessageSent = true;
             }
           }
         });

@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.helpers.modelmappers;
 
 import com.hva.nl.ewa.models.Model;
+import org.dom4j.rule.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,5 +22,9 @@ public class DefaultModelMapper {
 
     public <E> E ModelToDTO(Model model, Class<E> target) {
         return this.mapper.map(model, target);
+    }
+
+    public <E, T extends Model> T DTOToModel(E dto, Class<T> target) {
+        return this.mapper.map(dto, target);
     }
 }

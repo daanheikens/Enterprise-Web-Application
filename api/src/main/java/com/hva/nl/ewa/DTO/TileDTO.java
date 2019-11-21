@@ -14,11 +14,11 @@ public class TileDTO {
 
     private boolean treasure;
 
-    private int tileDefinition;
+    private Integer tileDefinition;
 
-    private int xCoordinate;
+    private Integer xCoordinate;
 
-    private int yCoordinate;
+    private Integer yCoordinate;
 
     public TileDTO() {
     }
@@ -63,27 +63,27 @@ public class TileDTO {
         this.treasure = treasure;
     }
 
-    public int getTileDefinition() {
+    public Integer getTileDefinition() {
         return tileDefinition;
     }
 
-    public void setTileDefinition(int tileDefinition) {
+    public void setTileDefinition(Integer tileDefinition) {
         this.tileDefinition = tileDefinition;
     }
 
-    public int getxCoordinate() {
+    public Integer getxCoordinate() {
         return xCoordinate;
     }
 
-    public void setxCoordinate(int xCoordinate) {
+    public void setxCoordinate(Integer xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
 
-    public int getyCoordinate() {
+    public Integer getyCoordinate() {
         return yCoordinate;
     }
 
-    public void setyCoordinate(int yCoordinate) {
+    public void setyCoordinate(Integer yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
 }

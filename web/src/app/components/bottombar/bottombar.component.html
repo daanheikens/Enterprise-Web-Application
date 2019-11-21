@@ -4,5 +4,6 @@
     <img *ngIf="placeAbleTile" src="{{placeAbleTile.imgSrc}}" class="tile {{placeAbleTile.tileRotation}}">
     <img src="../../assets/images/card-backside.png" class="kaart-achterkant">
     <img src="../../assets/images/card-sword.png" class="kaart">
+    <button [disabled]="!turnEnded" (click)="onEndTurn()" class="btn btn-primary">Speel</button>
   </div>
 </nav>

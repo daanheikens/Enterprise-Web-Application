@@ -2,6 +2,7 @@ package com.hva.nl.ewa.controllers;
 
 import com.hva.nl.ewa.DTO.*;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
+import com.hva.nl.ewa.helpers.CollectionHelper;
 import com.hva.nl.ewa.helpers.PawnPlacer;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
@@ -19,16 +20,12 @@ import java.util.*;
 @Transactional
 @RequestMapping(value = "/api/games", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GameController {
-
     private final GameService gameService;
-
     private final UserService userService;
-
     private final DefaultModelMapper modelMapper;
-
     private final BoardService boardService;
-
     private final PawnService pawnService;
+    private final TileService tileService;
 
     @Autowired
     public GameController(
@@ -36,13 +33,15 @@ public class GameController {
             UserService userService,
             DefaultModelMapper modelMapper,
             BoardService boardService,
-            PawnService pawnService
+            PawnService pawnService,
+            TileService tileService
     ) {
         this.gameService = gameService;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.boardService = boardService;
         this.pawnService = pawnService;
+        this.tileService = tileService;
     }
 
     @PostMapping
@@ -139,7 +138,7 @@ public class GameController {
                 pawnDTO.setUser(pawn.getUser());
                 tileDTO.setPawnDTO(pawnDTO);
             }
-            tileDTO.setImgSrc(t.getTileDefinition().getImgSrc());
+            tileDTO.setImgSrc(t.getTileDefinitionObject().getImgSrc());
             tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
         }
 
@@ -148,7 +147,7 @@ public class GameController {
 
         Tile tile = currentGame.getPlaceableTile();
         TileDTO tileDTO = this.modelMapper.ModelToDTO(tile, TileDTO.class);
-        tileDTO.setImgSrc(tile.getTileDefinition().getImgSrc());
+        tileDTO.setImgSrc(tile.getTileDefinitionObject().getImgSrc());
 
         dto.setPlaceAbleTile(tileDTO);
         dto.setMatrix(tilesArray);
@@ -192,10 +191,14 @@ public class GameController {
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/{gameId}")
-    public ResponseEntity update(OAuth2Authentication auth, @PathVariable(value = "gameId") Long gameId, Tile[][] tiles) {
+    @PatchMapping(value = "/{gameId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(
+            OAuth2Authentication auth,
+            @PathVariable(value = "gameId") Long gameId,
+            @RequestBody BoardDTO board
+    ) {
         User user = this.userService.loadUserByUsername(auth.getName());
-        // TODO: Add placeableTile to request and save it.
+
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -206,7 +209,26 @@ public class GameController {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
 
-        currentGame.setTiles(tiles);
+        Set<Tile> tiles = CollectionHelper.toSet(board.getTiles());
+        Map<Long, Tile> tilesMap = currentGame.getTilesAsMap();
+
+        /**
+         * Not optimal but works
+         */
+        for (Tile t : tiles) {
+            Tile t2 = tilesMap.get(t.getTileId());
+            t2.setyCoordinate(t.getyCoordinate());
+            t2.setxCoordinate(t.getxCoordinate());
+            t2.setRotation(t.getRotation());
+        }
+
+        Tile placeableTile = this.tileService.findOne(board.getPlaceableTile().getTileId());
+
+        if (placeableTile == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
+
+        currentGame.setPlaceableTile(placeableTile);
 
         this.gameService.save(currentGame);
 

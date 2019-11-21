@@ -2,6 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {MessageService} from '../../services/message.service';
+import {User} from '../../model/User';
+import {Message, MessageType} from '../../model/Message';
+import {Board} from '../../model/Board';
+import {error} from 'util';
 
 @Component({
   selector: 'app-game',
@@ -14,6 +18,14 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public placeableTile: Tile;
 
+  public turnCanEnd: boolean;
+
+  private gameId: number;
+
+  private board: Board;
+
+  private isTurn = false;
+
   public constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService
@@ -24,12 +36,16 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         if (data !== null) {
+          this.gameId = data.id;
+          this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
+          this.isTurn = data.user.userId === data.userTurn.userId;
           this.messageService.connect(data.id);
         }
       });
 
     this.messageService.joinGame.subscribe(() => this.onPlayerJoinedGame());
-    this.messageService.turnEnded.subscribe(() => this.onTurnEnded());
+    this.messageService.leaveGame.subscribe(() => this.onPlayerLeftRoom());
+    this.messageService.turnEnded.subscribe(() => this.onTurnChanged());
   }
 
   public ngOnDestroy(): void {
@@ -40,42 +56,47 @@ export class GameComponent implements OnInit, OnDestroy {
     this.placeableTile = tile;
   }
 
+  /**
+   * This is a promise since we want to send the message after the response has been returned
+   */
   public onTurnEnded(): void {
-    // TODO send message to notify a turn end.
+    this.gameService.updateBoard(this.board)
+      .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.gameId))
+      .catch(error => console.log(error)
+      );
   }
 
-  /**
-   * Step 1 get players (refresh players)
-   * Step 2 Assign players somewhere in the dom
-   * Step 3 Check if max players is reached
-   * Step 4 if max players has reached, game can start
-   */
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         if (data.currentPlayers.length >= data.maxPlayers) {
           this.gamePending = false;
-          this.refreshPlayers();
+          this.refreshPlayers(data.currentPlayers);
         }
       });
   }
 
-  // A turn has ended, check if it is your turn
-  /**
-   * Step 1 message contains the user which turn has ended
-   * Step 2 fetch the user turn. (API call or?)
-   * Step 3 if it is somebody else turn, ignore response
-   * Step 4 if current user turn, then enable controls and notify user
-   */
+  private onTurnCanEnd(): void {
+    this.turnCanEnd = true;
+  }
+
+  // A turn has changed, refresh the game
   private onTurnChanged(): void {
+    this.gameService.getCurrentGame()
+      .subscribe(data => {
+        if (data !== null) {
+          this.gameId = data.id;
+          this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
+          this.isTurn = data.user.userId === data.userTurn.userId;
+        }
+      });
+  }
+
+  private refreshPlayers(users: User[]): void {
 
   }
 
-  private refreshPlayers(): void {
-
-  }
-
-  private renderBoard() {
+  private onPlayerLeftRoom(): void {
 
   }
 }

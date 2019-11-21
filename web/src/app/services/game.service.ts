@@ -64,12 +64,11 @@ export class GameService {
    *
    * @param board Board
    */
-  public updateBoard(board: Board): Observable<Game> {
-    return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, board.tiles)
-      .pipe(tap(game => {
-        return game;
-      }, error => {
-        console.log(error);
-      }));
+  public updateBoard(board: Board): Promise<Game> {
+    return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, {
+      tiles: board.tiles,
+      placeableTile: board.placeAbleTile,
+      gameId: board.gameId,
+    }).toPromise();
   }
 }

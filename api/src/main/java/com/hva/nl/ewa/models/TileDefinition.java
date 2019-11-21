@@ -14,6 +14,9 @@ public class TileDefinition {
     private int tileDefinitionId;
     private boolean hasTreasure;
 
+    public TileDefinition() {
+    }
+
     public TileDefinition(int tileDefinitionId, boolean topWall, boolean bottomWall, boolean rightWall, boolean leftWall, boolean hasTreasure, String imgSrc) {
         this.topWall = topWall;
         this.bottomWall = bottomWall;
@@ -74,11 +77,11 @@ public class TileDefinition {
         }
     }
 
-    public int getTileDefinitionId() {
+    public int getTileDefinitionObjectId() {
         return tileDefinitionId;
     }
 
-    boolean hasTreasure() {
+    public boolean hasTreasure() {
         return hasTreasure;
     }
 

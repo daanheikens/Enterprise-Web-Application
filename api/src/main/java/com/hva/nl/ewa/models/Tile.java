@@ -2,6 +2,7 @@ package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,7 +28,7 @@ public class Tile implements Model {
     private boolean treasure;
 
     @NotNull
-    private int tileDefinition;
+    private Integer tileDefinition;
 
     @JsonIgnore
     @ManyToOne
@@ -39,22 +40,6 @@ public class Tile implements Model {
     private Integer yCoordinate;
 
     public Tile() {
-    }
-
-    public Tile(Pawn pawn, TileDefinition tileDefinition) {
-        this.rotation = TileRotation.Zero;
-        this.pawn = pawn;
-        this.treasure = tileDefinition.hasTreasure();
-        this.tileDefinition = tileDefinition.getTileDefinitionId();
-    }
-
-    public Tile(Pawn pawn, TileDefinition tileDefinition, int initialYCoordinate, int initialXCoordinate) {
-        this.rotation = TileRotation.Zero;
-        this.pawn = pawn;
-        this.treasure = tileDefinition.hasTreasure();
-        this.tileDefinition = tileDefinition.getTileDefinitionId();
-        this.xCoordinate = initialXCoordinate;
-        this.yCoordinate = initialYCoordinate;
     }
 
     public TileRotation getRotation() {
@@ -81,12 +66,21 @@ public class Tile implements Model {
         this.treasure = treasure;
     }
 
-    public TileDefinition getTileDefinition() {
-        return TileDefinition.GetTile(tileDefinition);
+    public Integer getTileDefinition() {
+        return this.tileDefinition;
     }
 
-    public void setTileDefinition(TileDefinition tileDefinition) {
-        this.tileDefinition = tileDefinition.getTileDefinitionId();
+    public void setTileDefinition(Integer tileDefinition) {
+        this.tileDefinition = tileDefinition;
+    }
+
+    public TileDefinition getTileDefinitionObject() {
+        return TileDefinition.GetTile(this.tileDefinition);
+    }
+
+    @JsonIgnore
+    public void setTileDefinitionObject(TileDefinition tileDefinition) {
+        this.tileDefinition = tileDefinition.getTileDefinitionObjectId();
     }
 
     public Integer getyCoordinate() {
