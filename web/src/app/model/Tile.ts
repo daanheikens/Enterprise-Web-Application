@@ -5,7 +5,7 @@ import {Pawn} from './Pawn';
 export class Tile {
 
   constructor(tileId: number, xCoordinate: number, yCoordinate: number, topWall = false, bottomWall = false, rightWall = false, leftWall = false,
-              imgSrc = TileStyle.EMPTY, pawnDTO: Pawn = null) {
+              imgSrc = TileStyle.EMPTY, pawnDTO: Pawn = null, rotation = TileRotation.Zero) {
     this.tileId = tileId;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
@@ -15,6 +15,7 @@ export class Tile {
     this.leftWall = leftWall;
     this.imgSrc = imgSrc;
     this.pawnDTO = pawnDTO;
+    this.rotation = rotation;
   }
 
   public readonly tileId: number;
@@ -25,6 +26,6 @@ export class Tile {
   public rightWall: boolean;
   public leftWall: boolean;
   public imgSrc: TileStyle;
-  public tileRotation: TileRotation = TileRotation.Zero;
+  public rotation: TileRotation;
   public pawnDTO: Pawn;
 }

@@ -38,21 +38,21 @@ export class Board {
   }
 
   public rotatePlacableTile() {
-    switch (this.placeAbleTile.tileRotation) {
+    switch (this.placeAbleTile.rotation) {
       case TileRotation.Zero: {
-        this.placeAbleTile.tileRotation = TileRotation.Ninety;
+        this.placeAbleTile.rotation = TileRotation.Ninety;
         break;
       }
       case TileRotation.Ninety: {
-        this.placeAbleTile.tileRotation = TileRotation.OneEighty;
+        this.placeAbleTile.rotation = TileRotation.OneEighty;
         break;
       }
       case TileRotation.OneEighty: {
-        this.placeAbleTile.tileRotation = TileRotation.TwoHundredSeventy;
+        this.placeAbleTile.rotation = TileRotation.TwoHundredSeventy;
         break;
       }
       case TileRotation.TwoHundredSeventy: {
-        this.placeAbleTile.tileRotation = TileRotation.Zero;
+        this.placeAbleTile.rotation = TileRotation.Zero;
         break;
       }
       default:

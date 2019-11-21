@@ -17,6 +17,8 @@ export default class InsertBottom implements InsertionStrategy {
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = board.tiles[col][i];
+      tileToMoveUp.xCoordinate = col;
+      tileToMoveUp.yCoordinate = i;
       board.tiles[col][i] = tileToMoveUp;
       tileToMoveUp = currentTile;
     }

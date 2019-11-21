@@ -2,9 +2,11 @@
 
 <app-board [isPending]="gamePending"
            [board]="board"
+           [userPawn]="userPawn"
            [isTurn]="isTurn"
            (placeableTileMessage)="onPlaceableTileChanged($event)"
-           (canEndTurnMessage)="onTurnCanEnd()">
+           (canEndTurnMessage)="onTurnCanEnd()"
+           (boardChangedMessage)="onBoardChanged($event)">
 </app-board>
 
 <app-bottombar *ngIf="!gamePending"

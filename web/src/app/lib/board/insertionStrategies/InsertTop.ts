@@ -8,6 +8,8 @@ export default class InsertTop implements InsertionStrategy {
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = board.tiles[col][i];
+      tileToMoveDown.xCoordinate = col;
+      tileToMoveDown.yCoordinate = i;
       board.tiles[col][i] = tileToMoveDown;
       tileToMoveDown = currentTile;
     }

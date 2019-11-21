@@ -1,5 +1,5 @@
 /* Tile Rotations */
-.RotationZero {
+.Zero {
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
   -o-transform: rotate(0deg);
@@ -7,7 +7,7 @@
   transform: rotate(0deg);
 }
 
-.RotationNinety {
+.Ninety {
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
@@ -15,7 +15,7 @@
   transform: rotate(90deg);
 }
 
-.RotationOneEighty {
+.OneEighty {
   -webkit-transform: rotate(180deg);
   -moz-transform: rotate(180deg);
   -o-transform: rotate(180deg);
@@ -23,7 +23,7 @@
   transform: rotate(180deg);
 }
 
-.RotationTwoHundredSeventy {
+.TwoHundredSeventy {
   -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
   -o-transform: rotate(270deg);

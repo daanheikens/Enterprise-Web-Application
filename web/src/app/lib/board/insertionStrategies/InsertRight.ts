@@ -13,12 +13,14 @@ export default class InsertRight implements InsertionStrategy {
       return;
     }
 
-    let tileToMoveRight = board.placeAbleTile;
+    let tileToMoveLeft = board.placeAbleTile;
     let currentTile;
     for (let i = 6; i >= 0; i--) {
       currentTile = board.tiles[i][row];
-      board.tiles[i][row] = tileToMoveRight;
-      tileToMoveRight = currentTile;
+      tileToMoveLeft.xCoordinate = i;
+      tileToMoveLeft.yCoordinate = row;
+      board.tiles[i][row] = tileToMoveLeft;
+      tileToMoveLeft = currentTile;
     }
     board.placeAbleTile = currentTile;
   }

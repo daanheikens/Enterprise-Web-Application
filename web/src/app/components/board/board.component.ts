@@ -19,6 +19,7 @@ import InsertTop from '../../lib/board/insertionStrategies/InsertTop';
 import InsertBottom from '../../lib/board/insertionStrategies/InsertBottom';
 import InsertLeft from '../../lib/board/insertionStrategies/InsertLeft';
 import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
+import {Pawn} from '../../model/Pawn';
 
 @Component({
   selector: 'app-board',
@@ -37,12 +38,20 @@ export class BoardComponent implements AfterViewInit {
   @Input()
   public isTurn = false;
 
+  @Input()
+  private userPawn: Pawn;
+
+  /** Event emitters to notify parent of changes **/
   @Output()
   private placeableTileMessage = new EventEmitter<Tile>();
 
   @Output()
+  private boardChangedMessage = new EventEmitter<Board>();
+
+  @Output()
   private canEndTurnMessage = new EventEmitter<Event>();
 
+  /** State properties for the turn **/
   private placedTile = false;
 
   private turnEndMessageSent = false;
@@ -98,9 +107,9 @@ export class BoardComponent implements AfterViewInit {
         this.placeableTileMessage.emit(this.board.placeAbleTile);
       }
 
-      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
-      this.movementHandler = new MovementHandler(PawnFactory.createPawns(this.board));
-    }, 500);
+      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage, this.boardChangedMessage);
+      this.movementHandler = new MovementHandler(this.userPawn);
+    }, 750);
   }
 
   public insertTop(column: number): void {
@@ -110,6 +119,8 @@ export class BoardComponent implements AfterViewInit {
 
     this.changeState('colTop' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
+
+    this.placedTile = true;
   }
 
   public insertRight(row: number): void {
@@ -119,6 +130,8 @@ export class BoardComponent implements AfterViewInit {
 
     this.changeState('rowRight' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
+
+    this.placedTile = true;
   }
 
   public insertBottom(column: number): void {
@@ -128,6 +141,8 @@ export class BoardComponent implements AfterViewInit {
 
     this.changeState('colBottom' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
+
+    this.placedTile = true;
   }
 
   public insertLeft(row: number): void {
@@ -137,6 +152,8 @@ export class BoardComponent implements AfterViewInit {
 
     this.changeState('rowLeft' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
+
+    this.placedTile = true;
   }
 
   /**
@@ -148,8 +165,6 @@ export class BoardComponent implements AfterViewInit {
       this.enableAnimation = false;
       // Reset state to prepare for next turn
       this.currentState[position] = 'initial';
-
-      this.placedTile = true;
     }
   }
 

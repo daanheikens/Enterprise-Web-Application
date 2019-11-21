@@ -53,6 +53,7 @@ export class PawnFactory {
   private static placePawn(pawns: Pawn[], board: Board, tile: Tile): void {
     const tileElement: HTMLElement = document.getElementById(board.tiles[tile.xCoordinate][tile.yCoordinate].tileId.toString());
 
+    console.log(tileElement);
     tile.pawnDTO.topOffset = (PawnFactory.getOffsetTop(tileElement) + 10).toString();
     tile.pawnDTO.leftOffset = (PawnFactory.getOffsetLeft(tileElement) + 25).toString();
     tile.pawnDTO.imgSrc = '/assets/images/pawn.png';

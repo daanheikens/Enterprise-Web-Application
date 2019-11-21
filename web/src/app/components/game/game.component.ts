@@ -1,18 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {MessageService} from '../../services/message.service';
 import {User} from '../../model/User';
 import {Message, MessageType} from '../../model/Message';
 import {Board} from '../../model/Board';
-import {error} from 'util';
+import {PawnFactory} from '../../lib/factories/PawnFactory';
+import {Pawn} from '../../model/Pawn';
+import {Game} from '../../model/Game';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public gamePending = true;
 
@@ -26,19 +28,26 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private isTurn = false;
 
+  private userPawn: Pawn;
+
   public constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService
   ) {
   }
 
+  public ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.renderPawn();
+    }, 500);
+  }
+
+
   public ngOnInit(): void {
-    this.gameService.getCurrentGame()
-      .subscribe(data => {
+    this.gameService.getCurrentGame().toPromise()
+      .then(data => {
         if (data !== null) {
-          this.gameId = data.id;
-          this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
-          this.isTurn = data.user.userId === data.userTurn.userId;
+          this.renderBoard(data);
           this.messageService.connect(data.id);
         }
       });
@@ -71,8 +80,8 @@ export class GameComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data.currentPlayers.length >= data.maxPlayers) {
           this.gamePending = false;
-          this.refreshPlayers(data.currentPlayers);
         }
+        this.refreshPlayers(data.currentPlayers);
       });
   }
 
@@ -85,11 +94,20 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gameService.getCurrentGame()
       .subscribe(data => {
         if (data !== null) {
-          this.gameId = data.id;
-          this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
-          this.isTurn = data.user.userId === data.userTurn.userId;
+          this.renderBoard(data);
+          this.renderPawn();
         }
       });
+  }
+
+  private renderBoard(game: Game) {
+    this.gameId = game.id;
+    this.board = new Board(game.matrix, game.currentPlayers, game.user, game.placeAbleTile, game.id);
+    this.isTurn = game.user.userId === game.userTurn.userId;
+  }
+
+  private renderPawn() {
+    this.userPawn = PawnFactory.createPawns(this.board);
   }
 
   private refreshPlayers(users: User[]): void {
@@ -98,5 +116,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private onPlayerLeftRoom(): void {
 
+  }
+
+  private onBoardChanged(board: Board) {
+    this.board = board;
   }
 }
