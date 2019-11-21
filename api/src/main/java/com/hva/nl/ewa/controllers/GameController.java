@@ -74,7 +74,9 @@ public class GameController {
         tiles[0][0].setPawn(pawn);
         game.setTiles(tiles);
         game.setInitiator(user);
-        game.setPlaceableTile(board.getPlaceableTile());
+        Tile placeableTile = board.getPlaceableTile();
+        placeableTile.setGame(game);
+        game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
 
         return new ResponseEntity<>(
@@ -139,7 +141,9 @@ public class GameController {
                 tileDTO.setPawnDTO(pawnDTO);
             }
             tileDTO.setImgSrc(t.getTileDefinitionObject().getImgSrc());
-            tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
+            if (t.getxCoordinate() != null && t.getyCoordinate() != null) {
+                tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
+            }
         }
 
         dto.setUser(user);
@@ -220,6 +224,10 @@ public class GameController {
             t2.setyCoordinate(t.getyCoordinate());
             t2.setxCoordinate(t.getxCoordinate());
             t2.setRotation(t.getRotation());
+            t2.setTopWall(t.isTopWall());
+            t2.setBottomWall(t.isBottomWall());
+            t2.setRightWall(t.isRightWall());
+            t2.setLeftWall(t.isLeftWall());
         }
 
         Tile placeableTile = this.tileService.findOne(board.getPlaceableTile().getTileId());

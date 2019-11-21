@@ -18,4 +18,8 @@ public class TileService {
     public Tile findOne(long id) {
         return this.repository.findById(id).orElse(null);
     }
+
+    public Tile save(Tile tile) {
+        return this.repository.save(tile);
+    }
 }

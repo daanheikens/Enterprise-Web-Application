@@ -38,6 +38,20 @@ export class Board {
   }
 
   public rotatePlacableTile() {
+    const waltempRight = this.placeAbleTile.rightWall;
+    const waltempLeft = this.placeAbleTile.leftWall;
+    const waltempBottom = this.placeAbleTile.bottomWall;
+    const waltempTop = this.placeAbleTile.topWall;
+
+    // noinspection JSSuspiciousNameCombination
+    this.placeAbleTile.rightWall = waltempTop;
+    // noinspection JSSuspiciousNameCombination
+    this.placeAbleTile.bottomWall = waltempRight;
+    // noinspection JSSuspiciousNameCombination
+    this.placeAbleTile.leftWall = waltempBottom;
+    // noinspection JSSuspiciousNameCombination
+    this.placeAbleTile.topWall = waltempLeft;
+
     switch (this.placeAbleTile.rotation) {
       case TileRotation.Zero: {
         this.placeAbleTile.rotation = TileRotation.Ninety;

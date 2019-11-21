@@ -15,6 +15,7 @@ export default class InsertLeft implements InsertionStrategy {
     }
 
     let tileToMoveRight = board.placeAbleTile;
+
     let currentTile;
     for (let i = 0; i < 7; i++) {
       currentTile = board.tiles[i][row];
@@ -23,6 +24,7 @@ export default class InsertLeft implements InsertionStrategy {
       board.tiles[i][row] = tileToMoveRight;
       tileToMoveRight = currentTile;
     }
+
     board.placeAbleTile = currentTile;
   }
 }

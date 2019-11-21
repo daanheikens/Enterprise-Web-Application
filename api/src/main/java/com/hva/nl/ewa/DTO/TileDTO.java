@@ -2,6 +2,7 @@ package com.hva.nl.ewa.DTO;
 
 import com.hva.nl.ewa.models.TileRotation;
 
+
 public class TileDTO {
 
     private long tileId;
@@ -19,6 +20,14 @@ public class TileDTO {
     private Integer xCoordinate;
 
     private Integer yCoordinate;
+
+    private boolean topWall;
+
+    private boolean bottomWall;
+
+    private boolean rightWall;
+
+    private boolean leftWall;
 
     public TileDTO() {
     }
@@ -85,5 +94,37 @@ public class TileDTO {
 
     public void setyCoordinate(Integer yCoordinate) {
         this.yCoordinate = yCoordinate;
+    }
+
+    public boolean isTopWall() {
+        return topWall;
+    }
+
+    public void setTopWall(boolean topWall) {
+        this.topWall = topWall;
+    }
+
+    public boolean isBottomWall() {
+        return bottomWall;
+    }
+
+    public void setBottomWall(boolean bottomWall) {
+        this.bottomWall = bottomWall;
+    }
+
+    public boolean isRightWall() {
+        return rightWall;
+    }
+
+    public void setRightWall(boolean rightWall) {
+        this.rightWall = rightWall;
+    }
+
+    public boolean isLeftWall() {
+        return leftWall;
+    }
+
+    public void setLeftWall(boolean leftWall) {
+        this.leftWall = leftWall;
     }
 }

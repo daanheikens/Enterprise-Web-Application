@@ -93,11 +93,11 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && (targetTile.getTileDefinitionObject().isRightWall() || userTile.getTileDefinitionObject().isLeftWall())) {
+        if (offsetModdifier == -1 && (targetTile.isRightWall() || userTile.isLeftWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && (targetTile.getTileDefinitionObject().isLeftWall() || userTile.getTileDefinitionObject().isRightWall())) {
+        if (offsetModdifier == 1 && (targetTile.isLeftWall() || userTile.isRightWall())) {
             return false;
         }
 
@@ -117,11 +117,11 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && (targetTile.getTileDefinitionObject().isBottomWall() || userTile.getTileDefinitionObject().isTopWall())) {
+        if (offsetModdifier == -1 && (targetTile.isBottomWall() || userTile.isTopWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && (targetTile.getTileDefinitionObject().isTopWall() || userTile.getTileDefinitionObject().isBottomWall())) {
+        if (offsetModdifier == 1 && (targetTile.isTopWall() || userTile.isBottomWall())) {
             return false;
         }
 

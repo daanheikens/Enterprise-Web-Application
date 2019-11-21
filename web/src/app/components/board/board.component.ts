@@ -109,7 +109,7 @@ export class BoardComponent implements AfterViewInit {
 
       this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage, this.boardChangedMessage);
       this.movementHandler = new MovementHandler(this.userPawn);
-    }, 750);
+    }, 1000);
   }
 
   public insertTop(column: number): void {

@@ -37,6 +37,10 @@ public class BoardService {
                 tile.setRotation(TileRotation.Zero);
                 tile.setxCoordinate(x);
                 tile.setyCoordinate(y);
+                tile.setTopWall(tileDefinition.isTopWall());
+                tile.setBottomWall(tileDefinition.isBottomWall());
+                tile.setLeftWall(tileDefinition.isLeftWall());
+                tile.setRightWall(tileDefinition.isRightWall());
                 boardArray[x][y] = tile;
                 startDefinitionId++;
             }
@@ -81,6 +85,10 @@ public class BoardService {
             tile.setTileDefinitionObject(tileDefiniton);
             tile.setTreasure(tileDefiniton.hasTreasure());
             tile.setRotation(TileRotation.Zero);
+            tile.setTopWall(tileDefiniton.isTopWall());
+            tile.setBottomWall(tileDefiniton.isBottomWall());
+            tile.setLeftWall(tileDefiniton.isLeftWall());
+            tile.setRightWall(tileDefiniton.isRightWall());
             tiles.add(tile);
         }
         while (tiles.size() <= movableTiles) {
@@ -96,6 +104,10 @@ public class BoardService {
         tile.setTileDefinitionObject(tileDefinition);
         tile.setTreasure(tileDefinition.hasTreasure());
         tile.setRotation(TileRotation.Zero);
+        tile.setTopWall(tileDefinition.isTopWall());
+        tile.setBottomWall(tileDefinition.isBottomWall());
+        tile.setLeftWall(tileDefinition.isLeftWall());
+        tile.setRightWall(tileDefinition.isRightWall());
         return tile;
     }
 }

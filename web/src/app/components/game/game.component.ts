@@ -39,7 +39,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   public ngAfterViewInit(): void {
     setTimeout(() => {
       this.renderPawn();
-    }, 500);
+    }, 750);
   }
 
 
@@ -119,6 +119,10 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private onBoardChanged(board: Board) {
-    this.board = board;
+    console.log(board);
+    this.gameService.updateBoard(board)
+      .then(() => this.board = board)
+      .catch(error => console.log(error)
+      );
   }
 }
