@@ -24,9 +24,6 @@ public class Tile implements Model {
     private Pawn pawn;
 
     @NotNull
-    private boolean treasure;
-
-    @NotNull
     private int tileDefinition;
 
     @JsonIgnore
@@ -38,20 +35,16 @@ public class Tile implements Model {
 
     private Integer yCoordinate;
 
-    public Tile() {
-    }
 
     public Tile(Pawn pawn, TileDefinition tileDefinition) {
         this.rotation = TileRotation.Zero;
         this.pawn = pawn;
-        this.treasure = tileDefinition.hasTreasure();
         this.tileDefinition = tileDefinition.getTileDefinitionId();
     }
 
     public Tile(Pawn pawn, TileDefinition tileDefinition, int initialYCoordinate, int initialXCoordinate) {
         this.rotation = TileRotation.Zero;
         this.pawn = pawn;
-        this.treasure = tileDefinition.hasTreasure();
         this.tileDefinition = tileDefinition.getTileDefinitionId();
         this.xCoordinate = initialXCoordinate;
         this.yCoordinate = initialYCoordinate;
@@ -73,13 +66,6 @@ public class Tile implements Model {
         this.pawn = pawn;
     }
 
-    public boolean isTreasure() {
-        return treasure;
-    }
-
-    public void setTreasure(boolean treasure) {
-        this.treasure = treasure;
-    }
 
     public TileDefinition getTileDefinition() {
         return TileDefinition.GetTile(tileDefinition);
@@ -120,4 +106,5 @@ public class Tile implements Model {
     public void setGame(Game game) {
         this.game = game;
     }
+
 }

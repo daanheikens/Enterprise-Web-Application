@@ -5,41 +5,44 @@ public class TreasureDetection {
     private Tile tile;
     private Pawn pawn;
     private int scorePlayer = 0;
+    private TreasureCard treasureCard;
 
-    private boolean treasureCard;
-    //TODO klasse aanmaken voor treasureCard?
 
     public TreasureDetection(Tile tile, Pawn pawn) {
         this.tile = tile;
         this.pawn = pawn;
     }
 
-    private boolean checkPlayerHasTreasure() {
+
+    public TreasureCard getTreasureCard() {
         return treasureCard;
     }
 
-    private boolean checkPlayerTile() {
-        return this.tile != null;
+    public void setTreasureCard(TreasureCard treasureCard) {
+        this.treasureCard = treasureCard;
     }
 
-    private boolean compareTilePawnId() {
-        return tile.getTileId() == pawn.getTileId();
+    private boolean checkPlayerTile() {
+        if( this.tile != null){
+
+        }
+        return true;
     }
 
     private boolean compareTreasureTile() {
-        //return compareTilePawnId() ==
-        //TODO treasurecard
-        return true;
+        return tile.getTileId() == treasureCard.getTreasureID();
+
     }
 
     private void addPointForPlayer() {
         if (compareTreasureTile()) {
             scorePlayer++;
-            removeTreasureCard();
+            //removeTreasureCard();
         }
     }
 
     private void removeTreasureCard() {
+
         //TODO de huidige Treasure card verwijderen uit voor de speler
     }
 
