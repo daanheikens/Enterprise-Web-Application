@@ -3,6 +3,7 @@ package com.hva.nl.ewa.services;
 import com.hva.nl.ewa.models.BoardResult;
 import com.hva.nl.ewa.models.Tile;
 import com.hva.nl.ewa.models.TileDefinition;
+import com.hva.nl.ewa.models.TileRotation;
 import com.hva.nl.ewa.repositories.TileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,32 +24,34 @@ public class BoardService {
     private static final int movableTiles = 33;
 
     private static Tile[][] GetDefaultBoard() {
-        var boardArray = new Tile[7][7];
-        boardArray[0][0] = new Tile(null, TileDefinition.GetTile(12), 0, 0);
-        boardArray[2][0] = new Tile(null, TileDefinition.GetTile(13), 0, 2);
-        boardArray[4][0] = new Tile(null, TileDefinition.GetTile(14), 0, 4);
-        boardArray[6][0] = new Tile(null, TileDefinition.GetTile(15), 0, 6);
+        Tile[][] boardArray = new Tile[7][7];
+        int startDefinitionId = 12;
 
-        boardArray[0][2] = new Tile(null, TileDefinition.GetTile(16), 2, 0);
-        boardArray[2][2] = new Tile(null, TileDefinition.GetTile(17), 2, 2);
-        boardArray[4][2] = new Tile(null, TileDefinition.GetTile(18), 2, 4);
-        boardArray[6][2] = new Tile(null, TileDefinition.GetTile(19), 2, 6);
+        for (int y = 0; y <= 6; y += 2) {
+            for (int x = 0; x <= 6; x += 2) {
+                Tile tile = new Tile();
+                tile.setPawn(null);
+                TileDefinition tileDefinition = TileDefinition.GetTile(startDefinitionId);
+                tile.setTileDefinitionObject(tileDefinition);
+                tile.setTreasure(tileDefinition.hasTreasure());
+                tile.setRotation(TileRotation.Zero);
+                tile.setxCoordinate(x);
+                tile.setyCoordinate(y);
+                tile.setTopWall(tileDefinition.isTopWall());
+                tile.setBottomWall(tileDefinition.isBottomWall());
+                tile.setLeftWall(tileDefinition.isLeftWall());
+                tile.setRightWall(tileDefinition.isRightWall());
+                boardArray[x][y] = tile;
+                startDefinitionId++;
+            }
+        }
 
-        boardArray[0][4] = new Tile(null, TileDefinition.GetTile(20), 4, 0);
-        boardArray[2][4] = new Tile(null, TileDefinition.GetTile(21), 4, 2);
-        boardArray[4][4] = new Tile(null, TileDefinition.GetTile(22), 4, 4);
-        boardArray[6][4] = new Tile(null, TileDefinition.GetTile(23), 4, 6);
-
-        boardArray[0][6] = new Tile(null, TileDefinition.GetTile(24), 6, 0);
-        boardArray[2][6] = new Tile(null, TileDefinition.GetTile(25), 6, 2);
-        boardArray[4][6] = new Tile(null, TileDefinition.GetTile(26), 6, 4);
-        boardArray[6][6] = new Tile(null, TileDefinition.GetTile(27), 6, 6);
         return boardArray;
     }
 
     public BoardResult CreateBoard() {
-        var defaultBoard = GetDefaultBoard();
-        var tilesToPlace = GetTilesToPlace();
+        Tile[][] defaultBoard = GetDefaultBoard();
+        List<Tile> tilesToPlace = GetTilesToPlace();
         return FillBoardRandomly(defaultBoard, tilesToPlace);
     }
 
@@ -77,7 +80,16 @@ public class BoardService {
         var moveAbleTileDefinitions = TileDefinition.GetMovableTileDefinitions();
         var tiles = new ArrayList<Tile>(movableTiles);
         for (TileDefinition tileDefiniton : moveAbleTileDefinitions) {
-            tiles.add(new Tile(null, tileDefiniton));
+            Tile tile = new Tile();
+            tile.setPawn(null);
+            tile.setTileDefinitionObject(tileDefiniton);
+            tile.setTreasure(tileDefiniton.hasTreasure());
+            tile.setRotation(TileRotation.Zero);
+            tile.setTopWall(tileDefiniton.isTopWall());
+            tile.setBottomWall(tileDefiniton.isBottomWall());
+            tile.setLeftWall(tileDefiniton.isLeftWall());
+            tile.setRightWall(tileDefiniton.isRightWall());
+            tiles.add(tile);
         }
         while (tiles.size() <= movableTiles) {
             tiles.add(GetRandomTile());
@@ -86,7 +98,16 @@ public class BoardService {
     }
 
     private Tile GetRandomTile() {
-        var randomTileDef = TileDefinition.GetRandomNormalTile();
-        return new Tile(null, randomTileDef);
+        Tile tile = new Tile();
+        tile.setPawn(null);
+        TileDefinition tileDefinition = TileDefinition.GetRandomNormalTile();
+        tile.setTileDefinitionObject(tileDefinition);
+        tile.setTreasure(tileDefinition.hasTreasure());
+        tile.setRotation(TileRotation.Zero);
+        tile.setTopWall(tileDefinition.isTopWall());
+        tile.setBottomWall(tileDefinition.isBottomWall());
+        tile.setLeftWall(tileDefinition.isLeftWall());
+        tile.setRightWall(tileDefinition.isRightWall());
+        return tile;
     }
 }

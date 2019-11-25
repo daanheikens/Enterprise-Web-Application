@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tile} from '../../model/Tile';
 
 @Component({
@@ -11,12 +11,25 @@ export class BottombarComponent implements OnInit {
   @Input()
   public placeAbleTile: Tile;
 
-  constructor() { }
+  @Input()
+  public turnEnded = false;
 
-  ngOnInit() {
-    console.log(this.placeAbleTile);
+  @Input()
+  public isTurn = false;
+
+  @Output()
+  public turnEndedMessage = new EventEmitter<Event>();
+
+  public ngOnInit(): void {
+    console.log(this.isTurn);
+    console.log(this.turnEnded);
   }
 
-  // TODO add button to end the turn.
-  // TODO add output event emitter to output and endTurn message whenever the turn is ended.
+  private onEndTurn(): void {
+    if (this.turnEnded) {
+      this.turnEndedMessage.emit();
+      this.isTurn = false;
+      this.turnEnded = false;
+    }
+  }
 }

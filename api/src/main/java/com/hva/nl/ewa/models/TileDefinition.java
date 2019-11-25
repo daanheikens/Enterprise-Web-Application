@@ -14,6 +14,9 @@ public class TileDefinition {
     private int tileDefinitionId;
     private boolean hasTreasure;
 
+    public TileDefinition() {
+    }
+
     public TileDefinition(int tileDefinitionId, boolean topWall, boolean bottomWall, boolean rightWall, boolean leftWall, boolean hasTreasure, String imgSrc) {
         this.topWall = topWall;
         this.bottomWall = bottomWall;
@@ -51,7 +54,7 @@ public class TileDefinition {
             new TileDefinition(24, false, true, false, true, false, TileStyle.CORNER_YELLOW),
             new TileDefinition(25, false, true, false, false, true, TileStyle.GOLD),
             new TileDefinition(26, false, true, false, false, true, TileStyle.BOOK),
-            new TileDefinition(27, false, true, true, true, false, TileStyle.CORNER_RED),
+            new TileDefinition(27, false, true, true, false, false, TileStyle.CORNER_RED),
             new TileDefinition(28, false, true, false, true, false, TileStyle.CORNER),
             new TileDefinition(29, true, true, false, false, false, TileStyle.STRAIGHT),
             new TileDefinition(30, true, true, false, false, true, TileStyle.UGLY_ASS)
@@ -74,11 +77,11 @@ public class TileDefinition {
         }
     }
 
-    public int getTileDefinitionId() {
+    public int getTileDefinitionObjectId() {
         return tileDefinitionId;
     }
 
-    boolean hasTreasure() {
+    public boolean hasTreasure() {
         return hasTreasure;
     }
 
