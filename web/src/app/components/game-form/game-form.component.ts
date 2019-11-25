@@ -6,6 +6,7 @@ import {GameService} from '../../services/game.service';
 import {Router} from '@angular/router';
 import {NewGameFormFactory} from '../../forms/NewGameFormFactory';
 import {ModalDirective} from 'angular-bootstrap-md';
+import {User} from '../../model/User';
 
 @Component({
   selector: 'app-game-form',
@@ -20,6 +21,7 @@ export class GameFormComponent implements OnInit {
   public loading = false;
   public submitted = false;
   public error = '';
+  public users: User[];
 
   public constructor(
     private readonly gameService: GameService,

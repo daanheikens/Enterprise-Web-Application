@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -31,5 +33,9 @@ public class UserService implements UserDetailsService {
 
     public User save(User user) {
         return this.userRepository.save(user);
+    }
+
+    public List<User> find() {
+        return this.userRepository.findAll();
     }
 }

@@ -20,7 +20,10 @@ import {HeaderComponent} from './components/UI/welcome/header/header.component';
 import {GameListComponent} from './components/game-list/game-list.component';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
+import { MatInputModule} from '@angular/material';
 import { GameFormComponent } from './components/game-form/game-form.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -49,6 +52,9 @@ import { GameFormComponent } from './components/game-form/game-form.component';
     HttpClientModule,
     WavesModule,
     ButtonsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
     ModalModule.forRoot()
   ],
   providers: [
