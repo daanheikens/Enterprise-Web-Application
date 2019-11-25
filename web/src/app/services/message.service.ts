@@ -1,6 +1,5 @@
 import {Injectable, OnInit} from '@angular/core';
 import {CompatClient, Stomp} from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
 import {Message, MessageType} from '../model/Message';
 import {GameService} from './game.service';
 import {Observable, Subject} from 'rxjs';

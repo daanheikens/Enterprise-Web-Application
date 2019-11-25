@@ -7,7 +7,6 @@ export default class InsertTop implements InsertionStrategy {
     let tileToMoveDown = board.placeAbleTile;
     let currentTile;
 
-    console.log(tileToMoveDown);
     for (let i = 0; i < 7; i++) {
       currentTile = board.tiles[col][i];
       tileToMoveDown.xCoordinate = col;
@@ -15,7 +14,7 @@ export default class InsertTop implements InsertionStrategy {
       board.tiles[col][i] = tileToMoveDown;
       tileToMoveDown = currentTile;
     }
-    console.log(board.tiles[col][0]);
+
     board.placeAbleTile = currentTile;
   }
 }

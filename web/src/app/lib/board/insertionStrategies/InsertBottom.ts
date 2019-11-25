@@ -22,6 +22,10 @@ export default class InsertBottom implements InsertionStrategy {
       board.tiles[col][i] = tileToMoveUp;
       tileToMoveUp = currentTile;
     }
+
+    currentTile.xCoordinate = null;
+    currentTile.yCoordinate = null;
+
     board.placeAbleTile = currentTile;
   }
 }

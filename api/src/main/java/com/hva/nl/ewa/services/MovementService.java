@@ -51,6 +51,9 @@ public class MovementService {
         Tile userTile = null;
 
         for (Tile t : game.getTiles()) {
+            if (t.equals(game.getPlaceableTile())) {
+                continue;
+            }
             tilesArray[t.getxCoordinate()][t.getyCoordinate()] = t;
             Pawn pawn = t.getPawn();
             if (pawn != null && pawn.equals(user.getPawn())) {

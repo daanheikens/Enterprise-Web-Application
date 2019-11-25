@@ -132,6 +132,7 @@ public class GameController {
          * This is a temporary fix since it is pain in the ass to serialize relations. (Probably DTO can be replaced and
          * use of jackson serializer will help to remove all this overhead)
          */
+        Tile placeableTile = currentGame.getPlaceableTile();
         for (Tile t : currentGame.getTiles()) {
             TileDTO tileDTO = this.modelMapper.ModelToDTO(t, TileDTO.class);
             Pawn pawn = t.getPawn();
@@ -141,7 +142,7 @@ public class GameController {
                 tileDTO.setPawnDTO(pawnDTO);
             }
             tileDTO.setImgSrc(t.getTileDefinitionObject().getImgSrc());
-            if (t.getxCoordinate() != null && t.getyCoordinate() != null) {
+            if ((t.getxCoordinate() != null && t.getyCoordinate() != null) || placeableTile.getTileId() != t.getTileId()) {
                 tilesArray[t.getxCoordinate()][t.getyCoordinate()] = tileDTO;
             }
         }
@@ -215,12 +216,31 @@ public class GameController {
 
         Set<Tile> tiles = CollectionHelper.toSet(board.getTiles());
         Map<Long, Tile> tilesMap = currentGame.getTilesAsMap();
+        Tile placeableTile = this.tileService.findOne(board.getPlaceableTile().getTileId());
+        if (placeableTile == null) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        }
+
+        placeableTile.setxCoordinate(null);
+        placeableTile.setyCoordinate(null);
+
+        this.tileService.save(placeableTile);
 
         /**
          * Not optimal but works
          */
         for (Tile t : tiles) {
             Tile t2 = tilesMap.get(t.getTileId());
+            if (t2.equals(placeableTile)) {
+                t2.setyCoordinate(placeableTile.getyCoordinate());
+                t2.setxCoordinate(placeableTile.getxCoordinate());
+                t2.setRotation(placeableTile.getRotation());
+                t2.setTopWall(placeableTile.isTopWall());
+                t2.setBottomWall(placeableTile.isBottomWall());
+                t2.setRightWall(placeableTile.isRightWall());
+                t2.setLeftWall(placeableTile.isLeftWall());
+                continue;
+            }
             t2.setyCoordinate(t.getyCoordinate());
             t2.setxCoordinate(t.getxCoordinate());
             t2.setRotation(t.getRotation());
@@ -230,13 +250,39 @@ public class GameController {
             t2.setLeftWall(t.isLeftWall());
         }
 
-        Tile placeableTile = this.tileService.findOne(board.getPlaceableTile().getTileId());
+        currentGame.setPlaceableTile(placeableTile);
 
-        if (placeableTile == null) {
+        this.gameService.save(currentGame);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(value = "/{gameId}/turnEnded")
+    public ResponseEntity endTurn(
+            OAuth2Authentication auth,
+            @PathVariable(value = "gameId") Long gameId
+    ) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Game currentGame = this.gameService.findOne(gameId);
+
+        if (currentGame == null) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
         }
 
-        currentGame.setPlaceableTile(placeableTile);
+        List<User> userList = new ArrayList<>(currentGame.getUsers());
+        User currentUser = currentGame.getUserTurn();
+
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).equals(currentUser)) {
+                currentGame.setUserTurn(userList.get((i + 1) > (userList.size() - 1) ? 0 : (i + 1)));
+                break;
+            }
+        }
 
         this.gameService.save(currentGame);
 

@@ -57,6 +57,10 @@ public class Game implements Model {
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userTurn;
 
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    private User userPlacedTile;
+
     public long getId() {
         return id;
     }
@@ -161,4 +165,11 @@ public class Game implements Model {
         this.userTurn = userTurn;
     }
 
+    public User getUserPlacedTile() {
+        return userPlacedTile;
+    }
+
+    public void setUserPlacedTile(User userPlacedTile) {
+        this.userPlacedTile = userPlacedTile;
+    }
 }

@@ -1,9 +1,10 @@
 <app-overlay *ngIf="gamePending"></app-overlay>
 
-<app-board [isPending]="gamePending"
+<app-board *ngIf="board" [isPending]="gamePending"
            [board]="board"
            [userPawn]="userPawn"
            [isTurn]="isTurn"
+           [placedTile]="placedTile"
            (placeableTileMessage)="onPlaceableTileChanged($event)"
            (canEndTurnMessage)="onTurnCanEnd()"
            (boardChangedMessage)="onBoardChanged($event)">
@@ -12,5 +13,6 @@
 <app-bottombar *ngIf="!gamePending"
                [placeAbleTile]="placeableTile"
                [turnEnded]="turnCanEnd"
+               [isTurn]="isTurn"
                (turnEndedMessage)="onTurnEnded()">
 </app-bottombar>

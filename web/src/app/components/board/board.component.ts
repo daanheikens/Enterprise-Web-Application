@@ -52,6 +52,7 @@ export class BoardComponent implements AfterViewInit {
   private canEndTurnMessage = new EventEmitter<Event>();
 
   /** State properties for the turn **/
+  @Input()
   private placedTile = false;
 
   private turnEndMessageSent = false;
@@ -121,6 +122,11 @@ export class BoardComponent implements AfterViewInit {
     this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
 
     this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertRight(row: number): void {
@@ -132,6 +138,11 @@ export class BoardComponent implements AfterViewInit {
     this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
 
     this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertBottom(column: number): void {
@@ -143,6 +154,11 @@ export class BoardComponent implements AfterViewInit {
     this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
 
     this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertLeft(row: number): void {
@@ -154,6 +170,11 @@ export class BoardComponent implements AfterViewInit {
     this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
 
     this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   /**
@@ -201,11 +222,6 @@ export class BoardComponent implements AfterViewInit {
               this.movementHandler.handleMovement(this.moveUp);
             } else if (event.key === 'ArrowDown') {
               this.movementHandler.handleMovement(this.moveDown);
-            }
-
-            if (this.turnEndMessageSent === false) {
-              this.canEndTurnMessage.emit();
-              this.turnEndMessageSent = true;
             }
           }
         });

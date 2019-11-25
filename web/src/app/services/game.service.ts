@@ -63,12 +63,17 @@ export class GameService {
    * Updates the board after movement.
    *
    * @param board Board
+   * @param turnEnded
    */
   public updateBoard(board: Board): Promise<Game> {
     return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, {
       tiles: board.tiles,
       placeableTile: board.placeAbleTile,
-      gameId: board.gameId,
+      gameId: board.gameId
     }).toPromise();
+  }
+
+  public endTurn(gameId: number) {
+    return this.http.post<Object>(`${environment.apiUrl}/games/${gameId}/turnEnded`, {}).toPromise();
   }
 }

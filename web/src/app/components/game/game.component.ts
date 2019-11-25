@@ -20,7 +20,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public placeableTile: Tile;
 
-  public turnCanEnd: boolean;
+  public turnCanEnd = false;
 
   private gameId: number;
 
@@ -29,6 +29,8 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   private isTurn = false;
 
   private userPawn: Pawn;
+
+  private placedTile = false;
 
   public constructor(
     private readonly gameService: GameService,
@@ -69,7 +71,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
    * This is a promise since we want to send the message after the response has been returned
    */
   public onTurnEnded(): void {
-    this.gameService.updateBoard(this.board)
+    this.gameService.endTurn(this.gameId)
       .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.gameId))
       .catch(error => console.log(error)
       );
@@ -103,7 +105,13 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   private renderBoard(game: Game) {
     this.gameId = game.id;
     this.board = new Board(game.matrix, game.currentPlayers, game.user, game.placeAbleTile, game.id);
-    this.isTurn = game.user.userId === game.userTurn.userId;
+    if (game.user.userId === game.userTurn.userId) {
+      this.isTurn = game.user.userId === game.userTurn.userId;
+      if (this.isTurn === true) {
+        this.placedTile = false;
+        this.placeableTile = game.placeAbleTile;
+      }
+    }
   }
 
   private renderPawn() {
@@ -119,7 +127,6 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private onBoardChanged(board: Board) {
-    console.log(board);
     this.gameService.updateBoard(board)
       .then(() => this.board = board)
       .catch(error => console.log(error)
