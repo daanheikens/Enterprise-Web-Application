@@ -24,6 +24,7 @@ import { MatInputModule} from '@angular/material';
 import { GameFormComponent } from './components/game-form/game-form.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import {MatIconModule} from '@angular/material/icon';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    MatSelectModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
