@@ -20,11 +20,7 @@ import {HeaderComponent} from './components/UI/welcome/header/header.component';
 import {GameListComponent} from './components/game-list/game-list.component';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
-import { MatInputModule} from '@angular/material';
 import { GameFormComponent } from './components/game-form/game-form.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -53,11 +49,7 @@ import {MatSelectModule} from '@angular/material/select';
     HttpClientModule,
     WavesModule,
     ButtonsModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ModalModule.forRoot(),
-    MatSelectModule
+    ModalModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
