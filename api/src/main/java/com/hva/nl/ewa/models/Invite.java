@@ -15,13 +15,13 @@ public class Invite implements Model {
 
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "invitee_id")
     @NotNull
     private User invitee;
 
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "inviter_id")
     @NotNull
     private User inviter;
 
