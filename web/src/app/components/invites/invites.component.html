@@ -1,0 +1,21 @@
+<app-header></app-header>
+<div class="fullscreen-bg">
+  <video [muted]="true" loop autoplay class="fullscreen-bg__video">
+    <source src="/assets/video/doolhof.mp4" type="video/mp4">
+  </video>
+
+  <div class="col-lg-12">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-sm-6">
+      <ul class="list-group">
+        <li (click)="joinGame(invite.game.gameId)"
+            *ngFor="let invite of invites"
+            class="list-group-item d-flex justify-content-between align-items-center game">
+          {{invite.game.name}} - invited by {{invite.inviter}}
+          <span class="badge badge-primary badge-pill">{{invite.game.currentPlayers.length}} / {{invite.game.maxPlayers}}</span>
+      </ul>
+    </div>
+    <div class="col-sm-3"></div>
+  </div>
+</div>
