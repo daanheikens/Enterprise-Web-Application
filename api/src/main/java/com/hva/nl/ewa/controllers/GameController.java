@@ -26,6 +26,7 @@ public class GameController {
     private final BoardService boardService;
     private final PawnService pawnService;
     private final TileService tileService;
+    private final InviteService inviteService;
 
     @Autowired
     public GameController(
@@ -34,7 +35,8 @@ public class GameController {
             DefaultModelMapper modelMapper,
             BoardService boardService,
             PawnService pawnService,
-            TileService tileService
+            TileService tileService,
+            InviteService inviteService
     ) {
         this.gameService = gameService;
         this.userService = userService;
@@ -42,6 +44,7 @@ public class GameController {
         this.boardService = boardService;
         this.pawnService = pawnService;
         this.tileService = tileService;
+        this.inviteService = inviteService;
     }
 
     @PostMapping
@@ -55,7 +58,7 @@ public class GameController {
     ) {
         User user = this.userService.loadUserByUsername(auth.getName());
         // If no user is found or user already in game, return 412 since we cannot create a new game
-        if (user == null || user.getGames().size() > 0) {
+        if (user == null || user.getGames().size() > 0 || invitedUsers.size() > maxPlayers) {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -66,6 +69,7 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        game.setPrivate(invitedUsers.size() > 0);
         BoardResult board = boardService.CreateBoard();
 
         Tile[][] tiles = board.getTiles();
@@ -80,8 +84,12 @@ public class GameController {
         game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
 
+        Game savedGame = this.gameService.save(game);
+
+        this.inviteService.inviteUsers(savedGame, user, invitedUsers);
+
         return new ResponseEntity<>(
-                this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                this.modelMapper.ModelToDTO(savedGame, GameDTO.class),
                 new HttpHeaders(),
                 HttpStatus.CREATED
         );

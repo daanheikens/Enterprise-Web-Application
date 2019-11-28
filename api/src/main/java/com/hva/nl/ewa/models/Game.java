@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hva.nl.ewa.DTO.TileDTO;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -60,6 +61,10 @@ public class Game implements Model {
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userPlacedTile;
+
+    @NotNull
+    @ColumnDefault("0")
+    private boolean isPrivate;
 
     public long getId() {
         return id;
@@ -171,5 +176,13 @@ public class Game implements Model {
 
     public void setUserPlacedTile(User userPlacedTile) {
         this.userPlacedTile = userPlacedTile;
+    }
+
+    public boolean isPrivate() {
+        return this.isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        this.isPrivate = aPrivate;
     }
 }
