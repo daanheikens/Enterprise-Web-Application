@@ -7,7 +7,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {BottombarComponent} from './components/bottombar/bottombar.component';
 import {GameComponent} from './components/game/game.component';
 import {LoginComponent} from './components/login/login.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {JwtInterceptor} from './auth/interceptors/jwt.interceptor';
 import {AuthInterceptor} from './auth/interceptors/auth.interceptor';
@@ -21,6 +21,7 @@ import {GameListComponent} from './components/game-list/game-list.component';
 import {OverlayComponent} from './components/overlay/overlay.component';
 import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
 import { GameFormComponent } from './components/game-form/game-form.component';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -49,7 +50,9 @@ import { GameFormComponent } from './components/game-form/game-form.component';
     HttpClientModule,
     WavesModule,
     ButtonsModule,
-    ModalModule.forRoot()
+    NgSelectModule,
+    ModalModule.forRoot(),
+    FormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

@@ -50,7 +50,8 @@ public class GameController {
             @RequestParam(name = "name") String name,
             @RequestParam(name = "maxPlayers") Integer maxPlayers,
             @RequestParam(name = "maxTurnTime") Integer maxTurnTime,
-            @RequestParam(name = "maxPendingTime") Integer maxPendingTime
+            @RequestParam(name = "maxPendingTime") Integer maxPendingTime,
+            @RequestParam(name = "selectedUsers", required = false) List<User> invitedUsers
     ) {
         User user = this.userService.loadUserByUsername(auth.getName());
         // If no user is found or user already in game, return 412 since we cannot create a new game
