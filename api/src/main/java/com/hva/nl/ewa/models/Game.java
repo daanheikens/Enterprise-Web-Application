@@ -122,9 +122,12 @@ public class Game implements Model {
         return users;
     }
 
-
     public void setInitiator(User user) {
         initiator = user;
+    }
+
+    public User getInitiator() {
+        return this.initiator;
     }
 
     public void setTiles(Tile[][] tiles) {

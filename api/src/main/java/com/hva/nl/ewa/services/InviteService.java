@@ -34,4 +34,12 @@ public class InviteService {
 
         this.repository.saveAll(invites);
     }
+
+    public List<Invite> findInvites(User user) {
+        return this.repository.findByInvitee(user);
+    }
+
+    public void removeInvite(Long inviteId) {
+        this.repository.deleteById(inviteId);
+    }
 }

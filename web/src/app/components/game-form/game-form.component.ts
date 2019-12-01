@@ -48,7 +48,7 @@ export class GameFormComponent implements OnInit {
       return;
     }
 
-    if (this.formControls.userSelect.value && this.formControls.userSelect.value.length > this.formControls.maxPlayers.value) {
+    if (this.formControls.userSelect.value && this.formControls.userSelect.value.length > this.formControls.maxPlayers.value - 1) {
       this.error = `Cannot create game. Only ${this.formControls.maxPlayers.value} players allowed!`;
       return;
     }
