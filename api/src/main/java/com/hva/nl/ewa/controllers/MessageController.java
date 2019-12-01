@@ -21,11 +21,8 @@ import java.util.Set;
 @RestController
 @Transactional
 public class MessageController {
-
     private final SimpMessagingTemplate messagingTemplate;
-
     private final GameService gameService;
-
     private final UserService userService;
 
     @Autowired
@@ -44,6 +41,19 @@ public class MessageController {
      */
     @MessageMapping("/game/{gameId}/notify")
     public void sendMessage(
+            OAuth2Authentication auth,
+            @DestinationVariable String gameId,
+            @Payload MessageDTO messageDTO
+    ) {
+        messageDTO.setSender(auth.getName());
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
+    }
+
+    /**
+     * Endpoint used for sending a chat message
+     */
+    @MessageMapping("/game/{gameId}/chat")
+    public void sendChatMessage(
             OAuth2Authentication auth,
             @DestinationVariable String gameId,
             @Payload MessageDTO messageDTO

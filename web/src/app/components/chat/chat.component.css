@@ -1,0 +1,50 @@
+.message-box {
+  position: fixed;
+  top: 0;
+  left: 2%;
+  width: calc(100% / 12 * 2.75);
+  font-size: 16px;
+  height: 78%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.container-chat {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.container-chat::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.container-chat img {
+  float: right;
+  margin-left: 20px;
+  margin-right: 0;
+  max-width: 60px;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
+.controls {
+  position: fixed;
+  top: 79%;
+  left: 2%;
+  width: calc(100% / 12 * 2.75);
+  font-size: 16px;
+}
+
+.controls input {
+  width: 100%;
+}

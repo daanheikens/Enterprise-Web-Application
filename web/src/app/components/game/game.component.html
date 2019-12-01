@@ -1,5 +1,10 @@
-<app-overlay *ngIf="gamePending"></app-overlay>
+<!--Loading Overlay-->
+<!--<app-overlay *ngIf="gamePending"></app-overlay>-->
 
+<!--Chat component-->
+<app-chat [gameId]="gameId"></app-chat>
+
+<!--Board component-->
 <app-board *ngIf="board" [isPending]="gamePending"
            [board]="board"
            [userPawn]="userPawn"
@@ -10,7 +15,8 @@
            (boardChangedMessage)="onBoardChanged($event)">
 </app-board>
 
-<app-bottombar *ngIf="!gamePending"
+<!--Bottombar with controls-->
+<app-bottombar
                [placeAbleTile]="placeableTile"
                [turnEnded]="turnCanEnd"
                [isTurn]="isTurn"
