@@ -215,7 +215,9 @@ public class GameController {
         this.gameService.save(game);
 
         // Remove invite here:
-        this.inviteService.removeInvite(inviteId);
+        if (inviteId != null) {
+            this.inviteService.removeInvite(inviteId);
+        }
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
