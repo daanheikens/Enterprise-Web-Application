@@ -167,30 +167,4 @@ describe('RegisterComponent', () => {
 
     expect(component.registerForm.invalid).toBeFalsy();
   });
-  /**
-   * @author Daan Heikens
-   */
-  it('Register form should be invalid when password too short', async () => {
-    let formControls = component.formControls;
-    formControls.screenName.setValue('UT_name');
-    formControls.username.setValue('UT_username');
-    formControls.password.setValue('UT');
-    formControls.email.setValue('ut@ut.com');
-    formControls.street.setValue('utstreet');
-    formControls.number.setValue('69');
-    formControls.city.setValue('UT_city');
-    formControls.image.patchValue('');
-    formControls.image.setErrors(null);
-    let file = new Blob();
-    const fileList = {
-      0: file,
-      1: file,
-      length: 2,
-      item: (index: number) => file
-    };
-    component.selectFile({target: {files: fileList}});
-    component.onSubmit();
-
-    expect(component.registerForm.invalid).toBeFalsy();
-  });
 });
