@@ -21,8 +21,6 @@ export class BottombarComponent implements OnInit {
   public turnEndedMessage = new EventEmitter<Event>();
 
   public ngOnInit(): void {
-    console.log(this.isTurn);
-    console.log(this.turnEnded);
   }
 
   private onEndTurn(): void {

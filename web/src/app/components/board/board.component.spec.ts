@@ -75,7 +75,14 @@ describe('BoardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Should create arrow definitions', async () => {
+    expect(component.arrowDown).toBeTruthy();
+    expect(component.arrowLeft).toBeTruthy();
+    expect(component.arrowRight).toBeTruthy();
+    expect(component.arrowUp).toBeTruthy();
   });
 });

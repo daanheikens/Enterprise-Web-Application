@@ -25,6 +25,7 @@ import {OverlayComponent} from '../overlay/overlay.component';
 import {GameFormComponent} from '../game-form/game-form.component';
 import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
+import {AuthService} from '../../services/auth/auth.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
