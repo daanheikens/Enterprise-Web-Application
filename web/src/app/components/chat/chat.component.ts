@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {MessageService} from '../../services/message.service';
+import {MessageService} from '../../services/messaging/message.service';
 import {Message, MessageType} from '../../model/Message';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {ChatFormFactory} from '../../forms/ChatFormFactory';

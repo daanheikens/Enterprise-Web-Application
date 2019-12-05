@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import Invite from '../../model/Invite';
-import {InviteService} from '../../services/invite.service';
+import {InviteService} from '../../services/invite/invite.service';
 import {HttpParams} from '@angular/common/http';
-import {GameService} from '../../services/game.service';
+import {GameService} from '../../services/game/game.service';
 import {Router} from '@angular/router';
 
 @Component({
