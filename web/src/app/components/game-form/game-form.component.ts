@@ -58,7 +58,8 @@ export class GameFormComponent implements OnInit {
       .set('maxPlayers', this.formControls.maxPlayers.value)
       .set('maxTurnTime', this.formControls.maxTurnTime.value)
       .set('maxPendingTime', this.formControls.maxPendingTime.value)
-      .set('selectedUsers', this.formControls.userSelect.value);
+      .set('selectedUsers',  this.formControls.userSelect.value ? this.formControls.userSelect.value : []);
+
 
     this.gameService.create(body)
       .pipe(first())

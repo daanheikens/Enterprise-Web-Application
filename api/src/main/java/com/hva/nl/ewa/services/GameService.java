@@ -19,8 +19,8 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    public List<Game> find() {
-        return this.gameRepository.findAll();
+    public List<Game> find(User user) {
+        return this.gameRepository.findAllByInitiatorNotAndPrivateGameIsFalse(user);
     }
 
     public Game findOne(Long id) {

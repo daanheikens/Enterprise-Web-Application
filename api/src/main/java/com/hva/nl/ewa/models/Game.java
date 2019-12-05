@@ -1,9 +1,6 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.hva.nl.ewa.DTO.TileDTO;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -64,7 +61,7 @@ public class Game implements Model {
 
     @NotNull
     @ColumnDefault("0")
-    private boolean isPrivate;
+    private boolean privateGame;
 
     public long getId() {
         return id;
@@ -182,10 +179,10 @@ public class Game implements Model {
     }
 
     public boolean isPrivate() {
-        return this.isPrivate;
+        return this.privateGame;
     }
 
     public void setPrivate(boolean aPrivate) {
-        this.isPrivate = aPrivate;
+        this.privateGame = aPrivate;
     }
 }
