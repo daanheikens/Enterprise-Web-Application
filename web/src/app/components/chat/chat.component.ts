@@ -51,13 +51,16 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   private onMessageReceived(message): void {
     this.appendMessage(message.content, message.sender);
-
   }
 
   private appendMessage(message: string, name: string) {
     const date = new Date();
-    document.querySelector('.message-box').innerHTML += this.tpl
+    let htmlElement = <HTMLElement>document.querySelector('.message-box');
+    htmlElement.innerHTML += this.tpl
       .replace('{{message}}', name + ': ' + message)
       .replace('{{time}}', date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
+
+    // Focus to bottom
+    htmlElement.scrollTop = htmlElement.scrollHeight;
   }
 }
