@@ -21,6 +21,10 @@ public class InviteService {
     }
 
     public void inviteUsers(Game game, User inviter, List<User> invitees) {
+        if (invitees.isEmpty()) {
+            return;
+        }
+
         List<Invite> invites = new ArrayList<>();
 
         for (User invitee : invitees) {

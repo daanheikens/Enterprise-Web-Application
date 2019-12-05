@@ -59,7 +59,7 @@ public class GameController {
         User user = this.userService.loadUserByUsername(auth.getName());
 
         // If no user is found or user already in game, return 412 since we cannot create a new game
-        if (user == null || user.getGames().size() > 0 || invitedUsers.size() > maxPlayers - 1) {
+        if (user == null || user.getGames().size() > 0 || invitedUsers == null || invitedUsers.size() > maxPlayers - 1) {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -71,6 +71,7 @@ public class GameController {
         game.setCreationDate(new Date());
         game.addUser(user);
         game.setPrivate(invitedUsers.size() > 0);
+
         BoardResult board = boardService.CreateBoard();
 
         Tile[][] tiles = board.getTiles();
@@ -104,7 +105,7 @@ public class GameController {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
         }
 
-        List<Game> games = this.gameService.find();
+        List<Game> games = this.gameService.find(user);
         List<GameDTO> gameDTOs = new ArrayList<>();
 
         for (Game game : games) {

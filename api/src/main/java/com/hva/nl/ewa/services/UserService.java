@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
         return this.userRepository.save(user);
     }
 
-    public List<User> find() {
-        return this.userRepository.findAll();
+    public List<User> find(long userId) {
+        return this.userRepository.findAllByUserIdNot(userId);
     }
 }

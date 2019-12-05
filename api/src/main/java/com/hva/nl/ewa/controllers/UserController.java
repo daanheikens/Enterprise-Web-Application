@@ -30,7 +30,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.find());
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.find(user.getUserId()));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
