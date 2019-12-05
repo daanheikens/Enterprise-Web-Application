@@ -25,6 +25,9 @@ import {GameFormComponent} from '../game-form/game-form.component';
 import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
+import {UserService} from '../../services/user/user.service';
+import {inject} from '@angular/core';
+import {Router} from '@angular/router';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -64,9 +67,12 @@ describe('RegisterComponent', () => {
         ModalModule.forRoot(),
         FormsModule,
         RouterTestingModule
+      ],
+      providers: [
+        UserService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -75,7 +81,28 @@ describe('RegisterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
+  });
+
+  it('register form should return invalid', async () => {
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+  });
+
+  it('Register form should navigate to /login', async () => {
+    let formControls = component.formControls;
+
+    formControls.screenName.setValue('UT_name');
+    formControls.username.setValue('UT_username');
+    formControls.password.setValue('UT_password');
+    formControls.email.setValue('ut@ut.com');
+    formControls.street.setValue('utstreet');
+    formControls.number.setValue('69');
+    formControls.city.setValue('UT_city');
+    component.selectFile({target: {files: [new Blob()]}});
+    component.onSubmit();
+
+    expect(component.registerForm.invalid).toBeFalsy();
   });
 });
