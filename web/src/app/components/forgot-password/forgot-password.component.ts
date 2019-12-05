@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PasswordResetService} from '../../services/password-reset.service';
+import {PasswordResetService} from '../../services/user/password-reset.service';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
 import {ForgotPasswordFormFactory} from '../../forms/ForgotPasswordFormFactory';

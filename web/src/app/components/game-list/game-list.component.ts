@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {GameService} from '../../services/game.service';
+import {GameService} from '../../services/game/game.service';
 import {Game} from '../../model/Game';
 import {Router} from '@angular/router';
 import {HttpParams} from '@angular/common/http';

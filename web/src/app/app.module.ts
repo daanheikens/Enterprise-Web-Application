@@ -32,7 +32,6 @@ import { ChatComponent } from './components/chat/chat.component';
     BoardComponent,
     GameComponent,
     BottombarComponent,
-    LoginComponent,
     RegisterComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
@@ -43,7 +42,8 @@ import { ChatComponent } from './components/chat/chat.component';
     OverlayComponent,
     GameFormComponent,
     InvitesComponent,
-    ChatComponent
+    ChatComponent,
+    LoginComponent
   ],
   imports: [
     AppRoutingModule,

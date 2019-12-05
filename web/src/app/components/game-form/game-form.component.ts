@@ -2,12 +2,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {HttpParams} from '@angular/common/http';
 import {first} from 'rxjs/operators';
-import {GameService} from '../../services/game.service';
+import {GameService} from '../../services/game/game.service';
 import {Router} from '@angular/router';
 import {NewGameFormFactory} from '../../forms/NewGameFormFactory';
 import {ModalDirective} from 'angular-bootstrap-md';
 import {User} from '../../model/User';
-import {UserService} from '../../services/user.service';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
   selector: 'app-game-form',
@@ -58,7 +58,7 @@ export class GameFormComponent implements OnInit {
       .set('maxPlayers', this.formControls.maxPlayers.value)
       .set('maxTurnTime', this.formControls.maxTurnTime.value)
       .set('maxPendingTime', this.formControls.maxPendingTime.value)
-      .set('selectedUsers',  this.formControls.userSelect.value ? this.formControls.userSelect.value : []);
+      .set('selectedUsers', this.formControls.userSelect.value ? this.formControls.userSelect.value : []);
 
 
     this.gameService.create(body)

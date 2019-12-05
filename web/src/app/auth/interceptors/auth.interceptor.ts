@@ -2,13 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
-import {MessageService} from '../../services/message.service';
+import {MessageService} from '../../services/messaging/message.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
- public  constructor(
+  public constructor(
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService) {
@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
       if (err.status === 401 || err.status === 403) {
         this.messageService.disconnect();
         this.authService.logout();
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
       }
 
       const error = err.error.message || err.statusText;
