@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Daan Heikens
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTests {

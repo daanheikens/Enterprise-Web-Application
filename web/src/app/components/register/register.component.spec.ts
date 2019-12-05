@@ -81,6 +81,9 @@ describe('RegisterComponent', () => {
     fixture.detectChanges();
   });
 
+  /**
+   * @author Daan Heikens
+   */
   it('should create', async () => {
     expect(component).toBeTruthy();
   });
@@ -111,7 +114,9 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     expect(component.registerForm.invalid).toBeTruthy();
   });
-
+  /**
+   * @author Daan Heikens
+   */
   it('Register form should be valid', async () => {
     let formControls = component.formControls;
 
@@ -136,7 +141,9 @@ describe('RegisterComponent', () => {
 
     expect(component.registerForm.invalid).toBeFalsy();
   });
-
+  /**
+   * @author Daan Heikens
+   */
   it('Register form should be invalid when invalid email', async () => {
     let formControls = component.formControls;
     formControls.screenName.setValue('UT_name');
@@ -160,7 +167,9 @@ describe('RegisterComponent', () => {
 
     expect(component.registerForm.invalid).toBeFalsy();
   });
-
+  /**
+   * @author Daan Heikens
+   */
   it('Register form should be invalid when password too short', async () => {
     let formControls = component.formControls;
     formControls.screenName.setValue('UT_name');
