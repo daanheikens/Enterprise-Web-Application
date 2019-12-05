@@ -85,12 +85,34 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('register form should return invalid', async () => {
+  it('register form should return invalid when required parameter is missing', async () => {
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    let formControls = component.formControls;
+    formControls.screenName.setValue('UT_name');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.username.setValue('UT_username');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.password.setValue('UT_password');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.email.setValue('ut@ut.com');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.street.setValue('utstreet');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.number.setValue('69');
+    component.onSubmit();
+    expect(component.registerForm.invalid).toBeTruthy();
+    formControls.city.setValue('UT_city');
     component.onSubmit();
     expect(component.registerForm.invalid).toBeTruthy();
   });
 
-  it('Register form should navigate to /login', async () => {
+  it('Register form should be valid', async () => {
     let formControls = component.formControls;
 
     formControls.screenName.setValue('UT_name');
@@ -100,7 +122,64 @@ describe('RegisterComponent', () => {
     formControls.street.setValue('utstreet');
     formControls.number.setValue('69');
     formControls.city.setValue('UT_city');
-    component.selectFile({target: {files: [new Blob()]}});
+    formControls.image.patchValue('');
+    formControls.image.setErrors(null);
+    let file = new Blob();
+    const fileList = {
+      0: file,
+      1: file,
+      length: 2,
+      item: (index: number) => file
+    };
+    component.selectFile({target: {files: fileList}});
+    component.onSubmit();
+
+    expect(component.registerForm.invalid).toBeFalsy();
+  });
+
+  it('Register form should be invalid when invalid email', async () => {
+    let formControls = component.formControls;
+    formControls.screenName.setValue('UT_name');
+    formControls.username.setValue('UT_username');
+    formControls.password.setValue('UT_password');
+    formControls.email.setValue('ut@ut');
+    formControls.street.setValue('utstreet');
+    formControls.number.setValue('69');
+    formControls.city.setValue('UT_city');
+    formControls.image.patchValue('');
+    formControls.image.setErrors(null);
+    let file = new Blob();
+    const fileList = {
+      0: file,
+      1: file,
+      length: 2,
+      item: (index: number) => file
+    };
+    component.selectFile({target: {files: fileList}});
+    component.onSubmit();
+
+    expect(component.registerForm.invalid).toBeFalsy();
+  });
+
+  it('Register form should be invalid when password too short', async () => {
+    let formControls = component.formControls;
+    formControls.screenName.setValue('UT_name');
+    formControls.username.setValue('UT_username');
+    formControls.password.setValue('UT');
+    formControls.email.setValue('ut@ut.com');
+    formControls.street.setValue('utstreet');
+    formControls.number.setValue('69');
+    formControls.city.setValue('UT_city');
+    formControls.image.patchValue('');
+    formControls.image.setErrors(null);
+    let file = new Blob();
+    const fileList = {
+      0: file,
+      1: file,
+      length: 2,
+      item: (index: number) => file
+    };
+    component.selectFile({target: {files: fileList}});
     component.onSubmit();
 
     expect(component.registerForm.invalid).toBeFalsy();
