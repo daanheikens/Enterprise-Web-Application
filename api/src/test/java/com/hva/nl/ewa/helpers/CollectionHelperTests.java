@@ -10,6 +10,9 @@ import java.util.*;
 
 import static org.hamcrest.core.Is.is;
 
+/**
+ * @author Daan Heikens
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CollectionHelperTests {

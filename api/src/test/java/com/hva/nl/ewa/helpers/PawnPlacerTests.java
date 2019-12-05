@@ -19,6 +19,9 @@ import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 
+/**
+ * @author Daan Heikens
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PawnPlacerTests {

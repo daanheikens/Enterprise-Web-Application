@@ -79,6 +79,9 @@ describe('BoardComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /**
+   * @author Daan Heikens
+   */
   it('Should create arrow definitions', async () => {
     expect(component.arrowDown).toBeTruthy();
     expect(component.arrowLeft).toBeTruthy();
