@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.*;
 /**
  * @author Daan Heikens
  */
@@ -61,27 +62,27 @@ public class UserServiceTests {
     @Test
     public void testFindByUsernameReturnsUser() {
         User user = userService.loadUserByUsername("Joost");
-        Assert.assertEquals(testUser, user);
+        Assert.assertSame(testUser, user);
     }
 
     @Test
     public void testFindByEmailShouldReturnUser() {
         User user = userService.findOne("UT@UT.UT");
-        Assert.assertEquals(testUser, user);
+        Assert.assertSame(testUser, user);
     }
 
     @Test
     public void testFindByUserIdNotReturnsOtherUser() {
         List<User> users = userService.find(200);
         Assert.assertEquals(1, users.size());
-        Assert.assertEquals(users.get(0), testUser2);
+        Assert.assertSame(users.get(0), testUser2);
     }
 
     @Test
     public void testFindByUserIdNotShouldReturnAllUsers() {
         List<User> users = userService.find(-1);
         Assert.assertEquals(2, users.size());
-        Assert.assertEquals(users.get(0), testUser);
-        Assert.assertEquals(users.get(1), testUser2);
+        Assert.assertSame(users.get(0), testUser);
+        Assert.assertSame(users.get(1), testUser2);
     }
 }

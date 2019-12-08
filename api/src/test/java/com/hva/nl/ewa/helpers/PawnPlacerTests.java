@@ -46,10 +46,10 @@ public class PawnPlacerTests {
         PawnPlacer.placePawnOnInitialTile(pawn3, tiles, 4);
 
         // Assert on each tile that a pawn is placed
-        Assert.assertEquals(board.getTiles()[0][0].getPawn(), pawn);
-        Assert.assertEquals(board.getTiles()[6][0].getPawn(), pawn1);
-        Assert.assertEquals(board.getTiles()[0][6].getPawn(), pawn2);
-        Assert.assertEquals(board.getTiles()[6][6].getPawn(), pawn3);
+        Assert.assertSame(board.getTiles()[0][0].getPawn(), pawn);
+        Assert.assertSame(board.getTiles()[6][0].getPawn(), pawn1);
+        Assert.assertSame(board.getTiles()[0][6].getPawn(), pawn2);
+        Assert.assertSame(board.getTiles()[6][6].getPawn(), pawn3);
     }
 
     @Test
