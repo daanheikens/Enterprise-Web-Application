@@ -26,6 +26,7 @@ public class GameController {
     private final BoardService boardService;
     private final PawnService pawnService;
     private final TileService tileService;
+    private final InviteService inviteService;
 
     @Autowired
     public GameController(
@@ -34,7 +35,8 @@ public class GameController {
             DefaultModelMapper modelMapper,
             BoardService boardService,
             PawnService pawnService,
-            TileService tileService
+            TileService tileService,
+            InviteService inviteService
     ) {
         this.gameService = gameService;
         this.userService = userService;
@@ -42,6 +44,7 @@ public class GameController {
         this.boardService = boardService;
         this.pawnService = pawnService;
         this.tileService = tileService;
+        this.inviteService = inviteService;
     }
 
     @PostMapping
@@ -50,11 +53,13 @@ public class GameController {
             @RequestParam(name = "name") String name,
             @RequestParam(name = "maxPlayers") Integer maxPlayers,
             @RequestParam(name = "maxTurnTime") Integer maxTurnTime,
-            @RequestParam(name = "maxPendingTime") Integer maxPendingTime
+            @RequestParam(name = "maxPendingTime") Integer maxPendingTime,
+            @RequestParam(name = "selectedUsers", required = false) List<User> invitedUsers
     ) {
         User user = this.userService.loadUserByUsername(auth.getName());
+
         // If no user is found or user already in game, return 412 since we cannot create a new game
-        if (user == null || user.getGames().size() > 0) {
+        if (user == null || user.getGames().size() > 0 || invitedUsers == null || invitedUsers.size() > maxPlayers - 1) {
             return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
@@ -65,6 +70,8 @@ public class GameController {
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());
         game.addUser(user);
+        game.setPrivate(invitedUsers.size() > 0);
+
         BoardResult board = boardService.CreateBoard();
 
         Tile[][] tiles = board.getTiles();
@@ -79,20 +86,30 @@ public class GameController {
         game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
 
+        Game savedGame = this.gameService.save(game);
+
+        this.inviteService.inviteUsers(savedGame, user, invitedUsers);
+
         return new ResponseEntity<>(
-                this.modelMapper.ModelToDTO(this.gameService.save(game), GameDTO.class),
+                this.modelMapper.ModelToDTO(savedGame, GameDTO.class),
                 new HttpHeaders(),
                 HttpStatus.CREATED
         );
     }
 
     @GetMapping
-    public ResponseEntity<List<GameDTO>> find() {
-        List<Game> games = this.gameService.find();
+    public ResponseEntity<List<GameDTO>> find(OAuth2Authentication auth) {
+        User user = this.userService.loadUserByUsername(auth.getName());
+
+        if (user == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
+
+        List<Game> games = this.gameService.find(user);
         List<GameDTO> gameDTOs = new ArrayList<>();
 
         for (Game game : games) {
-            if (game.getUsers().size() >= game.getMaxPlayers()) {
+            if (game.getUsers().size() >= game.getMaxPlayers() || game.getInitiator().equals(user)) {
                 continue;
             }
 
@@ -161,11 +178,15 @@ public class GameController {
     }
 
     @PostMapping(value = "/join")
-    public ResponseEntity joinGame(OAuth2Authentication auth, @RequestParam("gameId") Long gameId) throws PawnPlacerException {
+    public ResponseEntity joinGame(
+            OAuth2Authentication auth,
+            @RequestParam("gameId") Long gameId,
+            @RequestParam(value = "inviteId", required = false) Long inviteId
+    ) throws PawnPlacerException {
         User user = this.userService.loadUserByUsername(auth.getName());
 
-        if (user == null) {
-            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        if (user == null || user.getGames().size() > 0) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         Game game = this.gameService.findOne(gameId);
@@ -192,6 +213,9 @@ public class GameController {
 
         this.pawnService.save(pawn);
         this.gameService.save(game);
+
+        // Remove invite here:
+        this.inviteService.removeInvite(inviteId);
 
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
