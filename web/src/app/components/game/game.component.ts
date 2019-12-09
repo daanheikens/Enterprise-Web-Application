@@ -22,7 +22,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public turnCanEnd = false;
 
-  private gameId: number;
+  private game: Game;
 
   private board: Board;
 
@@ -71,8 +71,8 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
    * This is a promise since we want to send the message after the response has been returned
    */
   public onTurnEnded(): void {
-    this.gameService.endTurn(this.gameId)
-      .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.gameId))
+    this.gameService.endTurn(this.game.id)
+      .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.game.id))
       .catch(error => console.log(error)
       );
   }
@@ -103,13 +103,19 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private renderBoard(game: Game) {
-    this.gameId = game.id;
+    this.game = game;
     this.board = new Board(game.matrix, game.currentPlayers, game.user, game.placeAbleTile, game.id);
     if (game.user.userId === game.userTurn.userId) {
       this.isTurn = game.user.userId === game.userTurn.userId;
       if (this.isTurn === true) {
         this.placedTile = false;
         this.placeableTile = game.placeAbleTile;
+      }
+    }
+    for (let player of game.currentPlayers) {
+      if (game.userTurn.userId === player.userId) {
+        player.isTurn = true;
+        break;
       }
     }
   }

@@ -1,0 +1,14 @@
+<div class="container">
+  <h5>Players</h5>
+  <div class="row user-widgets">
+    <div *ngFor="let user of users" class="col-xs-12 col-img">
+      <div class="widget-user-image">
+        <img class="img-circle small-img {{user.isTurn === true ? 'is-turn' : ''}}"
+             src="http://localhost:8080/{{user.image}}" alt="User Avatar">
+      </div>
+      <div>
+        {{user.screenName}}
+      </div>
+    </div>
+  </div>
+</div>
