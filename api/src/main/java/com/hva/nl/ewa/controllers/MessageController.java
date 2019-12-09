@@ -11,21 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.Set;
 
 @RestController
 @Transactional
 public class MessageController {
-
     private final SimpMessagingTemplate messagingTemplate;
-
     private final GameService gameService;
-
     private final UserService userService;
 
     @Autowired
@@ -46,8 +45,25 @@ public class MessageController {
     public void sendMessage(
             OAuth2Authentication auth,
             @DestinationVariable String gameId,
-            @Payload MessageDTO messageDTO
+            @Payload MessageDTO messageDTO,
+            SimpMessageHeaderAccessor headerAccessor
     ) {
+        headerAccessor.setSessionId(headerAccessor.getSessionAttributes().get("sessionId").toString());
+        messageDTO.setSender(auth.getName());
+        messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
+    }
+
+    /**
+     * Endpoint used for sending a chat message
+     */
+    @MessageMapping("/game/{gameId}/chat")
+    public void sendChatMessage(
+            OAuth2Authentication auth,
+            @DestinationVariable String gameId,
+            @Payload MessageDTO messageDTO,
+            SimpMessageHeaderAccessor headerAccessor
+    ) {
+        headerAccessor.setSessionId(headerAccessor.getSessionAttributes().get("sessionId").toString());
         messageDTO.setSender(auth.getName());
         messagingTemplate.convertAndSend(format("/channel/%s", gameId), messageDTO);
     }
@@ -58,8 +74,10 @@ public class MessageController {
     @MessageMapping("/game/{gameId}/join")
     public void addUser(OAuth2Authentication auth,
                         @DestinationVariable String gameId,
-                        @Payload MessageDTO messageDTO
+                        @Payload MessageDTO messageDTO,
+                        SimpMessageHeaderAccessor headerAccessor
     ) {
+        headerAccessor.setSessionId(headerAccessor.getSessionAttributes().get("sessionId").toString());
         User user = this.userService.loadUserByUsername(auth.getName());
         Game game = this.gameService.findOne(Long.parseLong(gameId));
         if (game == null || user == null) {

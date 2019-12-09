@@ -1,8 +1,8 @@
 export enum MessageType {
+  CHAT_MESSAGE = 'CHAT_MESSAGE',
   TURN_ENDED = 'TURN_ENDED',
   JOIN_GAME = 'JOIN_GAME',
-  LEAVE_GAME = 'LEAVE_GAME',
-  MOVE_PAWN = 'MOVE_PAWN'
+  LEAVE_GAME = 'LEAVE_GAME'
 }
 
 export class Message {

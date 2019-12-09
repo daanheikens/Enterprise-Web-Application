@@ -1,0 +1,21 @@
+<div class="message-box">
+  <!--Message content will be added here-->
+</div>
+<div class="controls">
+  <form [formGroup]="chatForm" (ngSubmit)="onSendMessage()">
+    <div class="form-group">
+      <input type="text" formControlName="chatMessage" class="form-control"
+             [ngClass]="{ 'is-invalid': formControls.chatMessage.errors && submitted }"/>
+      <div *ngIf="formControls.chatMessage.errors" class="invalid-feedback">
+        <div *ngIf="formControls.chatMessage.errors.required">Message is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button [disabled]="loading" type="submit" mdbBtn color="primary"
+              class="relative waves-light" mdbWavesEffect>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Send message
+      </button>
+    </div>
+  </form>
+</div>

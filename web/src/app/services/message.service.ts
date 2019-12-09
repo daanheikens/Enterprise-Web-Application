@@ -16,14 +16,14 @@ export class MessageService implements OnInit {
   public joinGame: Observable<Message>;
   public turnEnded: Observable<Message>;
   public leaveGame: Observable<Message>;
-  public movePawn: Observable<Message>;
+  public chatMessage: Observable<Message>;
   /**
    * Subject for the messages
    */
   private joinGameSubject: Subject<Message>;
   private turnEndedSubject: Subject<Message>;
   private leaveGameSubject: Subject<Message>;
-  private movePawnSubject: Subject<Message>;
+  private chatMessageSubject: Subject<Message>;
 
   private static readonly BASE_PREFIX = '/app/game';
   private stompClient: CompatClient;
@@ -36,11 +36,11 @@ export class MessageService implements OnInit {
     this.joinGameSubject = new Subject<Message>();
     this.turnEndedSubject = new Subject<Message>();
     this.leaveGameSubject = new Subject<Message>();
-    this.movePawnSubject = new Subject<Message>();
+    this.chatMessageSubject = new Subject<Message>();
     this.joinGame = this.joinGameSubject.asObservable();
     this.turnEnded = this.turnEndedSubject.asObservable();
     this.leaveGame = this.leaveGameSubject.asObservable();
-    this.movePawn = this.movePawnSubject.asObservable();
+    this.chatMessage = this.chatMessageSubject.asObservable();
   }
 
   public ngOnInit(): void {
@@ -90,6 +90,9 @@ export class MessageService implements OnInit {
       case MessageType.LEAVE_GAME:
         this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/leave`, {}, JSON.stringify(message));
         break;
+      case MessageType.CHAT_MESSAGE:
+        this.stompClient.send(`${MessageService.BASE_PREFIX}/${gameId}/chat`, {}, JSON.stringify(message));
+        break;
       default:
         throw new Error('Unexpected type');
     }
@@ -105,6 +108,9 @@ export class MessageService implements OnInit {
         break;
       case MessageType.LEAVE_GAME:
         this.leaveGameSubject.next(message);
+        break;
+      case MessageType.CHAT_MESSAGE:
+        this.chatMessageSubject.next(message);
         break;
       default:
         throw new Error('Unexpected type');

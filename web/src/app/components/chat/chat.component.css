@@ -1,0 +1,22 @@
+.message-box {
+  position: fixed;
+  top: 0;
+  left: 2%;
+  width: calc(100% / 12 * 2.75);
+  font-size: 16px;
+  height: 65%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.controls {
+  position: fixed;
+  top: 67%;
+  left: 2%;
+  width: calc(100% / 12 * 2.75);
+  font-size: 16px;
+}
+
+.controls input {
+  width: 100%;
+}
