@@ -1,14 +1,13 @@
 package com.hva.nl.ewa.repositories;
 
-import com.hva.nl.ewa.models.Tile;
-import com.hva.nl.ewa.models.TreasureCard;
+import com.hva.nl.ewa.models.Card;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.ArrayList;
 
-public interface TreasureRepository extends JpaRepository<TreasureCard, Long> {
+public interface TreasureRepository extends JpaRepository<Card, Long> {
 
-    TreasureCard findByTreasureID(long id);
+    Card findByid(long id);
 
-    ArrayList<TreasureCard> getAllByTreasureID(long treasureID);
+    ArrayList<Card> getAllByGame(long id);
 }

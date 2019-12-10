@@ -5,7 +5,7 @@ public class TreasureDetection {
     private Tile tile;
     private Pawn pawn;
     private int scorePlayer = 0;
-    private TreasureCard treasureCard;
+    private Card treasureCard;
 
 
     public TreasureDetection(Tile tile, Pawn pawn) {
@@ -14,11 +14,11 @@ public class TreasureDetection {
     }
 
 
-    public TreasureCard getTreasureCard() {
+    public Card getTreasureCard() {
         return treasureCard;
     }
 
-    public void setTreasureCard(TreasureCard treasureCard) {
+    public void setTreasureCard(Card treasureCard) {
         this.treasureCard = treasureCard;
     }
 

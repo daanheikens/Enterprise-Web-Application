@@ -50,7 +50,7 @@ public class Game implements Model {
 
     @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private Set<TreasureCard> treasureCards = new HashSet<>();
+    private Set<Card> cards = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
@@ -114,10 +114,10 @@ public class Game implements Model {
     }
 
     private void assignUserCards(User user) {
-        var userCards = FluentIterable.from(this.treasureCards)
+        var userCards = FluentIterable.from(this.cards)
                 .limit(24/this.maxPlayers)
                 .toList();
-        this.treasureCards.removeAll(userCards);
+        this.cards.removeAll(userCards);
         user.addCards(userCards);
     }
 
@@ -140,7 +140,7 @@ public class Game implements Model {
     }
 
     public void drawCards(){
-        this.treasureCards = new HashSet<>(TreasureCard.DrawCards());
+        this.cards = new HashSet<>(Card.DrawCards());
     }
 
     public Set<Tile> getTiles() {

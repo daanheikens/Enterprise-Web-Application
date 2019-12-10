@@ -56,8 +56,8 @@ public class User implements UserDetails, Model {
     private Set<Game> games = new HashSet<>();
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "users")
-    private Set<TreasureCard> cards = new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    private Set<Card> cards = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")
@@ -173,7 +173,7 @@ public class User implements UserDetails, Model {
         return true;
     }
 
-    public void addCards(ImmutableList<TreasureCard> cards) {
+    public void addCards(ImmutableList<Card> cards) {
         this.cards.addAll(cards);
     }
 }

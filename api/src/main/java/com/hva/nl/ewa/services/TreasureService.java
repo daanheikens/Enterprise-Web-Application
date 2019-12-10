@@ -1,7 +1,6 @@
 package com.hva.nl.ewa.services;
 
-import com.hva.nl.ewa.models.Tile;
-import com.hva.nl.ewa.models.TreasureCard;
+import com.hva.nl.ewa.models.Card;
 import com.hva.nl.ewa.repositories.TreasureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class TreasureService {
     }
 
 
-    public TreasureCard save(TreasureCard treasureCard) {
+    public Card save(Card treasureCard) {
         return this.repository.save(treasureCard);
     }
 
