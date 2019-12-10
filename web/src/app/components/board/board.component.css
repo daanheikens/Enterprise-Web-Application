@@ -34,6 +34,7 @@
 /* Default board styling */
 .row-boxed {
   height: 100vh;
+  background: transparent !important;
 }
 
 .grid {
@@ -55,12 +56,12 @@
   display: inline-block;
   width: calc(100% / 10);
   height: auto;
-  background-color: #281D7D;
+  background: transparent !important;
   margin: 0.01pt;
 }
 
 .cell-blue {
-  background-image: url("/assets/images/tile-bl.png");
+  background: transparent !important;
   z-index: -1
 }
 
