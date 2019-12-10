@@ -107,4 +107,8 @@ public class Tile implements Model {
         this.game = game;
     }
 
+    public boolean hasCard(Card card){
+        return card.IsOnTile(this);
+    }
+
 }
