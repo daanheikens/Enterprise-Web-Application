@@ -60,8 +60,9 @@ public class GameController {
         }
 
         Game game = new Game();
-        game.setName(name);
         game.setMaxPlayers(maxPlayers);
+        game.drawCards();
+        game.setName(name);
         game.setMaxTurnTime(maxTurnTime);
         game.setMaxPendingTime(maxPendingTime);
         game.setCreationDate(new Date());

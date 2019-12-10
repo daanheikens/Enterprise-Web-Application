@@ -2,6 +2,7 @@ package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.ImmutableList;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -53,6 +54,10 @@ public class User implements UserDetails, Model {
     @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users")
+    private Set<TreasureCard> cards = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")
@@ -166,5 +171,9 @@ public class User implements UserDetails, Model {
     @JsonIgnore
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addCards(ImmutableList<TreasureCard> cards) {
+        this.cards.addAll(cards);
     }
 }

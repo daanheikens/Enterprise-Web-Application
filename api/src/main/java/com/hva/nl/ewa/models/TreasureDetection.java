@@ -30,7 +30,7 @@ public class TreasureDetection {
     }
 
     private boolean compareTreasureTile() {
-        return tile.getTileId() == treasureCard.getTreasureID();
+        return tile.getTileId() == treasureCard.getId();
 
     }
 

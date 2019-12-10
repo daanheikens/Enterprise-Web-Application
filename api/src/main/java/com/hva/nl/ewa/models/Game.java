@@ -1,20 +1,17 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.hibernate.annotations.Cascade;
+import com.google.common.collect.FluentIterable;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "game")
 public class Game implements Model {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -50,6 +47,10 @@ public class Game implements Model {
     @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     private Set<Tile> tiles = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private Set<TreasureCard> treasureCards = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
@@ -109,6 +110,15 @@ public class Game implements Model {
 
     public void addUser(User user) {
         this.users.add(user);
+        this.assignUserCards(user);
+    }
+
+    private void assignUserCards(User user) {
+        var userCards = FluentIterable.from(this.treasureCards)
+                .limit(24/this.maxPlayers)
+                .toList();
+        this.treasureCards.removeAll(userCards);
+        user.addCards(userCards);
     }
 
     public Set<User> getUsers() {
@@ -127,6 +137,10 @@ public class Game implements Model {
                 tile1.setGame(this);
             }
         }
+    }
+
+    public void drawCards(){
+        this.treasureCards = new HashSet<>(TreasureCard.DrawCards());
     }
 
     public Set<Tile> getTiles() {
