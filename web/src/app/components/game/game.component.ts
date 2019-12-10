@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {GameService} from '../../services/game.service';
 import {MessageService} from '../../services/message.service';
-import {User} from '../../model/User';
 import {Message, MessageType} from '../../model/Message';
 import {Board} from '../../model/Board';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
@@ -79,11 +78,17 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
-      .subscribe(data => {
-        if (data.currentPlayers.length >= data.maxPlayers) {
+      .subscribe(game => {
+        if (game.currentPlayers.length >= game.maxPlayers) {
           this.gamePending = false;
+          this.game = game;
+          for (let player of game.currentPlayers) {
+            if (game.userTurn.userId === player.userId) {
+              player.isTurn = true;
+              break;
+            }
+          }
         }
-        this.refreshPlayers(data.currentPlayers);
       });
   }
 
@@ -122,10 +127,6 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private renderPawn() {
     this.userPawn = PawnFactory.createPawns(this.board);
-  }
-
-  private refreshPlayers(users: User[]): void {
-
   }
 
   private onPlayerLeftRoom(): void {
