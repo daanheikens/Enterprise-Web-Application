@@ -43,6 +43,8 @@ public class Tile implements Model {
 
     private Integer yCoordinate;
 
+    public Tile() {
+    }
 
     public Tile(Pawn pawn, TileDefinition tileDefinition) {
         this.rotation = TileRotation.Zero;
@@ -163,7 +165,7 @@ public class Tile implements Model {
         this.game = game;
     }
 
-    public boolean hasCard(Card card){
+    public boolean hasCard(Card card) {
         return card.IsOnTile(this);
     }
 

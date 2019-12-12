@@ -19,7 +19,7 @@ public class Card implements Model {
     private TreasureStyle treasureStyle;
 
     @JsonIgnore
-    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
