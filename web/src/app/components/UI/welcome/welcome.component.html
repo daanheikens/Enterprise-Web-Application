@@ -24,7 +24,7 @@
       </div>
       <div class="card text-center">
         <div class="card-img-overlay">
-          <h1>Invites</h1>
+          <h1>Invites {{invitesCount > 0 ? "(" + invitesCount + ")" : ""}}</h1>
           <a [routerLink]="['/invites']" class="stretched-link"></a>
         </div>
       </div>

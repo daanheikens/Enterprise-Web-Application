@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     '  border-radius: 5px;\n' +
     '  padding: 10px;\n' +
     '  margin: 10px 0;"> ' + '<span>{{message}}</span> ' + '<span style="float: right;\n' +
-    '  color: #999;">{{time}}</span> ' + '</div>';
+    '  color: #999;"><b>{{time}}</b></span> ' + '</div>';
 
   public constructor(private readonly messageService: MessageService) {
   }

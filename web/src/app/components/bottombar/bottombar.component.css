@@ -1,12 +1,12 @@
 .navbar{
   max-height: 20%;
-  background-color:#281D7D !important;
   justify-content: center;
+  background: transparent !important;
 }
 
-.tile{
-  width: 30%;
-  height:30%;
+.tile {
+  width: 25%;
+  height: 25%;
 }
 
 .kaart{

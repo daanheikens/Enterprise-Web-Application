@@ -23,7 +23,8 @@ import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
 import { GameFormComponent } from './components/game-form/game-form.component';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { InvitesComponent } from './components/invites/invites.component';
-import { ChatComponent } from './components/chat/chat.component';
+import {ChatComponent} from './components/chat/chat.component';
+import {UserWidgetsComponent} from './components/user-widgets/user-widgets.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ChatComponent } from './components/chat/chat.component';
     OverlayComponent,
     GameFormComponent,
     InvitesComponent,
-    ChatComponent
+    ChatComponent,
+    UserWidgetsComponent
   ],
   imports: [
     AppRoutingModule,

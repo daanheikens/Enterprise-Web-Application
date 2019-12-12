@@ -1,19 +1,28 @@
 <!--Loading Overlay-->
 <app-overlay *ngIf="gamePending"></app-overlay>
 
-<!--Chat component-->
-<app-chat [gameId]="gameId" *ngIf="!gamePending"></app-chat>
-
-<!--Board component-->
-<app-board *ngIf="board" [isPending]="gamePending"
-           [board]="board"
-           [userPawn]="userPawn"
-           [isTurn]="isTurn"
-           [placedTile]="placedTile"
-           (placeableTileMessage)="onPlaceableTileChanged($event)"
-           (canEndTurnMessage)="onTurnCanEnd()"
-           (boardChangedMessage)="onBoardChanged($event)">
-</app-board>
+<div class="row">
+  <div class="col-1">
+    <!--Chat component-->
+    <app-chat [gameId]="game.id" *ngIf="!gamePending"></app-chat>
+  </div>
+  <div class="col-10">
+    <!--Board component-->
+    <app-board *ngIf="board" [isPending]="gamePending"
+               [board]="board"
+               [userPawn]="userPawn"
+               [isTurn]="isTurn"
+               [placedTile]="placedTile"
+               (placeableTileMessage)="onPlaceableTileChanged($event)"
+               (canEndTurnMessage)="onTurnCanEnd()"
+               (boardChangedMessage)="onBoardChanged($event)">
+    </app-board>
+  </div>
+  <div class="col-1">
+    <!--User widgets component-->
+    <app-user-widgets *ngIf="game" [users]="game.currentPlayers"></app-user-widgets>
+  </div>
+</div>
 
 <!--Bottombar with controls-->
 <app-bottombar *ngIf="!gamePending"
