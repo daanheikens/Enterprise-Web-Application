@@ -1,13 +1,12 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
-import {GameService} from '../../services/game/game.service';
-import {MessageService} from '../../services/messaging/message.service';
-import {User} from '../../model/User';
 import {Message, MessageType} from '../../model/Message';
 import {Board} from '../../model/Board';
 import {PawnFactory} from '../../lib/factories/PawnFactory';
 import {Pawn} from '../../model/Pawn';
 import {Game} from '../../model/Game';
+import {GameService} from '../../services/game/game.service';
+import {MessageService} from '../../services/messaging/message.service';
 
 @Component({
   selector: 'app-game',
@@ -22,7 +21,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   public turnCanEnd = false;
 
-  private gameId: number;
+  private game: Game;
 
   private board: Board;
 
@@ -71,19 +70,25 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
    * This is a promise since we want to send the message after the response has been returned
    */
   public onTurnEnded(): void {
-    this.gameService.endTurn(this.gameId)
-      .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.gameId))
+    this.gameService.endTurn(this.game.id)
+      .then(() => this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.game.id))
       .catch(error => console.log(error)
       );
   }
 
   private onPlayerJoinedGame(): void {
     this.gameService.getCurrentGame()
-      .subscribe(data => {
-        if (data.currentPlayers.length >= data.maxPlayers) {
+      .subscribe(game => {
+        if (game.currentPlayers.length >= game.maxPlayers) {
           this.gamePending = false;
+          this.game = game;
+          for (let player of game.currentPlayers) {
+            if (game.userTurn.userId === player.userId) {
+              player.isTurn = true;
+              break;
+            }
+          }
         }
-        this.refreshPlayers(data.currentPlayers);
       });
   }
 
@@ -103,7 +108,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private renderBoard(game: Game) {
-    this.gameId = game.id;
+    this.game = game;
     this.board = new Board(game.matrix, game.currentPlayers, game.user, game.placeAbleTile, game.id);
     if (game.user.userId === game.userTurn.userId) {
       this.isTurn = game.user.userId === game.userTurn.userId;
@@ -112,14 +117,16 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
         this.placeableTile = game.placeAbleTile;
       }
     }
+    for (let player of game.currentPlayers) {
+      if (game.userTurn.userId === player.userId) {
+        player.isTurn = true;
+        break;
+      }
+    }
   }
 
   private renderPawn() {
     this.userPawn = PawnFactory.createPawns(this.board);
-  }
-
-  private refreshPlayers(users: User[]): void {
-
   }
 
   private onPlayerLeftRoom(): void {

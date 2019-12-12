@@ -4,6 +4,7 @@ export class User {
   private _password?: string;
   private _image?: string;
   private readonly _token?: string;
+  private _isTurn = false;
 
   constructor(userId: number, screenName: string, password?: string, image?: string, token?: string) {
     this._userId = userId;
@@ -43,5 +44,13 @@ export class User {
 
   get token(): string {
     return this._token;
+  }
+
+  set isTurn(isTurn: boolean) {
+    this._isTurn = isTurn;
+  }
+
+  get isTurn(): boolean {
+    return this._isTurn;
   }
 }

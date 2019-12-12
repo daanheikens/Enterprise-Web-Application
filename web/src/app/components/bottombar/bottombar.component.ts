@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tile} from '../../model/Tile';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-bottombar',
   templateUrl: './bottombar.component.html',
   styleUrls: ['./bottombar.component.css']
 })
-export class BottombarComponent implements OnInit {
+export class BottombarComponent {
 
   @Input()
   public placeAbleTile: Tile;
@@ -20,7 +21,7 @@ export class BottombarComponent implements OnInit {
   @Output()
   public turnEndedMessage = new EventEmitter<Event>();
 
-  public ngOnInit(): void {
+  constructor(private readonly router: Router) {
   }
 
   private onEndTurn(): void {
@@ -29,5 +30,9 @@ export class BottombarComponent implements OnInit {
       this.isTurn = false;
       this.turnEnded = false;
     }
+  }
+
+  private quitGame(): void {
+    this.router.navigate(['/home']);
   }
 }
