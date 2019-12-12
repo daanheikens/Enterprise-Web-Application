@@ -80,9 +80,10 @@ public class TileDefinition {
         return tileDefinitionId;
     }
 
-    boolean hasTreasure() {
+    public boolean hasTreasure() {
         return hasTreasure;
     }
+
 
     public boolean isTopWall() {
         return topWall;

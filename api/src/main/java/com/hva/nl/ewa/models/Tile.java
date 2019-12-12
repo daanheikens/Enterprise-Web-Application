@@ -98,7 +98,7 @@ public class Tile implements Model {
 
     @JsonIgnore
     public void setTileDefinitionObject(TileDefinition tileDefinition) {
-        this.tileDefinition = tileDefinition.getTileDefinitionObjectId();
+        this.tileDefinition = tileDefinition.getTileDefinitionId();
     }
 
     public Integer getyCoordinate() {
@@ -165,7 +165,7 @@ public class Tile implements Model {
         this.game = game;
     }
 
-    public boolean hasCard(Card card) {
+    public boolean hasCard(Card card){
         return card.IsOnTile(this);
     }
 

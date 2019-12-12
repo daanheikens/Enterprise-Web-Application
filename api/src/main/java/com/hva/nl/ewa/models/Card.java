@@ -10,6 +10,8 @@ import java.util.*;
 @Table(name = "card")
 public class Card implements Model {
 
+    public Card(){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -29,7 +31,7 @@ public class Card implements Model {
     private Game game;
 
     public boolean IsOnTile(Tile tile){
-        return tile.getTileDefinition().getTreasureStyle() == this.treasureStyle;
+        return TileDefinition.GetTile(tile.getTileDefinition()).getTreasureStyle() == this.treasureStyle;
     }
 
     public static Card[] GetNewCardSet(){
