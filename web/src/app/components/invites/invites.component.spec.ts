@@ -25,6 +25,7 @@ import {OverlayComponent} from '../overlay/overlay.component';
 import {GameFormComponent} from '../game-form/game-form.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
+import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 
 describe('InvitesComponent', () => {
   let component: InvitesComponent;
@@ -48,7 +49,8 @@ describe('InvitesComponent', () => {
         GameFormComponent,
         InvitesComponent,
         ChatComponent,
-        LoginComponent
+        LoginComponent,
+        UserWidgetsComponent
       ],
       imports: [
         HttpClientTestingModule,

@@ -25,6 +25,7 @@ import {GameListComponent} from '../game-list/game-list.component';
 import {GameFormComponent} from '../game-form/game-form.component';
 import {InvitesComponent} from '../invites/invites.component';
 import {LoginComponent} from '../login/login.component';
+import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 
 describe('GameComponent', () => {
   let component: GameComponent;
@@ -48,7 +49,8 @@ describe('GameComponent', () => {
         GameFormComponent,
         InvitesComponent,
         ChatComponent,
-        LoginComponent
+        LoginComponent,
+        UserWidgetsComponent
       ],
       imports: [
         HttpClientTestingModule,

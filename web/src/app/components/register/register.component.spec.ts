@@ -28,6 +28,7 @@ import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user/user.service';
 import {inject} from '@angular/core';
 import {Router} from '@angular/router';
+import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -51,7 +52,8 @@ describe('RegisterComponent', () => {
         GameFormComponent,
         InvitesComponent,
         ChatComponent,
-        LoginComponent
+        LoginComponent,
+        UserWidgetsComponent
       ],
       imports: [
         HttpClientTestingModule,
