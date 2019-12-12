@@ -1,13 +1,14 @@
 export class User {
   private readonly _userId: number;
-  private _username: string;
+  private _screenName: string;
   private _password?: string;
   private _image?: string;
   private readonly _token?: string;
+  private _isTurn = false;
 
-  constructor(userId: number, username: string, password?: string, image?: string, token?: string) {
+  constructor(userId: number, screenName: string, password?: string, image?: string, token?: string) {
     this._userId = userId;
-    this._username = username;
+    this._screenName = screenName;
     this._password = password;
     this._image = image;
     this._token = token;
@@ -17,12 +18,12 @@ export class User {
     return this._userId;
   }
 
-  get username(): string {
-    return this._username;
+  get screenName(): string {
+    return this._screenName;
   }
 
-  set username(value: string) {
-    this._username = value;
+  set screenName(value: string) {
+    this._screenName = value;
   }
 
   get password(): string {
@@ -43,5 +44,13 @@ export class User {
 
   get token(): string {
     return this._token;
+  }
+
+  set isTurn(isTurn: boolean) {
+    this._isTurn = isTurn;
+  }
+
+  get isTurn(): boolean {
+    return this._isTurn;
   }
 }

@@ -7,10 +7,12 @@ export default class InsertionHandler {
 
   private readonly board: Board;
   private readonly placeableTileMessage: EventEmitter<Tile>;
+  private readonly boardChangedMessage: EventEmitter<Board>;
 
-  public constructor(board: Board, placeableTileMessage: EventEmitter<Tile>) {
+  public constructor(board: Board, placeableTileMessage: EventEmitter<Tile>, boardChangedMessage: EventEmitter<Board>) {
     this.board = board;
     this.placeableTileMessage = placeableTileMessage;
+    this.boardChangedMessage = boardChangedMessage;
   }
 
   public handleInsertion(index: number, insertion: InsertionStrategy) {
@@ -23,5 +25,6 @@ export default class InsertionHandler {
    */
   private notify() {
     this.placeableTileMessage.emit(null);
+    this.boardChangedMessage.emit(this.board);
   }
 }

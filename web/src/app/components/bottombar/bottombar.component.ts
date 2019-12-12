@@ -1,22 +1,38 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tile} from '../../model/Tile';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-bottombar',
   templateUrl: './bottombar.component.html',
   styleUrls: ['./bottombar.component.css']
 })
-export class BottombarComponent implements OnInit {
+export class BottombarComponent {
 
   @Input()
   public placeAbleTile: Tile;
 
-  constructor() { }
+  @Input()
+  public turnEnded = false;
 
-  ngOnInit() {
-    console.log(this.placeAbleTile);
+  @Input()
+  public isTurn = false;
+
+  @Output()
+  public turnEndedMessage = new EventEmitter<Event>();
+
+  constructor(private readonly router: Router) {
   }
 
-  // TODO add button to end the turn.
-  // TODO add output event emitter to output and endTurn message whenever the turn is ended.
+  private onEndTurn(): void {
+    if (this.turnEnded) {
+      this.turnEndedMessage.emit();
+      this.isTurn = false;
+      this.turnEnded = false;
+    }
+  }
+
+  private quitGame(): void {
+    this.router.navigate(['/home']);
+  }
 }

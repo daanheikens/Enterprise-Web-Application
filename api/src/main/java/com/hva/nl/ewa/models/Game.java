@@ -1,17 +1,20 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.FluentIterable;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "game")
 public class Game implements Model {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
@@ -59,6 +62,14 @@ public class Game implements Model {
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userTurn;
+
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    private User userPlacedTile;
+
+    @NotNull
+    @ColumnDefault("0")
+    private boolean privateGame;
 
     public long getId() {
         return id;
@@ -130,6 +141,10 @@ public class Game implements Model {
         initiator = user;
     }
 
+    public User getInitiator() {
+        return this.initiator;
+    }
+
     public void setTiles(Tile[][] tiles) {
         for (Tile[] tile : tiles) {
             this.tiles.addAll(Arrays.asList(tile));
@@ -143,8 +158,22 @@ public class Game implements Model {
         this.cards = new HashSet<>(Card.DrawCards());
     }
 
+    public void setTilesFromSet(Set<Tile> tiles) {
+        this.tiles = tiles;
+    }
+
     public Set<Tile> getTiles() {
         return this.tiles;
+    }
+
+    public Map<Long, Tile> getTilesAsMap() {
+        Map<Long, Tile> tiles = new TreeMap<>();
+
+        for (Tile t : this.getTiles()) {
+            tiles.put(t.getTileId(), t);
+        }
+
+        return tiles;
     }
 
     public Tile getPlaceableTile() {
@@ -161,5 +190,21 @@ public class Game implements Model {
 
     public void setUserTurn(User userTurn) {
         this.userTurn = userTurn;
+    }
+
+    public User getUserPlacedTile() {
+        return userPlacedTile;
+    }
+
+    public void setUserPlacedTile(User userPlacedTile) {
+        this.userPlacedTile = userPlacedTile;
+    }
+
+    public boolean isPrivate() {
+        return this.privateGame;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        this.privateGame = aPrivate;
     }
 }

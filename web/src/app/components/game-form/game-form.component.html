@@ -43,6 +43,27 @@
               </div>
             </div>
           </div>
+          <div class="form-group">
+            <label for="user-select">Invite users</label>
+            <ng-select
+              bindLabel="user-select"
+              placeholder="Select user"
+              appendTo="body"
+              multiple="true"
+              class="NgSelect"
+              searchable="true"
+              clearable="true"
+              formControlName="userSelect"
+              [ngClass]="{ 'is-invalid': formControls.userSelect.errors && (formControls.userSelect.dirty || submitted) }">
+              <ng-option [value]="user.userId"
+                         *ngFor="let user of users">
+                <img src="http://localhost:8080/{{user.image}}" width="20" height="20px" alt="user-image"/>
+                {{user.screenName}}
+              </ng-option>
+            </ng-select>
+            <div *ngIf="formControls.userSelect.errors" class="invalid-feedback">
+            </div>
+          </div>
           <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
         </div>
         <div class="modal-footer">

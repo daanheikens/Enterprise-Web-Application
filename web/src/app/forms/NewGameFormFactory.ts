@@ -8,7 +8,8 @@ export class NewGameFormFactory extends AbstractFormFactory {
       name: ['', Validators.required],
       maxPlayers: ['4', Validators.required],
       maxTurnTime: ['60', Validators.required],
-      maxPendingTime: ['720', Validators.required]
+      maxPendingTime: ['720', Validators.required],
+      userSelect: []
     });
   }
 }

@@ -22,10 +22,18 @@ public class Tile implements Model {
     @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "pawn_id")
     private Pawn pawn;
-
     @NotNull
-    private int tileDefinition;
-
+    private boolean treasure;
+    @NotNull
+    private Integer tileDefinition;
+    @NotNull
+    private boolean topWall;
+    @NotNull
+    private boolean bottomWall;
+    @NotNull
+    private boolean rightWall;
+    @NotNull
+    private boolean leftWall;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "game_id")
@@ -66,13 +74,29 @@ public class Tile implements Model {
         this.pawn = pawn;
     }
 
-
-    public TileDefinition getTileDefinition() {
-        return TileDefinition.GetTile(tileDefinition);
+    public boolean isTreasure() {
+        return treasure;
     }
 
-    public void setTileDefinition(TileDefinition tileDefinition) {
-        this.tileDefinition = tileDefinition.getTileDefinitionId();
+    public void setTreasure(boolean treasure) {
+        this.treasure = treasure;
+    }
+
+    public Integer getTileDefinition() {
+        return this.tileDefinition;
+    }
+
+    public void setTileDefinition(Integer tileDefinition) {
+        this.tileDefinition = tileDefinition;
+    }
+
+    public TileDefinition getTileDefinitionObject() {
+        return TileDefinition.GetTile(this.tileDefinition);
+    }
+
+    @JsonIgnore
+    public void setTileDefinitionObject(TileDefinition tileDefinition) {
+        this.tileDefinition = tileDefinition.getTileDefinitionObjectId();
     }
 
     public Integer getyCoordinate() {
@@ -97,6 +121,38 @@ public class Tile implements Model {
 
     public void setTileId(long tileId) {
         this.tileId = tileId;
+    }
+
+    public boolean isTopWall() {
+        return topWall;
+    }
+
+    public void setTopWall(boolean topWall) {
+        this.topWall = topWall;
+    }
+
+    public boolean isBottomWall() {
+        return bottomWall;
+    }
+
+    public void setBottomWall(boolean bottomWall) {
+        this.bottomWall = bottomWall;
+    }
+
+    public boolean isRightWall() {
+        return rightWall;
+    }
+
+    public void setRightWall(boolean rightWall) {
+        this.rightWall = rightWall;
+    }
+
+    public boolean isLeftWall() {
+        return leftWall;
+    }
+
+    public void setLeftWall(boolean leftWall) {
+        this.leftWall = leftWall;
     }
 
     public Game getGame() {
