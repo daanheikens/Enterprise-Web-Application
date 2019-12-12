@@ -25,6 +25,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ButtonsModule, ModalModule, WavesModule} from 'angular-bootstrap-md';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {RouterTestingModule} from '@angular/router/testing';
+import {UserWidgetsComponent} from '../../../user-widgets/user-widgets.component';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -48,7 +49,8 @@ describe('HeaderComponent', () => {
         GameFormComponent,
         InvitesComponent,
         ChatComponent,
-        LoginComponent
+        LoginComponent,
+        UserWidgetsComponent
       ],
       imports: [
         HttpClientTestingModule,

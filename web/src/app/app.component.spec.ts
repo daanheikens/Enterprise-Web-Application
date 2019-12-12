@@ -24,6 +24,7 @@ import {GameFormComponent} from './components/game-form/game-form.component';
 import {InvitesComponent} from './components/invites/invites.component';
 import {ChatComponent} from './components/chat/chat.component';
 import {LoginComponent} from './components/login/login.component';
+import {UserWidgetsComponent} from './components/user-widgets/user-widgets.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -44,7 +45,8 @@ describe('AppComponent', () => {
         GameFormComponent,
         InvitesComponent,
         ChatComponent,
-        LoginComponent
+        LoginComponent,
+        UserWidgetsComponent
       ],
       imports: [
         HttpClientTestingModule,
