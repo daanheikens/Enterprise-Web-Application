@@ -36,6 +36,7 @@ public class TileDefinition {
     private final static
     TileDefinition[] TileDefinitions = {
             new TileDefinition(1, true, false, false, true, TreasureCardDefinition.getTreasureID2() , TileStyle.MOUSE),
+
 //            new TileDefinition(2, true, false, false, true, 18, TileStyle.SALAMANDER),
 //            new TileDefinition(3, false, true, true, false, 2, TileStyle.BUG),
 //            new TileDefinition(4, false, true, false, false, 6, TileStyle.DRAGON),
