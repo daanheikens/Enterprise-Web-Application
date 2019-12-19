@@ -24,14 +24,14 @@
       </div>
       <div class="card text-center">
         <div class="card-img-overlay">
-          <h1>Highscores</h1>
-          <a href="#" class="stretched-link"></a>
+          <h1>Invites {{invitesCount > 0 ? "(" + invitesCount + ")" : ""}}</h1>
+          <a [routerLink]="['/invites']" class="stretched-link"></a>
         </div>
       </div>
       <div class="card text-center">
         <div class="card-img-overlay">
-          <h1>Credits</h1>
-          <a href="#" class="stretched-link"></a>
+          <h1>Highscores</h1>
+          <a class="stretched-link"></a>
         </div>
       </div>
     </div>

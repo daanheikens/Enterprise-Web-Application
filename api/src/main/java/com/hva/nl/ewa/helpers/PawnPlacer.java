@@ -38,7 +38,10 @@ public class PawnPlacer {
         Tile[][] tilesArray = new Tile[7][7];
 
         for (Tile t : tiles) {
-            tilesArray[t.getxCoordinate()][t.getyCoordinate()] = t;
+            if (t.getyCoordinate() != null && t.getyCoordinate() != null) {
+                tilesArray[t.getxCoordinate()][t.getyCoordinate()] = t;
+            }
+
         }
 
         for (Map.Entry<Integer, Integer> position : coordinates.get(totalUsers).entrySet()) {

@@ -9,6 +9,7 @@ import {TokenGuard} from './auth/token.guard';
 import {WelcomeComponent} from './components/UI/welcome/welcome.component';
 import {LoginComponent} from './components/login/login.component';
 import {GameListComponent} from './components/game-list/game-list.component';
+import {InvitesComponent} from './components/invites/invites.component';
 
 const routes: Routes = [
   // Public routes
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'home', component: WelcomeComponent, canActivate: [AuthGuard]},
   {path: 'game-list', component: GameListComponent, canActivate: [AuthGuard]},
   {path: 'game', component: GameComponent, canActivate: [AuthGuard]},
+  {path: 'invites', component: InvitesComponent, canActivate: [AuthGuard]},
   // Fallback route
   {path: '**', redirectTo: 'login'}
 ];

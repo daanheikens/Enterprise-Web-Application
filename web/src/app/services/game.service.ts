@@ -29,6 +29,7 @@ export class GameService {
   public getCurrentGame(): Observable<Game> {
     return this.http.get<Game>(`${environment.apiUrl}/games/current`)
       .pipe(tap(game => {
+        game.currentPlayers.sort((userA, userB) => (userA.screenName > userB.screenName) ? 1 : ((userB.screenName > userA.screenName) ? -1 : 0));
         return game;
       }, error => {
         console.log(error);
@@ -63,13 +64,17 @@ export class GameService {
    * Updates the board after movement.
    *
    * @param board Board
+   * @param turnEnded
    */
-  public updateBoard(board: Board): Observable<Game> {
-    return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, board.tiles)
-      .pipe(tap(game => {
-        return game;
-      }, error => {
-        console.log(error);
-      }));
+  public updateBoard(board: Board): Promise<Game> {
+    return this.http.patch<Game>(`${environment.apiUrl}/games/${board.gameId}`, {
+      tiles: board.tiles,
+      placeableTile: board.placeAbleTile,
+      gameId: board.gameId
+    }).toPromise();
+  }
+
+  public endTurn(gameId: number) {
+    return this.http.post<Object>(`${environment.apiUrl}/games/${gameId}/turnEnded`, {}).toPromise();
   }
 }

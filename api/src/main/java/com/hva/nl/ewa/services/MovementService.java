@@ -51,6 +51,9 @@ public class MovementService {
         Tile userTile = null;
 
         for (Tile t : game.getTiles()) {
+            if (t.equals(game.getPlaceableTile())) {
+                continue;
+            }
             tilesArray[t.getxCoordinate()][t.getyCoordinate()] = t;
             Pawn pawn = t.getPawn();
             if (pawn != null && pawn.equals(user.getPawn())) {
@@ -93,11 +96,11 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && (targetTile.getTileDefinition().isRightWall() || userTile.getTileDefinition().isLeftWall())) {
+        if (offsetModdifier == -1 && (targetTile.isRightWall() || userTile.isLeftWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && (targetTile.getTileDefinition().isLeftWall() || userTile.getTileDefinition().isRightWall())) {
+        if (offsetModdifier == 1 && (targetTile.isLeftWall() || userTile.isRightWall())) {
             return false;
         }
 
@@ -117,11 +120,11 @@ public class MovementService {
             return false;
         }
 
-        if (offsetModdifier == -1 && (targetTile.getTileDefinition().isBottomWall() || userTile.getTileDefinition().isTopWall())) {
+        if (offsetModdifier == -1 && (targetTile.isBottomWall() || userTile.isTopWall())) {
             return false;
         }
 
-        if (offsetModdifier == 1 && (targetTile.getTileDefinition().isTopWall() || userTile.getTileDefinition().isBottomWall())) {
+        if (offsetModdifier == 1 && (targetTile.isTopWall() || userTile.isBottomWall())) {
             return false;
         }
 

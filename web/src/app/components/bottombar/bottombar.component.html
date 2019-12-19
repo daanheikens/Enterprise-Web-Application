@@ -1,8 +1,10 @@
 <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
 
   <div class="class">
-    <img *ngIf="placeAbleTile" src="{{placeAbleTile.imgSrc}}" class="tile {{placeAbleTile.tileRotation}}">
+    <img *ngIf="placeAbleTile" src="{{placeAbleTile.imgSrc}}" class="tile {{placeAbleTile.rotation}}">
     <img src="../../assets/images/card-backside.png" class="kaart-achterkant">
     <img src="../../assets/images/card-sword.png" class="kaart">
+    <button [disabled]="!turnEnded  || !isTurn" (click)="onEndTurn()" class="btn btn-primary">Speel</button>
+    <button class="btn btn-danger" (click)="quitGame()">Quit</button>
   </div>
 </nav>

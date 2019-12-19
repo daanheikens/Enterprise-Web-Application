@@ -9,6 +9,7 @@ public class MessageDTO {
         TURN_ENDED,
         JOIN_GAME,
         LEAVE_GAME,
+        CHAT_MESSAGE
     }
 
     public MessageDTO() {

@@ -1,6 +1,6 @@
 export enum TileRotation {
-  Zero = 'RotationZero',
-  Ninety = 'RotationNinety',
-  OneEighty = 'RotationOneEighty',
-  TwoHundredSeventy = 'RotationTwoHundredSeventy'
+  Zero = 'Zero',
+  Ninety = 'Ninety',
+  OneEighty = 'OneEighty',
+  TwoHundredSeventy = 'TwoHundredSeventy'
 }

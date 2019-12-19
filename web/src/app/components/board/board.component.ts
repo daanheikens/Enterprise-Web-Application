@@ -19,6 +19,7 @@ import InsertTop from '../../lib/board/insertionStrategies/InsertTop';
 import InsertBottom from '../../lib/board/insertionStrategies/InsertBottom';
 import InsertLeft from '../../lib/board/insertionStrategies/InsertLeft';
 import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
+import {Pawn} from '../../model/Pawn';
 
 @Component({
   selector: 'app-board',
@@ -26,17 +27,35 @@ import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
   styleUrls: ['./board.component.css'],
   animations: [TileAnimations]
 })
-export class BoardComponent implements OnInit, AfterViewInit {
+export class BoardComponent implements AfterViewInit {
   /** Board state properties **/
+  @Input()
   public board: Board;
-  @Output()
-  public placeableTileMessage: EventEmitter<Tile> = new EventEmitter<Tile>();
+
   @Input()
   public isPending: boolean;
 
-  private isTurn = false;
+  @Input()
+  public isTurn = false;
 
+  @Input()
+  private userPawn: Pawn;
+
+  /** Event emitters to notify parent of changes **/
+  @Output()
+  private placeableTileMessage = new EventEmitter<Tile>();
+
+  @Output()
+  private boardChangedMessage = new EventEmitter<Board>();
+
+  @Output()
+  private canEndTurnMessage = new EventEmitter<Event>();
+
+  /** State properties for the turn **/
+  @Input()
   private placedTile = false;
+
+  private turnEndMessageSent = false;
 
   /** Animation properties **/
   public currentState = {
@@ -83,24 +102,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
   ) {
   }
 
-  public ngOnInit(): void {
-    this.gameService.getCurrentGame()
-      .subscribe(data => {
-        this.board = new Board(data.matrix, data.currentPlayers, data.user, data.placeAbleTile, data.id);
-        this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage);
-        if (data.userTurn.userId === data.user.userId) {
-          this.isTurn = true;
-          this.placeableTileMessage.emit(this.board.placeAbleTile);
-        }
-      }, () => {
-      });
-  }
-
   public ngAfterViewInit(): void {
     setTimeout(() => {
-      const playerPawn = PawnFactory.createPawns(this.board);
-      this.movementHandler = new MovementHandler(playerPawn);
-    }, 750);
+      if (this.isTurn) {
+        this.placeableTileMessage.emit(this.board.placeAbleTile);
+      }
+
+      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage, this.boardChangedMessage);
+      this.movementHandler = new MovementHandler(this.userPawn);
+    }, 1000);
   }
 
   public insertTop(column: number): void {
@@ -110,6 +120,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     this.changeState('colTop' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
+
+    this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertRight(row: number): void {
@@ -119,6 +136,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     this.changeState('rowRight' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
+
+    this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertBottom(column: number): void {
@@ -128,6 +152,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     this.changeState('colBottom' + column);
     this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
+
+    this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   public insertLeft(row: number): void {
@@ -137,6 +168,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
 
     this.changeState('rowLeft' + row);
     this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
+
+    this.placedTile = true;
+
+    if (this.turnEndMessageSent === false) {
+      this.canEndTurnMessage.emit();
+      this.turnEndMessageSent = true;
+    }
   }
 
   /**
@@ -148,8 +186,6 @@ export class BoardComponent implements OnInit, AfterViewInit {
       this.enableAnimation = false;
       // Reset state to prepare for next turn
       this.currentState[position] = 'initial';
-
-      this.placedTile = true;
     }
   }
 

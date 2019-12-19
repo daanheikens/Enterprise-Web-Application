@@ -2,6 +2,7 @@ package com.hva.nl.ewa.DTO;
 
 import com.hva.nl.ewa.models.TileRotation;
 
+
 public class TileDTO {
 
     private long tileId;
@@ -14,11 +15,19 @@ public class TileDTO {
 
     private boolean treasure;
 
-    private int tileDefinition;
+    private Integer tileDefinition;
 
-    private int xCoordinate;
+    private Integer xCoordinate;
 
-    private int yCoordinate;
+    private Integer yCoordinate;
+
+    private boolean topWall;
+
+    private boolean bottomWall;
+
+    private boolean rightWall;
+
+    private boolean leftWall;
 
     public TileDTO() {
     }
@@ -63,27 +72,59 @@ public class TileDTO {
         this.treasure = treasure;
     }
 
-    public int getTileDefinition() {
+    public Integer getTileDefinition() {
         return tileDefinition;
     }
 
-    public void setTileDefinition(int tileDefinition) {
+    public void setTileDefinition(Integer tileDefinition) {
         this.tileDefinition = tileDefinition;
     }
 
-    public int getxCoordinate() {
+    public Integer getxCoordinate() {
         return xCoordinate;
     }
 
-    public void setxCoordinate(int xCoordinate) {
+    public void setxCoordinate(Integer xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
 
-    public int getyCoordinate() {
+    public Integer getyCoordinate() {
         return yCoordinate;
     }
 
-    public void setyCoordinate(int yCoordinate) {
+    public void setyCoordinate(Integer yCoordinate) {
         this.yCoordinate = yCoordinate;
+    }
+
+    public boolean isTopWall() {
+        return topWall;
+    }
+
+    public void setTopWall(boolean topWall) {
+        this.topWall = topWall;
+    }
+
+    public boolean isBottomWall() {
+        return bottomWall;
+    }
+
+    public void setBottomWall(boolean bottomWall) {
+        this.bottomWall = bottomWall;
+    }
+
+    public boolean isRightWall() {
+        return rightWall;
+    }
+
+    public void setRightWall(boolean rightWall) {
+        this.rightWall = rightWall;
+    }
+
+    public boolean isLeftWall() {
+        return leftWall;
+    }
+
+    public void setLeftWall(boolean leftWall) {
+        this.leftWall = leftWall;
     }
 }

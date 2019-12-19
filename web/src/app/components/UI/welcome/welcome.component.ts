@@ -3,6 +3,8 @@ import {GameService} from '../../../services/game.service';
 import {Game} from '../../../model/Game';
 import {Router} from '@angular/router';
 import {GameFormComponent} from '../../game-form/game-form.component';
+import {InviteService} from '../../../services/invite.service';
+import Invite from '../../../model/Invite';
 
 @Component({
   selector: 'app-welcome',
@@ -13,15 +15,17 @@ export class WelcomeComponent implements OnInit {
   @ViewChild(GameFormComponent, {static: false})
   private gameForm: GameFormComponent;
   private game: Game;
+  private invitesCount: number;
 
   public constructor(
     private readonly gameService: GameService,
+    private readonly inviteService: InviteService,
     private readonly router: Router) {
   }
 
   public ngOnInit(): void {
-    this.gameService.getCurrentGame()
-      .subscribe(data => this.game = data);
+    this.gameService.getCurrentGame().subscribe((game: Game) => this.game = game);
+    this.inviteService.getInvites().subscribe((invites: Invite[]) => this.invitesCount = invites ? invites.length : 0);
   }
 
   public continueGame(): void {
