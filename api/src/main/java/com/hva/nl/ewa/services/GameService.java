@@ -46,7 +46,6 @@ public class GameService {
                 this.delete(game);
                 continue;
             }
-
             currentGame = game;
             break;
         }

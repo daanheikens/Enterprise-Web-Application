@@ -29,6 +29,7 @@ export class GameService {
   public getCurrentGame(): Observable<Game> {
     return this.http.get<Game>(`${environment.apiUrl}/games/current`)
       .pipe(tap(game => {
+        if(game === null ) return game;
         game.currentPlayers.sort((userA, userB) => (userA.screenName > userB.screenName) ? 1 : ((userB.screenName > userA.screenName) ? -1 : 0));
         return game;
       }, error => {
