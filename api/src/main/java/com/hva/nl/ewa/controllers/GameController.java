@@ -7,12 +7,14 @@ import com.hva.nl.ewa.helpers.PawnPlacer;
 import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
 import com.hva.nl.ewa.models.*;
+import com.hva.nl.ewa.repositories.CardRepository;
 import com.hva.nl.ewa.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -27,6 +29,7 @@ public class GameController {
     private final PawnService pawnService;
     private final TileService tileService;
     private final InviteService inviteService;
+    private final CardRepository cardRepository;
 
     @Autowired
     public GameController(
@@ -36,7 +39,8 @@ public class GameController {
             BoardService boardService,
             PawnService pawnService,
             TileService tileService,
-            InviteService inviteService
+            InviteService inviteService,
+            CardRepository cardRepository
     ) {
         this.gameService = gameService;
         this.userService = userService;
@@ -45,6 +49,7 @@ public class GameController {
         this.pawnService = pawnService;
         this.tileService = tileService;
         this.inviteService = inviteService;
+        this.cardRepository = cardRepository;
     }
 
     @PostMapping
@@ -87,6 +92,7 @@ public class GameController {
         game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
 
+        this.cardRepository.saveAll(user.getCards());
         Game savedGame = this.gameService.save(game);
 
         this.inviteService.inviteUsers(savedGame, user, invitedUsers);

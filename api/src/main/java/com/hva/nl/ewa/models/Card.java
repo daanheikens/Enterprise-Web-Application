@@ -1,6 +1,8 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hva.nl.ewa.repositories.CardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,7 +41,7 @@ public class Card implements Model {
     }
 
     public Card(long treasureId, TreasureStyle cardStyle) {
-        this.id = treasureId;
+        this.id = 0;
         this.treasureStyle = cardStyle;
     }
 

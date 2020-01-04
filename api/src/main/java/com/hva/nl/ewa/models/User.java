@@ -134,6 +134,10 @@ public class User implements UserDetails, Model {
         return this.pawn;
     }
 
+    public Set<Card> getCards() {
+        return cards;
+    }
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
