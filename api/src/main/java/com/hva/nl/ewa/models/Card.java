@@ -29,7 +29,7 @@ public class Card implements Model {
     private User user;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
 
@@ -89,5 +89,21 @@ public class Card implements Model {
             new Card(TreasureStyle.UGLYASSCARD),
             new Card(TreasureStyle.WITCHCARD)
     };
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 

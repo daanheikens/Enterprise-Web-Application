@@ -128,7 +128,13 @@ public class Game implements Model {
                 .limit(24/this.maxPlayers)
                 .toList();
         this.cards.removeAll(userCards);
+
+        for (Card userCard : userCards) {
+            userCard.setGame(this);
+        }
+        
         user.addCards(userCards);
+        
     }
 
     public Set<User> getUsers() {

@@ -181,6 +181,11 @@ public class User implements UserDetails, Model {
     }
 
     public void addCards(ImmutableList<Card> cards) {
+
+        for (Card card : cards) {
+            card.setUser(this);
+        }
+
         this.cards.addAll(cards);
     }
 }
