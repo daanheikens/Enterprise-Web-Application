@@ -92,7 +92,6 @@ public class GameController {
         game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
 
-        this.cardRepository.saveAll(user.getCards());
         Game savedGame = this.gameService.save(game);
 
         this.inviteService.inviteUsers(savedGame, user, invitedUsers);

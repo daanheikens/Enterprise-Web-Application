@@ -1,18 +1,19 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hva.nl.ewa.repositories.CardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "card")
 public class Card implements Model {
 
-    public Card(){}
+    public Card() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +33,19 @@ public class Card implements Model {
     @JoinColumn(name = "game_id")
     private Game game;
 
-    public boolean IsOnTile(Tile tile){
+    @NotNull
+    @Column(columnDefinition = "boolean default FALSE")
+    private boolean collected;
+
+    public boolean IsOnTile(Tile tile) {
         return TileDefinition.GetTile(tile.getTileDefinition()).getTreasureStyle() == this.treasureStyle;
     }
 
-    public static Card[] GetNewCardSet(){
+    public static Card[] GetNewCardSet() {
         return TREASURE_CARDS;
     }
 
-    public Card(long treasureId, TreasureStyle cardStyle) {
-        this.id = 0;
+    public Card(TreasureStyle cardStyle) {
         this.treasureStyle = cardStyle;
     }
 
@@ -53,38 +57,37 @@ public class Card implements Model {
         return id;
     }
 
-    static List<Card> DrawCards(){
+    static List<Card> DrawCards() {
         var list = Arrays.asList(TREASURE_CARDS);
         Collections.shuffle(list);
         return list;
     }
 
-    private static final Card[] TREASURE_CARDS = {
-            new Card(0, TreasureStyle.BATCARD),
-            new Card(1, TreasureStyle.BOOKCARD),
-            new Card(2, TreasureStyle.BUGCARD),
-            new Card(3, TreasureStyle.CANDLECARD),
-            new Card(4, TreasureStyle.CHESTCARD),
-            new Card(5, TreasureStyle.CROWNCARD),
-            new Card(6, TreasureStyle.DRAGONCARD),
-            new Card(7, TreasureStyle.FLYTHINGCARD),
-            new Card(8, TreasureStyle.GEMCARD),
-            new Card(9, TreasureStyle.GHOSTCARD),
-            new Card(10, TreasureStyle.GHOSTUGLYCARD),
-            new Card(11, TreasureStyle.GOLDCARD),
-            new Card(12, TreasureStyle.HELMETCARD),
-            new Card(13, TreasureStyle.KEYSCARD),
-            new Card(14, TreasureStyle.MAPCARD),
-            new Card(15, TreasureStyle.MOUSECARD),
-            new Card(16, TreasureStyle.OWLCARD),
-            new Card(17, TreasureStyle.RINGCARD),
-            new Card(18, TreasureStyle.SALAMANDERCARD),
-            new Card(19, TreasureStyle.SKULLCARD),
-            new Card(20, TreasureStyle.SPIDERCARD),
-            new Card(21, TreasureStyle.SWORDCARD),
-            new Card(22, TreasureStyle.UGLYASSCARD),
-            new Card(23, TreasureStyle.WITCHCARD)
+    private static final Card[] TREASURE_CARDS = new Card[]{
+            new Card(TreasureStyle.BATCARD),
+            new Card(TreasureStyle.BOOKCARD),
+            new Card(TreasureStyle.BUGCARD),
+            new Card(TreasureStyle.CANDLECARD),
+            new Card(TreasureStyle.CHESTCARD),
+            new Card(TreasureStyle.CROWNCARD),
+            new Card(TreasureStyle.DRAGONCARD),
+            new Card(TreasureStyle.FLYTHINGCARD),
+            new Card(TreasureStyle.GEMCARD),
+            new Card(TreasureStyle.GHOSTCARD),
+            new Card(TreasureStyle.GHOSTUGLYCARD),
+            new Card(TreasureStyle.GOLDCARD),
+            new Card(TreasureStyle.HELMETCARD),
+            new Card(TreasureStyle.KEYSCARD),
+            new Card(TreasureStyle.MAPCARD),
+            new Card(TreasureStyle.MOUSECARD),
+            new Card(TreasureStyle.OWLCARD),
+            new Card(TreasureStyle.RINGCARD),
+            new Card(TreasureStyle.SALAMANDERCARD),
+            new Card(TreasureStyle.SKULLCARD),
+            new Card(TreasureStyle.SPIDERCARD),
+            new Card(TreasureStyle.SWORDCARD),
+            new Card(TreasureStyle.UGLYASSCARD),
+            new Card(TreasureStyle.WITCHCARD)
     };
-
 }
 
