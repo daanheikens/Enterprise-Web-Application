@@ -26,13 +26,12 @@ import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
 import {UserService} from '../../services/user/user.service';
-import {inject} from '@angular/core';
-import {Router} from '@angular/router';
 import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
+  let element;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -81,6 +80,15 @@ describe('RegisterComponent', () => {
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    element = fixture.nativeElement;
+  });
+
+  /**
+   * @author Daan Heikens
+   */
+  it('Should create HTML header', async () => {
+    const formTitle = element.querySelector('.card-header');
+    expect(formTitle.textContent).toContain('Magical Maze register');
   });
 
   /**
@@ -90,6 +98,19 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  /**
+   * @author Daan Heikens
+   */
+  it('Should call the onSubmit method', async () => {
+    spyOn(component, 'onSubmit');
+    const submitButton = element.querySelector('.btn.btn-primary');
+    submitButton.click();
+    expect(component.onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  /**
+   * @author Daan Heikens
+   */
   it('register form should return invalid when required parameter is missing', async () => {
     component.onSubmit();
     expect(component.registerForm.invalid).toBeTruthy();
@@ -116,6 +137,7 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     expect(component.registerForm.invalid).toBeTruthy();
   });
+
   /**
    * @author Daan Heikens
    */
@@ -142,7 +164,15 @@ describe('RegisterComponent', () => {
     component.onSubmit();
 
     expect(component.registerForm.invalid).toBeFalsy();
+    expect(formControls.screenName.value).toBe('UT_name');
+    expect(formControls.username.value).toBe('UT_username');
+    expect(formControls.password.value).toBe('UT_password');
+    expect(formControls.email.value).toBe('ut@ut.com');
+    expect(formControls.street.value).toBe('utstreet');
+    expect(formControls.number.value).toBe('69');
+    expect(formControls.city.value).toBe('UT_city');
   });
+
   /**
    * @author Daan Heikens
    */
