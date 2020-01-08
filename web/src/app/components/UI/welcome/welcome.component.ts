@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {GameService} from '../../../services/game.service';
+import {GameService} from '../../../services/game/game.service';
 import {Game} from '../../../model/Game';
 import {Router} from '@angular/router';
 import {GameFormComponent} from '../../game-form/game-form.component';
-import {InviteService} from '../../../services/invite.service';
 import Invite from '../../../model/Invite';
+import {InviteService} from '../../../services/invite/invite.service';
 
 @Component({
   selector: 'app-welcome',

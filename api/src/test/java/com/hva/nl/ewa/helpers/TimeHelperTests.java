@@ -8,6 +8,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
 
+/**
+ * @author Daan Heikens
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TimeHelperTests {
