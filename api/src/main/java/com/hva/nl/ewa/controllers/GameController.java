@@ -1,20 +1,25 @@
 package com.hva.nl.ewa.controllers;
 
-import com.hva.nl.ewa.DTO.*;
+import com.hva.nl.ewa.DTO.BoardDTO;
+import com.hva.nl.ewa.DTO.GameDTO;
+import com.hva.nl.ewa.DTO.PawnDTO;
+import com.hva.nl.ewa.DTO.TileDTO;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
 import com.hva.nl.ewa.helpers.CollectionHelper;
 import com.hva.nl.ewa.helpers.PawnPlacer;
-import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.helpers.TimeHelper;
+import com.hva.nl.ewa.helpers.modelmappers.DefaultModelMapper;
 import com.hva.nl.ewa.models.*;
 import com.hva.nl.ewa.repositories.CardRepository;
 import com.hva.nl.ewa.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -217,6 +222,7 @@ public class GameController {
         // If 2 users, then index 1 will be returned which is the second
         pawn.setPawnType(PawnType.values()[users.size() - 1]);
         PawnPlacer.placePawnOnInitialTile(pawn, tiles, users.size());
+        game.assignUserCards(user);
 
         this.pawnService.save(pawn);
         this.gameService.save(game);
