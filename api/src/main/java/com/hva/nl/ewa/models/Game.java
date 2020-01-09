@@ -120,10 +120,9 @@ public class Game implements Model {
 
     public void addUser(User user) {
         this.users.add(user);
-        this.assignUserCards(user);
     }
 
-    private void assignUserCards(User user) {
+    public void assignUserCards(User user) {
         var userCards = FluentIterable.from(this.cards)
                 .limit(24/this.maxPlayers)
                 .toList();

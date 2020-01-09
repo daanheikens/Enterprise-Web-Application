@@ -93,7 +93,8 @@ public class GameController {
         game.setUserTurn(user);
 
         Game savedGame = this.gameService.save(game);
-
+        savedGame.assignUserCards(user);
+        this.gameService.save(savedGame);
         this.inviteService.inviteUsers(savedGame, user, invitedUsers);
 
         return new ResponseEntity<>(
