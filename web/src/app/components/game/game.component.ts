@@ -131,7 +131,6 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private renderBoard(game: Game) {
-    console.log(game.matrix);
     this.game = game;
     this.board = new Board(game.matrix, game.currentPlayers, game.user, game.placeAbleTile, game.id);
     if (game.user.userId === game.userTurn.userId) {

@@ -12,14 +12,10 @@ import {Board} from '../model/Board';
 export class GameService {
 
   public placedTile: Observable<boolean>;
-  public board: Observable<Board>;
-
   private placedTileSubject = new Subject<boolean>();
-  private boardSubject = new Subject<Board>();
 
   public constructor(private readonly http: HttpClient) {
     this.placedTile = this.placedTileSubject.asObservable();
-    this.board = this.boardSubject.asObservable();
     this.placedTileSubject.next(false);
   }
 
@@ -93,9 +89,5 @@ export class GameService {
 
   public getPlacedTileSubject(): Subject<boolean> {
     return this.placedTileSubject;
-  }
-
-  public getBoardSubject(): Subject<Board> {
-    return this.boardSubject;
   }
 }

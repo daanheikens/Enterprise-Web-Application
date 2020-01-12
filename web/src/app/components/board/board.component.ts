@@ -28,7 +28,7 @@ import Turn from '../../model/Turn';
   styleUrls: ['./board.component.css'],
   animations: [TileAnimations]
 })
-export class BoardComponent implements AfterViewInit, OnInit {
+export class BoardComponent implements AfterViewInit {
   /** Board state properties **/
   @Input()
   public board: Board;
@@ -109,31 +109,27 @@ export class BoardComponent implements AfterViewInit, OnInit {
   ) {
   }
 
-  public ngOnInit(): void {
-    this.gameService.board.subscribe((board => this.board = board));
-  }
-
   public ngAfterViewInit(): void {
     setTimeout(() => {
       if (this.isTurn) {
         this.placeableTileMessage.emit(this.board.placeAbleTile);
       }
 
-      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage, this.boardChangedMessage);
+      this.insertionHandler = new InsertionHandler(this.placeableTileMessage, this.boardChangedMessage);
       this.movementHandler = new MovementHandler(this.userPawn);
       this.gameService.placedTile.subscribe((placedTile => this.placedTile = placedTile));
     }, 1000);
   }
 
   public insertTop(column: number): void {
-    console.log(this.isTurn);
-    console.log(this.placedTile);
     if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('colTop' + column);
-    this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(column - 1, this.insertTopStrategy);
 
     this.placedTile = true;
     this.turn.tileInsertedMessage = `<b>Placed a tile from top in column: ${column}`;
@@ -141,14 +137,14 @@ export class BoardComponent implements AfterViewInit, OnInit {
   }
 
   public insertRight(row: number): void {
-    console.log(this.isTurn);
-    console.log(this.placedTile);
     if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('rowRight' + row);
-    this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(row - 1, this.insertRightStrategy);
 
     this.placedTile = true;
     this.turn.tileInsertedMessage = `<b>Placed a tile from right in row: ${row}`;
@@ -156,35 +152,32 @@ export class BoardComponent implements AfterViewInit, OnInit {
   }
 
   public insertBottom(column: number): void {
-    console.log(this.isTurn);
-    console.log(this.placedTile);
     if (!this.isTurn || this.placedTile) {
       return;
     }
 
     this.changeState('colBottom' + column);
-    this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(column - 1, this.insertBottomStrategy);
 
     this.placedTile = true;
     this.turn.tileInsertedMessage = `<b>Placed a tile from bottom in column: ${column}`;
-    console.log(this.turn);
     this.canEndTurnMessage.emit(this.turn);
   }
 
   public insertLeft(row: number): void {
-    console.log(this.isTurn);
-    console.log(this.placedTile);
     if (!this.isTurn || this.placedTile) {
-      console.log('no insertion');
       return;
     }
 
     this.changeState('rowLeft' + row);
-    this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(row - 1, this.insertLefStrategy);
 
     this.placedTile = true;
     this.turn.tileInsertedMessage = `<b>Placed a tile from left in row: ${row}`;
-    console.log(this.turn);
     this.canEndTurnMessage.emit(this.turn);
   }
 
