@@ -3,6 +3,7 @@ import {MessageService} from '../../services/message.service';
 import {Message, MessageType} from '../../model/Message';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {ChatFormFactory} from '../../forms/ChatFormFactory';
+import {Game} from '../../model/Game';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +12,7 @@ import {ChatFormFactory} from '../../forms/ChatFormFactory';
 })
 export class ChatComponent implements OnInit, AfterViewInit {
   @Input()
-  public gameId: number;
+  public game: Game;
   public loading = false;
   public submitted = false;
   public error = '';
@@ -33,6 +34,10 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
+    this.game.notifications.forEach((notification) => {
+        this.appendMessage(notification.message, notification.sender, notification.creationTimestamp);
+      }
+    );
   }
 
   public get formControls(): { [p: string]: AbstractControl } {
@@ -46,15 +51,15 @@ export class ChatComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.messageService.sendMessage(new Message(MessageType.CHAT_MESSAGE, this.formControls.chatMessage.value), this.gameId);
+    this.messageService.sendMessage(new Message(MessageType.CHAT_MESSAGE, this.formControls.chatMessage.value), this.game.id);
   }
 
   private onMessageReceived(message): void {
     this.appendMessage(message.content, message.sender);
   }
 
-  private appendMessage(message: string, name: string) {
-    const date = new Date();
+  private appendMessage(message: string, name: string, sendDate?: string) {
+    let date = sendDate ? new Date(sendDate) : new Date();
     let htmlElement = <HTMLElement>document.querySelector('.message-box');
     htmlElement.innerHTML += this.tpl
       .replace('{{message}}', name + ': ' + message)

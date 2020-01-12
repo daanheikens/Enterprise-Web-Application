@@ -23,6 +23,7 @@ public class TileDefinition {
         this.imgSrc = imgSrc;
         this.tileDefinitionId = tileDefinitionId;
         this.treasureStyle = treasureStyle;
+        this.hasTreasure = hasTreasure;
     }
 
     private final static

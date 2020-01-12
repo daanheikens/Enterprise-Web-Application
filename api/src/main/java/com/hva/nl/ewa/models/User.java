@@ -10,6 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user")
@@ -52,15 +54,15 @@ public class User implements UserDetails, Model {
     private String image;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Game> games = new HashSet<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Card> cards = new HashSet<>();
 
     @JsonIgnore
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Pawn pawn;
 
     public User() {
@@ -127,7 +129,10 @@ public class User implements UserDetails, Model {
     }
 
     public Set<Game> getGames() {
-        return games;
+        return games
+                .stream()
+                .filter(Predicate.not(Game::isFinished))
+                .collect(Collectors.toSet());
     }
 
     public Pawn getPawn() {
@@ -181,7 +186,6 @@ public class User implements UserDetails, Model {
     }
 
     public void addCards(ImmutableList<Card> cards) {
-
         for (Card card : cards) {
             card.setUser(this);
         }

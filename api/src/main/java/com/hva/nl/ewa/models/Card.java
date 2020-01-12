@@ -105,5 +105,13 @@ public class Card implements Model {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean isCollected() {
+        return this.collected;
+    }
+
+    public void collect() {
+        this.collected = true;
+    }
 }
 

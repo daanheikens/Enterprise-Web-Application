@@ -1,9 +1,7 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.FluentIterable;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -37,8 +35,7 @@ public class Game implements Model {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_games",
-            joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "users_games", joinColumns = @JoinColumn(name = "game_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users = new HashSet<>();
 
     @JsonIgnore
@@ -47,7 +44,7 @@ public class Game implements Model {
     private User initiator;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Tile> tiles = new HashSet<>();
 
     @JsonIgnore
@@ -66,9 +63,17 @@ public class Game implements Model {
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userPlacedTile;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Notification> notifications = new HashSet<>();
+
     @NotNull
     @ColumnDefault("0")
     private boolean privateGame;
+
+    @NotNull
+    @ColumnDefault("0")
+    private boolean finished;
 
     public long getId() {
         return id;
@@ -124,16 +129,17 @@ public class Game implements Model {
 
     public void assignUserCards(User user) {
         var userCards = FluentIterable.from(this.cards)
-                .limit(24/this.maxPlayers)
+                .limit(24 / this.maxPlayers)
                 .toList();
+
         this.cards.removeAll(userCards);
 
         for (Card userCard : userCards) {
             userCard.setGame(this);
         }
-        
+
         user.addCards(userCards);
-        
+
     }
 
     public Set<User> getUsers() {
@@ -158,7 +164,7 @@ public class Game implements Model {
         }
     }
 
-    public void drawCards(){
+    public void drawCards() {
         this.cards = new HashSet<>(Card.DrawCards());
     }
 
@@ -210,5 +216,17 @@ public class Game implements Model {
 
     public void setPrivate(boolean aPrivate) {
         this.privateGame = aPrivate;
+    }
+
+    public void finishGame() {
+        this.finished = true;
+    }
+
+    public boolean isFinished() {
+        return this.finished;
+    }
+
+    public Set<Notification> getNotifications() {
+        return this.notifications;
     }
 }

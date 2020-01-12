@@ -49,7 +49,7 @@ public class CardController {
         User user = this.userService.loadUserByUsername(auth.getName());
 
         Game game = gameRepository.findById(gameId).orElseThrow(OperationNotSupportedException::new);
-        Card card = cardRepository.findFirstByUserAndGame(user,game);
+        Card card = cardRepository.findFirstByUserAndGameAndCollectedIsFalse(user, game);
 
         return new ResponseEntity<>(
                 this.modelMapper.ModelToDTO(card, CardDTO.class),

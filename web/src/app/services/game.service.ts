@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {tap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {Game} from '../model/Game';
 import {Board} from '../model/Board';
 
@@ -11,7 +11,16 @@ import {Board} from '../model/Board';
 })
 export class GameService {
 
+  public placedTile: Observable<boolean>;
+  public board: Observable<Board>;
+
+  private placedTileSubject = new Subject<boolean>();
+  private boardSubject = new Subject<Board>();
+
   public constructor(private readonly http: HttpClient) {
+    this.placedTile = this.placedTileSubject.asObservable();
+    this.board = this.boardSubject.asObservable();
+    this.placedTileSubject.next(false);
   }
 
   public create(body: HttpParams): Observable<Object> {
@@ -29,7 +38,9 @@ export class GameService {
   public getCurrentGame(): Observable<Game> {
     return this.http.get<Game>(`${environment.apiUrl}/games/current`)
       .pipe(tap(game => {
-        if(game === null ) return game;
+        if (game === null) {
+          return game;
+        }
         game.currentPlayers.sort((userA, userB) => (userA.screenName > userB.screenName) ? 1 : ((userB.screenName > userA.screenName) ? -1 : 0));
         return game;
       }, error => {
@@ -76,6 +87,15 @@ export class GameService {
   }
 
   public endTurn(gameId: number) {
+    this.placedTileSubject.next(false);
     return this.http.post<Object>(`${environment.apiUrl}/games/${gameId}/turnEnded`, {}).toPromise();
+  }
+
+  public getPlacedTileSubject(): Subject<boolean> {
+    return this.placedTileSubject;
+  }
+
+  public getBoardSubject(): Subject<Board> {
+    return this.boardSubject;
   }
 }

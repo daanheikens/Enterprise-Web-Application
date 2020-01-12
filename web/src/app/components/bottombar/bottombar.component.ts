@@ -19,7 +19,7 @@ export class BottombarComponent {
   public isTurn = false;
 
   @Output()
-  public turnEndedMessage = new EventEmitter<Event>();
+  private turnEndedMessage = new EventEmitter<Event>();
 
   constructor(private readonly router: Router) {
   }
@@ -27,8 +27,6 @@ export class BottombarComponent {
   private onEndTurn(): void {
     if (this.turnEnded) {
       this.turnEndedMessage.emit();
-      this.isTurn = false;
-      this.turnEnded = false;
     }
   }
 
