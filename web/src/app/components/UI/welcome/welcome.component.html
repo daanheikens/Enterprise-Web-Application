@@ -1,5 +1,44 @@
 <app-header></app-header>
 <app-game-form></app-game-form>
+<div class="modal hide fade" id="modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Spelregels</h3>
+
+      </div>
+      <div class="modal-body">
+        <h5>Begin</h5>
+        <p>Het spelbord toont een doolhof bestaande uit een rooster van 7×7 velden.
+          Hierop worden de dool-hofkaarten willekeurig open neergelegd.
+          Eén doolhofkaart blijft over.
+          Dit wordt gedurende het spel gebruikt om de gangen in het doolhof te laten verschuiven.
+          Sommige doolhofkaarten tonen alleen een stukje gang, op andere doolhofkaarten staat tevens een schat
+          afgebeeld. Deze schatten zijn ook te vinden op de kaarten.
+          De kaarten worden geschud en over de spelers verdeeld. Elke speler legt zijn kaarten in een gedekte stapel
+          voor zich. Hij mag de bovenste kaart van zijn stapel bekijken.
+          Dit is de schat die moet worden gevonden.
+          Elke speler plaatst zijn spelstuk op de aangegeven startpositie op het spelbord.</p>
+
+        <h5>Verloop</h5>
+        De Betoverde Doolhof wordt gespeeld in de richting van de klok. In zijn beurt schuift de speler de overgebleven doolhofkaart vanaf de zijkant in het doolhof,
+        net zover tot een doolhofkaart uit de rij wordt geschoven. Staat op de uitgeschoven kaart een spelstuk, dan wordt deze op de zojuist in-geschoven kaart geplaatst.
+        Vervolgens mag de speler zijn spelstuk verplaatsen naar een veld naar keuze dat zonder onderbrekingen kan worden bereikt.
+        Als het spelstuk op het veld met de gezochte schat belandt, laat de speler zijn kaart met deze schat zien en legt deze kaart terzijde.
+        Hij mag de bovenste kaart van zijn stapel bekijken.
+        Dit is de volgende schat die hij moet vinden. Vervolgens gaat de beurt naar de volgende speler.
+        <h5>Einde</h5>
+        Het spel eindigt zodra een speler al zijn schatten heeft gevonden en weer op zijn startpositie terug is.
+        Deze speler is de winnaar van het spel.positiefDe regels van zijn simpel.
+        Je kunt direct met spelen beginnen.De afgebeelde schatten zijn duidelijk van elkaar te onderscheiden.
+        Ze ademen allemaal een sprook-jes- en toverachtige sfeer.Het spel is uitstekend geschikt voor kinderen die niet
+        zo goed tegen hun verlies kunnen.
+        De spelers kunnen elkaar niet bewust dwars zitten, want je weet niet welke schat je medespelers zoeken.
+      </div>
+
+    </div>
+  </div>
+</div>
 <div class="fullscreen-bg">
   <video [muted]="true" loop autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
     <source src="/assets/video/doolhof.mp4" type="video/mp4">
@@ -34,7 +73,16 @@
           <a class="stretched-link"></a>
         </div>
       </div>
+      <div class="card text-center">
+        <div class="card-img-overlay">
+
+          <a class="stretched-link" data-toggle="modal" data-target="#modal">
+            <h1>Help</h1>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-sm-3"></div>
     </div>
-    <div class="col-sm-3"></div>
   </div>
 </div>
