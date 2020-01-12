@@ -48,6 +48,10 @@
   height: 100%;
 }
 
+#modal{
+  z-index: 9999;
+}
+
 @media (min-aspect-ratio: 16/9) {
   .fullscreen-bg__video {
     height: 300%;
