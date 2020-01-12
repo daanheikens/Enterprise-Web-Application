@@ -24,6 +24,7 @@ public class TileDefinition {
         this.leftWall = leftWall;
         this.imgSrc = imgSrc;
         this.tileDefinitionId = tileDefinitionId;
+        this.hasTreasure = hasTreasure;
     }
 
     private final static
