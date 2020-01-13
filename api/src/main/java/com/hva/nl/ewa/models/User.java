@@ -180,7 +180,7 @@ public class User implements UserDetails, Model {
         return true;
     }
 
-    public void addCards(ImmutableList<Card> cards) {
+    public void addCards(List<Card> cards) {
 
         for (Card card : cards) {
             card.setUser(this);
