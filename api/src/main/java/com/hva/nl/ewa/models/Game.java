@@ -65,6 +65,7 @@ public class Game implements Model {
 
     @JsonIgnore
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("creationTimestamp asc")
     private Set<Notification> notifications = new HashSet<>();
 
     @NotNull

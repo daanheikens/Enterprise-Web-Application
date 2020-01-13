@@ -1,27 +1,40 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tile} from '../../model/Tile';
 import {Router} from '@angular/router';
+import {CardService} from '../../services/card.service';
+import Card from '../../model/Card';
 
 @Component({
   selector: 'app-bottombar',
   templateUrl: './bottombar.component.html',
   styleUrls: ['./bottombar.component.css']
 })
-export class BottombarComponent {
+export class BottombarComponent implements OnInit {
 
   @Input()
-  public placeAbleTile: Tile;
+  private placeAbleTile: Tile;
 
   @Input()
-  public turnEnded = false;
+  private turnEnded = false;
 
   @Input()
-  public isTurn = false;
+  private isTurn = false;
+
+  @Input()
+  private gameId: number;
 
   @Output()
   private turnEndedMessage = new EventEmitter<Event>();
 
-  constructor(private readonly router: Router) {
+  private card: Card;
+
+  constructor(
+    private readonly router: Router,
+    private readonly cardService: CardService) {
+  }
+
+  public ngOnInit(): void {
+    this.cardService.getCurrentTreasureCard(this.gameId).subscribe((card: Card) => this.card = card);
   }
 
   private onEndTurn(): void {

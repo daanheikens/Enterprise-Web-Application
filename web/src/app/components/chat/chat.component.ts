@@ -4,6 +4,7 @@ import {Message, MessageType} from '../../model/Message';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {ChatFormFactory} from '../../forms/ChatFormFactory';
 import {Game} from '../../model/Game';
+import Notification from '../../model/Notification';
 
 @Component({
   selector: 'app-chat',
@@ -25,6 +26,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
     '  margin: 10px 0;"> ' + '<span>{{message}}</span> ' + '<span style="float: right;\n' +
     '  color: #999;"><b>{{time}}</b></span> ' + '</div>';
 
+  private htmlElement: HTMLElement;
+
   public constructor(private readonly messageService: MessageService) {
   }
 
@@ -34,10 +37,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.game.notifications.forEach((notification) => {
-        this.appendMessage(notification.message, notification.sender, notification.creationTimestamp);
-      }
-    );
+    this.htmlElement = <HTMLElement>document.querySelector('.message-box');
+    this.appendMessages(this.game.notifications);
   }
 
   public get formControls(): { [p: string]: AbstractControl } {
@@ -58,14 +59,25 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.appendMessage(message.content, message.sender);
   }
 
-  private appendMessage(message: string, name: string, sendDate?: string) {
-    let date = sendDate ? new Date(sendDate) : new Date();
-    let htmlElement = <HTMLElement>document.querySelector('.message-box');
-    htmlElement.innerHTML += this.tpl
+  private appendMessage(message: string, name: string) {
+    let date = new Date();
+    this.htmlElement.innerHTML += this.tpl
       .replace('{{message}}', name + ': ' + message)
       .replace('{{time}}', date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
 
     // Focus to bottom
-    htmlElement.scrollTop = htmlElement.scrollHeight;
+    this.htmlElement.scrollTop = this.htmlElement.scrollHeight;
+  }
+
+  private appendMessages(notifications: Notification[]): void {
+    notifications.forEach((notification) => {
+      let date = new Date(notification.creationTimestamp);
+      this.htmlElement.innerHTML += this.tpl
+        .replace('{{message}}', notification.sender + ': ' + notification.message)
+        .replace('{{time}}', date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
+    });
+
+    // Focus to bottom
+    this.htmlElement.scrollTop = this.htmlElement.scrollHeight;
   }
 }

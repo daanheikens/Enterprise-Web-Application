@@ -29,7 +29,7 @@ public class Card implements Model {
     private User user;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "game_id")
     private Game game;
 
@@ -112,6 +112,10 @@ public class Card implements Model {
 
     public void collect() {
         this.collected = true;
+    }
+
+    public TreasureStyle getTreasureStyle() {
+        return treasureStyle;
     }
 }
 

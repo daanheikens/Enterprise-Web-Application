@@ -148,17 +148,16 @@ public class GameController {
 
         GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
         dto.setCurrentPlayers(currentGame.getUsers());
-        dto.setNotifications(
-                currentGame.getNotifications()
-                        .stream()
-                        .map(notification -> {
-                            NotificationDTO notificationDTO = this.modelMapper.ModelToDTO(notification, NotificationDTO.class);
-                            notificationDTO.setSender(user.getScreenName());
-                            return notificationDTO;
-                        })
-                        .sorted(Comparator.comparing(NotificationDTO::getCreationTimestamp))
-                        .collect(Collectors.toCollection(LinkedHashSet::new))
-        );
+
+        Set<NotificationDTO> sortedNotifications = new LinkedHashSet<>();
+
+        for (Notification notification : currentGame.getNotifications()) {
+            NotificationDTO notificationDTO = this.modelMapper.ModelToDTO(notification, NotificationDTO.class);
+            notificationDTO.setSender(user.getScreenName());
+            sortedNotifications.add(notificationDTO);
+        }
+
+        dto.setNotifications(sortedNotifications);
         TileDTO[][] tilesArray = new TileDTO[7][7];
 
         /**
@@ -196,8 +195,8 @@ public class GameController {
     @PostMapping(value = "/join")
     public ResponseEntity joinGame(
             OAuth2Authentication auth,
-            @RequestParam("gameId") Long gameId,
-            @RequestParam(value = "inviteId", required = false) Long inviteId
+            @RequestParam(name = "gameId") Long gameId,
+            @RequestParam(name = "inviteId", required = false) Long inviteId
     ) throws PawnPlacerException {
         User user = this.userService.loadUserByUsername(auth.getName());
 

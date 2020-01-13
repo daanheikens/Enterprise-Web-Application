@@ -36,7 +36,7 @@ public class CardController {
     public CardController(UserService userService,
                           CardRepository cardRepository,
                           GameRepository gameRepository,
-                          DefaultModelMapper modelMapper){
+                          DefaultModelMapper modelMapper) {
         this.userService = userService;
         this.cardRepository = cardRepository;
         this.gameRepository = gameRepository;
@@ -48,8 +48,21 @@ public class CardController {
             throws OperationNotSupportedException {
         User user = this.userService.loadUserByUsername(auth.getName());
 
+        if (user == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
+
         Game game = gameRepository.findById(gameId).orElseThrow(OperationNotSupportedException::new);
+
+        if (game == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
         Card card = cardRepository.findFirstByUserAndGameAndCollectedIsFalse(user, game);
+
+        if (card == null) {
+            return new ResponseEntity<>(new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
 
         return new ResponseEntity<>(
                 this.modelMapper.ModelToDTO(card, CardDTO.class),
