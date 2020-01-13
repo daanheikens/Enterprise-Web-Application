@@ -19,5 +19,4 @@ public class TreasureService {
     public Card save(Card treasureCard) {
         return this.repository.save(treasureCard);
     }
-
 }

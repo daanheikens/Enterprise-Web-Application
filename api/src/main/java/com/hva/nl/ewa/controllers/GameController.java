@@ -1,9 +1,6 @@
 package com.hva.nl.ewa.controllers;
 
-import com.hva.nl.ewa.DTO.BoardDTO;
-import com.hva.nl.ewa.DTO.GameDTO;
-import com.hva.nl.ewa.DTO.PawnDTO;
-import com.hva.nl.ewa.DTO.TileDTO;
+import com.hva.nl.ewa.DTO.*;
 import com.hva.nl.ewa.exceptions.PawnPlacerException;
 import com.hva.nl.ewa.helpers.CollectionHelper;
 import com.hva.nl.ewa.helpers.PawnPlacer;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @Transactional
@@ -34,7 +32,6 @@ public class GameController {
     private final PawnService pawnService;
     private final TileService tileService;
     private final InviteService inviteService;
-    private final CardRepository cardRepository;
 
     @Autowired
     public GameController(
@@ -44,8 +41,7 @@ public class GameController {
             BoardService boardService,
             PawnService pawnService,
             TileService tileService,
-            InviteService inviteService,
-            CardRepository cardRepository
+            InviteService inviteService
     ) {
         this.gameService = gameService;
         this.userService = userService;
@@ -54,7 +50,6 @@ public class GameController {
         this.pawnService = pawnService;
         this.tileService = tileService;
         this.inviteService = inviteService;
-        this.cardRepository = cardRepository;
     }
 
     @PostMapping
@@ -82,7 +77,7 @@ public class GameController {
         game.setCreationDate(new Date());
         game.addUser(user);
         game.setPrivate(invitedUsers.size() > 0);
-
+        game.setInitiator(user);
         BoardResult board = boardService.CreateBoard();
 
         Tile[][] tiles = board.getTiles();
@@ -96,7 +91,6 @@ public class GameController {
         placeableTile.setGame(game);
         game.setPlaceableTile(this.tileService.save(placeableTile));
         game.setUserTurn(user);
-
         Game savedGame = this.gameService.save(game);
         savedGame.assignUserCards(user);
         this.gameService.save(savedGame);
@@ -155,6 +149,15 @@ public class GameController {
         GameDTO dto = this.modelMapper.ModelToDTO(currentGame, GameDTO.class);
         dto.setCurrentPlayers(currentGame.getUsers());
 
+        Set<NotificationDTO> sortedNotifications = new LinkedHashSet<>();
+
+        for (Notification notification : currentGame.getNotifications()) {
+            NotificationDTO notificationDTO = this.modelMapper.ModelToDTO(notification, NotificationDTO.class);
+            notificationDTO.setSender(user.getScreenName());
+            sortedNotifications.add(notificationDTO);
+        }
+
+        dto.setNotifications(sortedNotifications);
         TileDTO[][] tilesArray = new TileDTO[7][7];
 
         /**
@@ -192,8 +195,8 @@ public class GameController {
     @PostMapping(value = "/join")
     public ResponseEntity joinGame(
             OAuth2Authentication auth,
-            @RequestParam("gameId") Long gameId,
-            @RequestParam(value = "inviteId", required = false) Long inviteId
+            @RequestParam(name = "gameId") Long gameId,
+            @RequestParam(name = "inviteId", required = false) Long inviteId
     ) throws PawnPlacerException {
         User user = this.userService.loadUserByUsername(auth.getName());
 

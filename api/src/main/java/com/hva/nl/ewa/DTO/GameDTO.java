@@ -1,8 +1,6 @@
 package com.hva.nl.ewa.DTO;
 
-import com.hva.nl.ewa.models.Tile;
 import com.hva.nl.ewa.models.User;
-
 import java.util.Set;
 
 public class GameDTO {
@@ -27,7 +25,9 @@ public class GameDTO {
 
     private TileDTO placeAbleTile;
 
-    public GameDTO(){
+    private Set<NotificationDTO> notifications;
+
+    public GameDTO() {
     }
 
     public long getId() {
@@ -108,5 +108,13 @@ public class GameDTO {
 
     public void setPlaceAbleTile(TileDTO placeAbleTile) {
         this.placeAbleTile = placeAbleTile;
+    }
+
+    public Set<NotificationDTO> getNotifications() {
+        return this.notifications;
+    }
+
+    public void setNotifications(Set<NotificationDTO> notifications) {
+        this.notifications = notifications;
     }
 }

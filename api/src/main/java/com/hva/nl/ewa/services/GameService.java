@@ -20,7 +20,7 @@ public class GameService {
     }
 
     public List<Game> find(User user) {
-        return this.gameRepository.findAllByInitiatorNotAndPrivateGameIsFalse(user);
+        return this.gameRepository.findAllByInitiatorNotAndPrivateGameIsFalseAndFinishedIsFalse(user);
     }
 
     public Game findOne(Long id) {
@@ -35,10 +35,14 @@ public class GameService {
         this.gameRepository.delete(game);
     }
 
+    public void delete(Long gameId) {
+        this.gameRepository.deleteById(gameId);
+    }
+
     public Game getCurrentGame(User user) {
         Game currentGame = null;
         for (Game game : user.getGames()) {
-            if (game == null) {
+            if (game == null || game.isFinished()) {
                 continue;
             }
 

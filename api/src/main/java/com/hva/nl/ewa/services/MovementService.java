@@ -88,7 +88,7 @@ public class MovementService {
     }
 
     private boolean moveX(Tile[][] tilesArray, Tile userTile, int offsetModdifier, Pawn pawn) {
-        Tile targetTile = null;
+        Tile targetTile;
 
         try {
             targetTile = tilesArray[userTile.getxCoordinate() + offsetModdifier][userTile.getyCoordinate()];
@@ -104,8 +104,8 @@ public class MovementService {
             return false;
         }
 
-        targetTile.setPawn(pawn);
         userTile.setPawn(null);
+        targetTile.setPawn(pawn);
         pawn.setTile(targetTile);
 
         return true;

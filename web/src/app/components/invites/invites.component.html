@@ -9,11 +9,12 @@
     </div>
     <div class="col-sm-6">
       <ul class="list-group">
-        <li (click)="joinGame(invite.game.id)"
+        <li (click)="joinGame(invite.game.id, invite.inviteId)"
             *ngFor="let invite of invites"
             class="list-group-item d-flex justify-content-between align-items-center game">
           {{invite.game.name}} - invited by {{invite.inviterName}}
-          <span class="badge badge-primary badge-pill">{{invite.game.currentPlayers.length}} / {{invite.game.maxPlayers}}</span>
+          <span class="badge badge-primary badge-pill">{{invite.game.currentPlayers.length}}
+            / {{invite.game.maxPlayers}}</span>
       </ul>
     </div>
     <div class="col-sm-3"></div>

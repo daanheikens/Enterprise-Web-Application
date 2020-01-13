@@ -1,13 +1,15 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.collect.FluentIterable;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
@@ -64,9 +66,18 @@ public class Game implements Model {
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userPlacedTile;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("creationTimestamp asc")
+    private Set<Notification> notifications = new HashSet<>();
+
     @NotNull
     @ColumnDefault("0")
     private boolean privateGame;
+
+    @NotNull
+    @ColumnDefault("0")
+    private boolean finished;
 
     public long getId() {
         return id;
@@ -209,5 +220,17 @@ public class Game implements Model {
 
     public void setPrivate(boolean aPrivate) {
         this.privateGame = aPrivate;
+    }
+
+    public void finishGame() {
+        this.finished = true;
+    }
+
+    public boolean isFinished() {
+        return this.finished;
+    }
+
+    public Set<Notification> getNotifications() {
+        return this.notifications;
     }
 }

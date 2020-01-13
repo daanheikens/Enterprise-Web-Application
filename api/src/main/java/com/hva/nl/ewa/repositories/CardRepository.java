@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
-    Card findFirstByUserAndGame(User user, Game game);
+    Card findFirstByUserAndGameAndCollectedIsFalse(User user, Game game);
+
+    int countByUserAndGameAndCollectedIsFalse(User user, Game game);
 }
