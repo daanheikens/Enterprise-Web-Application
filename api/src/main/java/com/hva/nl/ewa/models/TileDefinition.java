@@ -54,7 +54,7 @@ public class TileDefinition {
             new TileDefinition(24, false, true, false, true, false, TileStyle.CORNER_YELLOW, TreasureStyle.NONE),
             new TileDefinition(25, false, true, false, false, true, TileStyle.GOLD, TreasureStyle.GOLDCARD),
             new TileDefinition(26, false, true, false, false, true, TileStyle.BOOK, TreasureStyle.BOOKCARD),
-            new TileDefinition(27, false, true, true, true, false, TileStyle.CORNER_RED, TreasureStyle.NONE),
+            new TileDefinition(27, false, true, true, false, false, TileStyle.CORNER_RED, TreasureStyle.NONE),
             new TileDefinition(28, false, true, false, true, false, TileStyle.CORNER, TreasureStyle.NONE),
             new TileDefinition(29, true, true, false, false, false, TileStyle.STRAIGHT, TreasureStyle.NONE),
             new TileDefinition(30, true, true, false, false, true, TileStyle.UGLY_ASS, TreasureStyle.UGLYASSCARD)

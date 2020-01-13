@@ -9,6 +9,8 @@ import {Pawn} from '../../model/Pawn';
 import {Game} from '../../model/Game';
 import Turn from '../../model/Turn';
 import {Router} from '@angular/router';
+import {CardService} from '../../services/card.service';
+import Card from '../../model/Card';
 
 @Component({
   selector: 'app-game',
@@ -33,9 +35,12 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private turn: Turn;
 
+  private card: Card;
+
   public constructor(
     private readonly gameService: GameService,
     private readonly messageService: MessageService,
+    private readonly cardService: CardService,
     private readonly router: Router
   ) {
   }
@@ -52,6 +57,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
       .toPromise()
       .then(data => {
         if (data !== null) {
+          this.cardService.getCurrentTreasureCard(data.id).subscribe((card: Card) => this.card = card);
           this.renderBoard(data);
           this.messageService.connect(data.id);
         } else {
@@ -126,6 +132,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
         if (data !== null) {
           this.renderBoard(data);
           this.renderPawn();
+          this.cardService.getCurrentTreasureCard(data.id).subscribe((card: Card) => this.card = card);
         }
       });
   }

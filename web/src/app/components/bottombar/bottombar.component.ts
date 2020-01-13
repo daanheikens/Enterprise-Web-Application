@@ -23,10 +23,11 @@ export class BottombarComponent implements OnInit {
   @Input()
   private gameId: number;
 
+  @Input()
+  private card: Card;
+
   @Output()
   private turnEndedMessage = new EventEmitter<Event>();
-
-  private card: Card;
 
   constructor(
     private readonly router: Router,
