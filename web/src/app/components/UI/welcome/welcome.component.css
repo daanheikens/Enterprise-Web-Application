@@ -86,6 +86,12 @@
   }
 }
 
+.modal-body{
+  height: 750px;
+  overflow-y: auto;
+}
+
+
 @media (max-width: 1023px ) {
   .fullscreen-bg {
     background: url('/assets/images/labyrinth.jpg') center center / cover no-repeat;
