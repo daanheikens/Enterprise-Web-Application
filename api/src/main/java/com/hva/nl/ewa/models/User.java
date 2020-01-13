@@ -132,10 +132,7 @@ public class User implements UserDetails, Model {
     }
 
     public Set<Game> getGames() {
-        return games
-                .stream()
-                .filter(Predicate.not(Game::isFinished))
-                .collect(Collectors.toSet());
+        return games;
     }
 
     public Pawn getPawn() {

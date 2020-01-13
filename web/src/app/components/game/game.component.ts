@@ -91,6 +91,7 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
         }
         this.messageService.sendMessage(new Message(MessageType.TURN_ENDED), this.game.id);
         this.messageService.sendMessage(new Message(MessageType.CHAT_MESSAGE, '<b>Ended turn</b>'), this.game.id);
+        this.cardService.getCurrentTreasureCard(this.game.id).subscribe((card: Card) => this.card = card);
       })
       .catch(error => {
           console.log(error);
@@ -132,7 +133,6 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
         if (data !== null) {
           this.renderBoard(data);
           this.renderPawn();
-          this.cardService.getCurrentTreasureCard(data.id).subscribe((card: Card) => this.card = card);
         }
       });
   }

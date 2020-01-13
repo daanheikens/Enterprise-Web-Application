@@ -73,10 +73,6 @@ public class Game implements Model {
     @ColumnDefault("0")
     private boolean privateGame;
 
-    @NotNull
-    @ColumnDefault("0")
-    private boolean finished;
-
     public long getId() {
         return id;
     }
@@ -219,14 +215,6 @@ public class Game implements Model {
 
     public void setPrivate(boolean aPrivate) {
         this.privateGame = aPrivate;
-    }
-
-    public void finishGame() {
-        this.finished = true;
-    }
-
-    public boolean isFinished() {
-        return this.finished;
     }
 
     public Set<Notification> getNotifications() {

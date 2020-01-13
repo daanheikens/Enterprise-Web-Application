@@ -83,8 +83,6 @@ public class TurnController {
             this.cardRepository.save(card);
             int treasureCount = this.cardRepository.countByUserAndGameAndCollectedIsFalse(user, game);
             if (treasureCount == 0) {
-                game.finishGame();
-                this.gameService.save(game);
                 return ResponseEntity.ok(new TurnResult(TurnResultAction.GAME_END));
             }
 

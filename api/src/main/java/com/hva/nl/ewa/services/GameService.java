@@ -42,7 +42,7 @@ public class GameService {
     public Game getCurrentGame(User user) {
         Game currentGame = null;
         for (Game game : user.getGames()) {
-            if (game == null || game.isFinished()) {
+            if (game == null) {
                 continue;
             }
 
