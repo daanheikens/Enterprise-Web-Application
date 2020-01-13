@@ -219,14 +219,14 @@ export class BoardComponent implements AfterViewInit {
         .subscribe((result: TurnResult) => {
           if (result.resultAction !== TurnResultAction.INVALID_MOVE) {
             this.handleMovement(event.key);
+            // End game if end game action is given (Send endgame message and end game)
+            if (result.resultAction === TurnResultAction.GAME_END) {
+              this.gameEndedMessage.emit();
+            }
             // End turn if treasure is found + send message treasure is found
             if (result.resultAction === TurnResultAction.COLLECTED_TREASURE) {
               this.turn.withTreasure = true;
               this.turnEndedMessage.emit(this.turn);
-            }
-            // End game if end game action is given (Send endgame message and end game)
-            if (result.resultAction === TurnResultAction.GAME_END) {
-              this.gameEndedMessage.emit();
             }
           }
         });

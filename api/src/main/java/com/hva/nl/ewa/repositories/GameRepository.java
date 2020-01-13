@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long> {
 
-    List<Game> findAllByInitiatorNotAndPrivateGameIsFalseAndFinishedIsFalse(User initiator);
+    List<Game> findAllByInitiatorNotAndPrivateGameIsFalse(User initiator);
 }

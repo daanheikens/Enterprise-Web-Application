@@ -20,7 +20,7 @@ public class GameService {
     }
 
     public List<Game> find(User user) {
-        return this.gameRepository.findAllByInitiatorNotAndPrivateGameIsFalseAndFinishedIsFalse(user);
+        return this.gameRepository.findAllByInitiatorNotAndPrivateGameIsFalse(user);
     }
 
     public Game findOne(Long id) {
