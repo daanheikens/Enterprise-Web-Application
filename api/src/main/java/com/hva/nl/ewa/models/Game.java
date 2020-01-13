@@ -1,15 +1,13 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.collect.FluentIterable;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
@@ -132,7 +130,9 @@ public class Game implements Model {
     }
 
     public void assignUserCards(User user) {
-        List<Card> userCards = this.cards.stream().filter(row -> row.getUser() == null).limit(24/this.getMaxPlayers()).collect(Collectors.toList());
+        List<Card> userCards = this.cards.stream()
+                .filter(row -> row.getUser() == null)
+                .limit(24/this.getMaxPlayers()).collect(Collectors.toList());
         this.cards.removeAll(userCards);
 
         for (Card userCard : userCards) {
@@ -140,7 +140,6 @@ public class Game implements Model {
         }
         
         user.addCards(userCards);
-        
     }
 
     public Set<User> getUsers() {
