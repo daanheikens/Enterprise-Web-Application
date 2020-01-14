@@ -25,11 +25,13 @@ import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
 import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
+import {DebugElement} from '@angular/core';
 
 describe('BottombarComponent', () => {
   let component: BottombarComponent;
   let fixture: ComponentFixture<BottombarComponent>;
   let componentHTML: HTMLElement;
+  let element;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -75,37 +77,88 @@ describe('BottombarComponent', () => {
     component = fixture.componentInstance;
     componentHTML = fixture.nativeElement;
     fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
     expect(componentHTML).toBeTruthy();
   });
+
   /**
    * @author Sebastiaan van de Griendt
    */
-  it('should have a button with Speel, Quit & Help on ',() =>{
+  it('should have a button with Speel',() =>{
     let button = fixture.debugElement.queryAll(By.css('button'));
     let button1 : HTMLButtonElement = button[0].nativeElement;
-    let button2 : HTMLButtonElement = button[1].nativeElement;
-    let button3 : HTMLButtonElement = button[2].nativeElement;
     expect(button1.textContent).toBe('Speel');
-    expect(button2.textContent).toBe('Quit');
-    expect(button3.textContent).toBe('Help');
   });
 
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+
+  it('should have a button with Quit',() =>{
+    let button = fixture.debugElement.queryAll(By.css('button'));
+    let button1 : HTMLButtonElement = button[1].nativeElement;
+    expect(button1.textContent).toBe('Quit');
+  });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should have a button with Help on ',() =>{
+    let button = fixture.debugElement.queryAll(By.css('button'));
+    let button1 : HTMLButtonElement = button[2].nativeElement;
+    expect(button1.textContent).toBe('Help');
+  });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
   it('button should not be named banaan', () =>{
     let button = fixture.debugElement.queryAll(By.css('button'));
     let button1 : HTMLButtonElement = button[1].nativeElement;
     expect(button1.textContent).not.toContain('banaan')
   });
 
-
+  /**
+   * @author Sebastiaan van de Griendt
+   */
   it('should load its images', () => {
     componentHTML.querySelectorAll('img').forEach((img: HTMLImageElement)=>{
-      expect(img).toBeTruthy();
-      expect(img.complete).toBeTruthy();
+      fixture.detectChanges();
+      setTimeout(() => {
+        expect(img).toBeTruthy();
+        expect(img.complete).toBeTruthy();
+      }, 30);
+      })
+  });
 
-    })
-  })
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should check playButton is disabled', async(() => {
+    let loginBtn: HTMLButtonElement;
+    loginBtn = fixture.debugElement.query(By.css('#playButton')).nativeElement;
+    fixture.whenStable().then(() => {
+
+      fixture.detectChanges();
+      expect(loginBtn.disabled).toBe(true)
+    });
+  }));
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should check quitButton is enabled', async(() => {
+    let quitBtn: HTMLButtonElement;
+    quitBtn = fixture.debugElement.query(By.css('#quitButton')).nativeElement;
+    fixture.whenStable().then(() => {
+
+      fixture.detectChanges();
+      expect(quitBtn.disabled).toBe(false)
+    });
+
+  }));
 });

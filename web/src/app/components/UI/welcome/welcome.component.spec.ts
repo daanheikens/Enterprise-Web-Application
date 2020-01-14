@@ -5,7 +5,7 @@ import {GameFormComponent} from '../../game-form/game-form.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from '../../../app-routing.module';
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, By} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {HttpClientModule} from '@angular/common/http';
@@ -30,6 +30,8 @@ import {UserWidgetsComponent} from '../../user-widgets/user-widgets.component';
 describe('WelcomeComponent', () => {
   let component: WelcomeComponent;
   let fixture: ComponentFixture<WelcomeComponent>;
+  let componentHTML: HTMLElement;
+  let element;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,7 +70,8 @@ describe('WelcomeComponent', () => {
         RouterTestingModule
       ]
     })
-    .compileComponents();
+      .compileComponents();
+
   }));
 
   beforeEach(() => {
@@ -80,4 +83,36 @@ describe('WelcomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should have music disabled in video', () => {
+    let loginBtn: HTMLVideoElement;
+    loginBtn = fixture.debugElement.query(By.css('#video')).nativeElement;
+    expect(loginBtn).toBeTruthy();
+    expect(loginBtn.muted).toBe(true);
+  });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should have video on autoplay', () => {
+    let autoplay: HTMLVideoElement;
+    autoplay = fixture.debugElement.query(By.css('#video')).nativeElement;
+    expect(autoplay).toBeTruthy();
+    expect(autoplay.autoplay).not.toBe(false);
+  });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('should have video on loop', () => {
+    let loop: HTMLVideoElement;
+    loop = fixture.debugElement.query(By.css('#video')).nativeElement;
+    expect(loop).toBeTruthy();
+    expect(loop.loop).toBe(true);
+  });
+
+
 });

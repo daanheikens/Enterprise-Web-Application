@@ -30,6 +30,7 @@ import {UserWidgetsComponent} from '../../../user-widgets/user-widgets.component
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let element: Element;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -79,5 +80,15 @@ describe('HeaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  /**
+   * @author Sebastiaan van de Griendt
+   */
+  it('Should call the logOut method', async () => {
+    spyOn(component, 'logout');
+    const submitButton = fixture.debugElement.nativeElement.querySelector('#logOutLink');
+    submitButton.click();
+    expect(component.logout).toHaveBeenCalledTimes(1);
   });
 });

@@ -4,9 +4,9 @@
     <img *ngIf="placeAbleTile" src="{{placeAbleTile.imgSrc}}" class="tile {{placeAbleTile.rotation}}">
     <img src="../../assets/images/card-backside.png" class="kaart-achterkant">
     <img src="../../assets/images/card-sword.png" class="kaart">
-    <button [disabled]="!turnEnded  || !isTurn" (click)="onEndTurn()" class="btn btn-primary">Speel</button>
-    <button class="btn btn-danger" (click)="quitGame()">Quit</button>
-    <button class="btn btn-info" data-toggle="modal" data-target="#gameModal">Help</button>
+    <button [disabled]="!turnEnded  || !isTurn" (click)="onEndTurn()" id="playButton" class="btn btn-primary">Speel</button>
+    <button class="btn btn-danger" id="quitButton" (click)="quitGame()">Quit</button>
+    <button class="btn btn-info" id="helpButton" data-toggle="modal" data-target="#gameModal">Help</button>
   </div>
 </nav>
 
