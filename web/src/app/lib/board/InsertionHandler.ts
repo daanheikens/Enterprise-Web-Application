@@ -5,14 +5,18 @@ import {EventEmitter} from '@angular/core';
 
 export default class InsertionHandler {
 
-  private readonly board: Board;
+  private board: Board;
   private readonly placeableTileMessage: EventEmitter<Tile>;
   private readonly boardChangedMessage: EventEmitter<Board>;
 
-  public constructor(board: Board, placeableTileMessage: EventEmitter<Tile>, boardChangedMessage: EventEmitter<Board>) {
-    this.board = board;
+  public constructor(placeableTileMessage: EventEmitter<Tile>, boardChangedMessage: EventEmitter<Board>) {
     this.placeableTileMessage = placeableTileMessage;
     this.boardChangedMessage = boardChangedMessage;
+  }
+
+  public setBoard(board: Board): InsertionHandler {
+    this.board = board;
+    return this;
   }
 
   public handleInsertion(index: number, insertion: InsertionStrategy) {

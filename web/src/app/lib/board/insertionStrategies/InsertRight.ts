@@ -22,6 +22,10 @@ export default class InsertRight implements InsertionStrategy {
       board.tiles[i][row] = tileToMoveLeft;
       tileToMoveLeft = currentTile;
     }
+
+    currentTile.xCoordinate = null;
+    currentTile.yCoordinate = null;
+
     board.placeAbleTile = currentTile;
   }
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "game")
@@ -48,7 +49,11 @@ public class Game implements Model {
     private Set<Tile> tiles = new HashSet<>();
 
     @JsonIgnore
-    @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private Set<Card> cards = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(targetEntity = Tile.class, fetch = FetchType.LAZY)
     private Tile placeableTile;
 
     @JsonIgnore
@@ -58,6 +63,11 @@ public class Game implements Model {
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     private User userPlacedTile;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("creationTimestamp asc")
+    private Set<Notification> notifications = new HashSet<>();
 
     @NotNull
     @ColumnDefault("0")
@@ -115,9 +125,23 @@ public class Game implements Model {
         this.users.add(user);
     }
 
+    public void assignUserCards(User user) {
+        List<Card> userCards = this.cards.stream()
+                .filter(row -> row.getUser() == null)
+                .limit(24/this.getMaxPlayers()).collect(Collectors.toList());
+        this.cards.removeAll(userCards);
+
+        for (Card userCard : userCards) {
+            userCard.setGame(this);
+        }
+        
+        user.addCards(userCards);
+    }
+
     public Set<User> getUsers() {
         return users;
     }
+
 
     public void setInitiator(User user) {
         initiator = user;
@@ -133,6 +157,13 @@ public class Game implements Model {
             for (Tile tile1 : tile) {
                 tile1.setGame(this);
             }
+        }
+    }
+
+    public void drawCards(){
+        this.cards = new HashSet<>(Card.DrawCards());
+        for (Card card : this.cards) {
+            card.setGame(this);
         }
     }
 
@@ -184,5 +215,9 @@ public class Game implements Model {
 
     public void setPrivate(boolean aPrivate) {
         this.privateGame = aPrivate;
+    }
+
+    public Set<Notification> getNotifications() {
+        return this.notifications;
     }
 }

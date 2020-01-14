@@ -20,14 +20,16 @@ export class InvitesComponent implements OnInit {
   ) {
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.inviteService.getInvites().subscribe((invites: Invite[]) => this.invites = invites, (error => console.log(error)));
   }
 
-  public joinGame(gameId: number) {
+  public joinGame(gameId: number, inviteId: number) {
     const body = new HttpParams()
-      .set('gameId', String(gameId));
+      .set('gameId', String(gameId))
+      .set('inviteId', String(inviteId));
 
+    console.log(body);
     this.gameService.joinGame(body).subscribe(() => this.router.navigate(['/game']));
   }
 }
