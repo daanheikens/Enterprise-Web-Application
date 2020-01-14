@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ewa:Web exploded">
+    <output-path>$PROJECT_DIR$/classes/artifacts/ewa_Web_exploded</output-path>
+    <root id="root" />
+  </artifact>
+</component>

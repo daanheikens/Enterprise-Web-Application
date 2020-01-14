@@ -1,5 +1,6 @@
 import {Tile} from './Tile';
 import {User} from './User';
+import Notification from './Notification';
 
 export class Game {
 
@@ -23,6 +24,8 @@ export class Game {
 
   private readonly _userTurn: User;
 
+  private readonly _notifications: Notification[];
+
   public constructor(
     id: number,
     name: string,
@@ -33,7 +36,8 @@ export class Game {
     user: User,
     matrix: Tile[][],
     userTurn: User,
-    placeAbleTile: Tile
+    placeAbleTile: Tile,
+    notifications: Notification[]
   ) {
     this._id = id;
     this._name = name;
@@ -45,6 +49,7 @@ export class Game {
     this._matrix = matrix;
     this._placeAbleTile = placeAbleTile;
     this._userTurn = userTurn;
+    this._notifications = notifications;
   }
 
   get id(): number {
@@ -85,5 +90,9 @@ export class Game {
 
   get placeAbleTile(): Tile {
     return this._placeAbleTile;
+  }
+
+  get notifications(): Notification[] {
+    return this._notifications;
   }
 }

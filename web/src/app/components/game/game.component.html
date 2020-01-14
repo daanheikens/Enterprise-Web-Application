@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-1">
     <!--Chat component-->
-    <app-chat [gameId]="game.id" *ngIf="!gamePending"></app-chat>
+    <app-chat [game]="game" *ngIf="!gamePending"></app-chat>
   </div>
   <div class="col-10">
     <!--Board component-->
@@ -12,10 +12,11 @@
                [board]="board"
                [userPawn]="userPawn"
                [isTurn]="isTurn"
-               [placedTile]="placedTile"
                (placeableTileMessage)="onPlaceableTileChanged($event)"
-               (canEndTurnMessage)="onTurnCanEnd()"
-               (boardChangedMessage)="onBoardChanged($event)">
+               (canEndTurnMessage)="onTurnCanEnd($event)"
+               (boardChangedMessage)="onBoardChanged($event)"
+               (turnEndedMessage)="onTurnEnded($event)"
+               (gameEndedMessage)="onGameEnd()">
     </app-board>
   </div>
   <div class="col-1">
@@ -30,5 +31,6 @@
                [placeAbleTile]="placeableTile"
                [turnEnded]="turnCanEnd"
                [isTurn]="isTurn"
-               (turnEndedMessage)="onTurnEnded()">
+               [card]="card"
+               (turnEndedMessage)="onTurnEnded(turn)">
 </app-bottombar>
