@@ -38,7 +38,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.htmlElement = <HTMLElement>document.querySelector('.message-box');
-    this.appendMessages(this.game.notifications);
+    if (this.game !== undefined) {
+      this.appendMessages(this.game.notifications);
+    }
   }
 
   public get formControls(): { [p: string]: AbstractControl } {
