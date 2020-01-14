@@ -8,7 +8,6 @@ import MoveUp from '../../lib/movement/strategies/MoveUp';
 import MoveLeft from '../../lib/movement/strategies/MoveLeft';
 import MoveRight from '../../lib/movement/strategies/MoveRight';
 import MoveDown from '../../lib/movement/strategies/MoveDown';
-import {MovementService} from '../../services/movement.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game/game.service';
@@ -21,6 +20,7 @@ import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
 import {Pawn} from '../../model/Pawn';
 import TurnResult, {TurnResultAction} from '../../model/TurnResult';
 import Turn from '../../model/Turn';
+import {TurnService} from '../../services/turn.service';
 
 @Component({
   selector: 'app-board',

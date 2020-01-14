@@ -9,6 +9,8 @@ import Turn from '../../model/Turn';
 import {Router} from '@angular/router';
 import {CardService} from '../../services/card.service';
 import Card from '../../model/Card';
+import {GameService} from '../../services/game/game.service';
+import {MessageService} from '../../services/messaging/message.service';
 
 @Component({
   selector: 'app-game',
