@@ -2,7 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RegisterComponent} from './register.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from '../../app-routing.module';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -31,7 +31,7 @@ import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let element;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -101,6 +101,32 @@ describe('RegisterComponent', () => {
   /**
    * @author Daan Heikens
    */
+  it('Should have initialized default properties', async () => {
+    expect(component.registerForm).toEqual(jasmine.any(FormGroup));
+    expect(component.returnUrl).toMatch('/home');
+    expect(component.error).toEqual('');
+    expect(component.loading).toBeFalsy();
+    expect(component.submitted).toBeFalsy();
+    expect((<any>component).selectedFiles).toBeUndefined();
+  });
+
+  it('Should add a file to the selectedFiles variable', async () => {
+    let file = new Blob();
+    const fileList = {
+      0: file,
+      1: file,
+      length: 2,
+      item: (index: number) => file
+    };
+
+    expect((<any>component).selectedFiles).toBeUndefined();
+    component.selectFile({target: {files: fileList}});
+    expect((<any>component).selectedFiles).toEqual(jasmine.any(Object));
+  });
+
+  /**
+   * @author Daan Heikens
+   */
   it('Should call the onSubmit method', async () => {
     spyOn(component, 'onSubmit');
     const submitButton = element.querySelector('.btn.btn-primary');
@@ -111,7 +137,7 @@ describe('RegisterComponent', () => {
   /**
    * @author Daan Heikens
    */
-  it('register form should return invalid when required parameter is missing', async () => {
+  it('register form should return invalid when a single required parameter is missing', async () => {
     component.onSubmit();
     expect(component.registerForm.invalid).toBeTruthy();
     let formControls = component.formControls;
@@ -171,32 +197,5 @@ describe('RegisterComponent', () => {
     expect(formControls.street.value).toBe('utstreet');
     expect(formControls.number.value).toBe('69');
     expect(formControls.city.value).toBe('UT_city');
-  });
-
-  /**
-   * @author Daan Heikens
-   */
-  it('Register form should be invalid when invalid email', async () => {
-    let formControls = component.formControls;
-    formControls.screenName.setValue('UT_name');
-    formControls.username.setValue('UT_username');
-    formControls.password.setValue('UT_password');
-    formControls.email.setValue('ut@ut');
-    formControls.street.setValue('utstreet');
-    formControls.number.setValue('69');
-    formControls.city.setValue('UT_city');
-    formControls.image.patchValue('');
-    formControls.image.setErrors(null);
-    let file = new Blob();
-    const fileList = {
-      0: file,
-      1: file,
-      length: 2,
-      item: (index: number) => file
-    };
-    component.selectFile({target: {files: fileList}});
-    component.onSubmit();
-
-    expect(component.registerForm.invalid).toBeFalsy();
   });
 });
