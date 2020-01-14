@@ -8,7 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 
 @Entity
 @Table(name = "user")
@@ -53,6 +59,10 @@ public class User implements UserDetails, Model {
     @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Game> games = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<Card> cards = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "user")
@@ -129,6 +139,10 @@ public class User implements UserDetails, Model {
         return this.pawn;
     }
 
+    public Set<Card> getCards() {
+        return cards;
+    }
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -169,5 +183,14 @@ public class User implements UserDetails, Model {
     @JsonIgnore
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addCards(List<Card> cards) {
+
+        for (Card card : cards) {
+            card.setUser(this);
+        }
+
+        this.cards.addAll(cards);
     }
 }

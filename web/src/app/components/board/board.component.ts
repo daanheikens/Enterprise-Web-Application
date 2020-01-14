@@ -8,7 +8,6 @@ import MoveUp from '../../lib/movement/strategies/MoveUp';
 import MoveLeft from '../../lib/movement/strategies/MoveLeft';
 import MoveRight from '../../lib/movement/strategies/MoveRight';
 import MoveDown from '../../lib/movement/strategies/MoveDown';
-import {MovementService} from '../../services/game/movement.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game/game.service';
@@ -19,6 +18,9 @@ import InsertBottom from '../../lib/board/insertionStrategies/InsertBottom';
 import InsertLeft from '../../lib/board/insertionStrategies/InsertLeft';
 import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
 import {Pawn} from '../../model/Pawn';
+import TurnResult, {TurnResultAction} from '../../model/TurnResult';
+import Turn from '../../model/Turn';
+import {TurnService} from '../../services/turn.service';
 
 @Component({
   selector: 'app-board',
@@ -48,13 +50,19 @@ export class BoardComponent implements AfterViewInit {
   private boardChangedMessage = new EventEmitter<Board>();
 
   @Output()
-  private canEndTurnMessage = new EventEmitter<Event>();
+  private canEndTurnMessage = new EventEmitter<Turn>();
+
+  @Output()
+  private turnEndedMessage = new EventEmitter<Turn>();
+
+  @Output()
+  private gameEndedMessage = new EventEmitter<Event>();
 
   /** State properties for the turn **/
   @Input()
   private placedTile = false;
 
-  private turnEndMessageSent = false;
+  private turn = new Turn();
 
   /** Animation properties **/
   public currentState = {
@@ -97,7 +105,7 @@ export class BoardComponent implements AfterViewInit {
   public constructor(
     private readonly authService: AuthService,
     private readonly gameService: GameService,
-    private readonly movementService: MovementService
+    private readonly movementService: TurnService
   ) {
   }
 
@@ -107,8 +115,9 @@ export class BoardComponent implements AfterViewInit {
         this.placeableTileMessage.emit(this.board.placeAbleTile);
       }
 
-      this.insertionHandler = new InsertionHandler(this.board, this.placeableTileMessage, this.boardChangedMessage);
+      this.insertionHandler = new InsertionHandler(this.placeableTileMessage, this.boardChangedMessage);
       this.movementHandler = new MovementHandler(this.userPawn);
+      this.gameService.placedTile.subscribe((placedTile => this.placedTile = placedTile));
     }, 1000);
   }
 
@@ -118,14 +127,13 @@ export class BoardComponent implements AfterViewInit {
     }
 
     this.changeState('colTop' + column);
-    this.insertionHandler.handleInsertion(column - 1, this.insertTopStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(column - 1, this.insertTopStrategy);
 
     this.placedTile = true;
-
-    if (this.turnEndMessageSent === false) {
-      this.canEndTurnMessage.emit();
-      this.turnEndMessageSent = true;
-    }
+    this.turn.tileInsertedMessage = `<b>Placed a tile from top in column: ${column}`;
+    this.canEndTurnMessage.emit(this.turn);
   }
 
   public insertRight(row: number): void {
@@ -134,14 +142,13 @@ export class BoardComponent implements AfterViewInit {
     }
 
     this.changeState('rowRight' + row);
-    this.insertionHandler.handleInsertion(row - 1, this.insertRightStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(row - 1, this.insertRightStrategy);
 
     this.placedTile = true;
-
-    if (this.turnEndMessageSent === false) {
-      this.canEndTurnMessage.emit();
-      this.turnEndMessageSent = true;
-    }
+    this.turn.tileInsertedMessage = `<b>Placed a tile from right in row: ${row}`;
+    this.canEndTurnMessage.emit(this.turn);
   }
 
   public insertBottom(column: number): void {
@@ -150,14 +157,13 @@ export class BoardComponent implements AfterViewInit {
     }
 
     this.changeState('colBottom' + column);
-    this.insertionHandler.handleInsertion(column - 1, this.insertBottomStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(column - 1, this.insertBottomStrategy);
 
     this.placedTile = true;
-
-    if (this.turnEndMessageSent === false) {
-      this.canEndTurnMessage.emit();
-      this.turnEndMessageSent = true;
-    }
+    this.turn.tileInsertedMessage = `<b>Placed a tile from bottom in column: ${column}`;
+    this.canEndTurnMessage.emit(this.turn);
   }
 
   public insertLeft(row: number): void {
@@ -166,14 +172,13 @@ export class BoardComponent implements AfterViewInit {
     }
 
     this.changeState('rowLeft' + row);
-    this.insertionHandler.handleInsertion(row - 1, this.insertLefStrategy);
+    this.insertionHandler
+      .setBoard(this.board)
+      .handleInsertion(row - 1, this.insertLefStrategy);
 
     this.placedTile = true;
-
-    if (this.turnEndMessageSent === false) {
-      this.canEndTurnMessage.emit();
-      this.turnEndMessageSent = true;
-    }
+    this.turn.tileInsertedMessage = `<b>Placed a tile from left in row: ${row}`;
+    this.canEndTurnMessage.emit(this.turn);
   }
 
   /**
@@ -211,19 +216,39 @@ export class BoardComponent implements AfterViewInit {
 
     if (this.placedTile && MovementDirections.includes(event.key)) {
       this.movementService.movePawn(new HttpParams().set('direction', event.key))
-        .subscribe((result: boolean) => {
-          if (result === true) {
-            if (event.key === 'ArrowRight') {
-              this.movementHandler.handleMovement(this.moveRight);
-            } else if (event.key === 'ArrowLeft') {
-              this.movementHandler.handleMovement(this.moveLeft);
-            } else if (event.key === 'ArrowUp') {
-              this.movementHandler.handleMovement(this.moveUp);
-            } else if (event.key === 'ArrowDown') {
-              this.movementHandler.handleMovement(this.moveDown);
+        .subscribe((result: TurnResult) => {
+          if (result.resultAction !== TurnResultAction.INVALID_MOVE) {
+            this.handleMovement(event.key);
+            // End game if end game action is given (Send endgame message and end game)
+            if (result.resultAction === TurnResultAction.GAME_END) {
+              this.gameEndedMessage.emit();
+            }
+            // End turn if treasure is found + send message treasure is found
+            if (result.resultAction === TurnResultAction.COLLECTED_TREASURE) {
+              this.turn.withTreasure = true;
+              this.turnEndedMessage.emit(this.turn);
             }
           }
         });
+    }
+  }
+
+  private handleMovement(key: string): void {
+    switch (key) {
+      case 'ArrowRight':
+        this.movementHandler.handleMovement(this.moveRight);
+        break;
+      case 'ArrowLeft':
+        this.movementHandler.handleMovement(this.moveLeft);
+        break;
+      case 'ArrowUp':
+        this.movementHandler.handleMovement(this.moveUp);
+        break;
+      case 'ArrowDown':
+        this.movementHandler.handleMovement(this.moveDown);
+        break;
+      default:
+        throw new Error('Cannot process movement by the provided key');
     }
   }
 }

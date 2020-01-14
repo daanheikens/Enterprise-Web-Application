@@ -15,6 +15,9 @@ export default class InsertTop implements InsertionStrategy {
       tileToMoveDown = currentTile;
     }
 
+    currentTile.xCoordinate = null;
+    currentTile.yCoordinate = null;
+
     board.placeAbleTile = currentTile;
   }
 }

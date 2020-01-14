@@ -35,6 +35,10 @@ public class GameService {
         this.gameRepository.delete(game);
     }
 
+    public void delete(Long gameId) {
+        this.gameRepository.deleteById(gameId);
+    }
+
     public Game getCurrentGame(User user) {
         Game currentGame = null;
         for (Game game : user.getGames()) {
@@ -46,7 +50,6 @@ public class GameService {
                 this.delete(game);
                 continue;
             }
-
             currentGame = game;
             break;
         }

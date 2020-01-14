@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
+@Table(name = "password_reset_token")
 public class PasswordResetToken implements Model {
 
     @Id

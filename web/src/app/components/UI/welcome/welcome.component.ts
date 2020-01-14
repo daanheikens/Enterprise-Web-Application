@@ -24,7 +24,9 @@ export class WelcomeComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.gameService.getCurrentGame().subscribe((game: Game) => this.game = game);
+    this.gameService.getCurrentGame().subscribe((game: Game) => {
+      this.game = game
+    });
     this.inviteService.getInvites().subscribe((invites: Invite[]) => this.invitesCount = invites ? invites.length : 0);
   }
 

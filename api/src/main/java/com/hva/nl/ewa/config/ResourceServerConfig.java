@@ -53,7 +53,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         // Set to true if mail fails to send and watch the log
-        props.put("mail.debug", "false");
+        props.put("mail.debug", "true");
 
         return mailSender;
     }
