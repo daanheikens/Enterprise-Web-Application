@@ -63,12 +63,4 @@ public class TileServiceTests {
         Assert.assertSame(null, tile2);
         Assert.assertEquals(null, tile3);
     }
-
-    @Test
-    public void saveShouldReturnSuccesTest() {
-        Tile tile = tileService.save(testTile);
-        Assert.assertNotNull(tile);
-    }
-
-
 }

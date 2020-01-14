@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
 /*
-* @author Sebastiaan van de Griendt
+ * @author Sebastiaan van de Griendt
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,12 +24,12 @@ public class TileDefinitionTest {
 
     TileDefinition var = TileDefinition.GetTile(30);
     List<TileDefinition> movableTile = TileDefinition.GetMovableTileDefinitions();
-    TileDefinition tile = new TileDefinition(1, true, true, true, true, true, null);
-    TileDefinition tile2 = new TileDefinition(2, true, true, true, true, false, null);
+    TileDefinition tile = new TileDefinition(1, true, true, true, true, true, null, TreasureStyle.BATCARD);
+    TileDefinition tile2 = new TileDefinition(2, true, true, true, true, false, null, TreasureStyle.BOOKCARD);
 
     @Test
     public void getTileReturnsSuccesfulIDTest() {
-        Assert.assertEquals(30, var.getTileDefinitionObjectId());
+        Assert.assertEquals(30, var.getTileDefinitionId());
     }
 
     @Test
@@ -49,21 +49,21 @@ public class TileDefinitionTest {
     public void randomNormalTileReturnsCorrect() {
         for (int i = 0; i < 9; i++) {
             var var = TileDefinition.GetRandomNormalTile();
-            assertThat(var.getTileDefinitionObjectId(), anyOf(is(29), is(28)));
+            assertThat(var.getTileDefinitionId(), anyOf(is(29), is(28)));
         }
     }
 
     @Test
     public void movableTileReturnsCorrect(){
         for (TileDefinition id : movableTile){
-            assertThat(id.getTileDefinitionObjectId(), is(not(both(greaterThan(10)).and(lessThan(27)))));
+            assertThat(id.getTileDefinitionId(), is(not(both(greaterThan(10)).and(lessThan(27)))));
         }
     }
 
     @Test
     public void movableTileReturnsIncorrect(){
         for (TileDefinition id : movableTile){
-            assertThat(id.getTileDefinitionObjectId(), is(either(greaterThan(26)).or(lessThan(11))));
+            assertThat(id.getTileDefinitionId(), is(either(greaterThan(26)).or(lessThan(11))));
         }
     }
 
