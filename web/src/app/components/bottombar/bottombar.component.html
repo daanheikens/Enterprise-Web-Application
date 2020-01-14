@@ -6,5 +6,27 @@
     <img src="{{card ? card.treasureStyle : ''}}" class="kaart">
     <button [disabled]="!turnEnded  || !isTurn" (click)="onEndTurn()" class="btn btn-primary">Speel</button>
     <button class="btn btn-danger" (click)="quitGame()">Quit</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#gameModal">Help</button>
   </div>
 </nav>
+
+<div class="modal hide fade" id="gameModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Spelregels</h3>
+
+      </div>
+      <div class="modal-body">
+        <h5>Doel</h5>
+        <p>Het doel is om de treasure die onderin staat te vinden in het spel en zo punten scoren</p>
+        <h5>Hoe</h5>
+        <p>Jouw beurt begint met het plaatsen van een nieuwe tegel op het bord, daarna kan je pas bewegen op het bord.
+          Maak gebruik van de pijltjes op het toetsenbord om jouw pion te bewegen.</p>
+        <h5>Extra informatie</h5>
+        <p>Er is een chat beschikbaar voor alle spelers om met elkaar te communiceren.</p>
+      </div>
+
+    </div>
+  </div>
+</div>

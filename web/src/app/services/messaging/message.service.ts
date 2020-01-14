@@ -1,10 +1,10 @@
 import {Injectable, OnInit} from '@angular/core';
 import {CompatClient, Stomp} from '@stomp/stompjs';
-import {Message, MessageType} from '../model/Message';
-import {GameService} from './game.service';
+import {Message, MessageType} from '../../model/Message';
+import {GameService} from '../game/game.service';
 import {Observable, Subject} from 'rxjs';
-import {Game} from '../model/Game';
-import {AuthService} from './auth.service';
+import {Game} from '../../model/Game';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'

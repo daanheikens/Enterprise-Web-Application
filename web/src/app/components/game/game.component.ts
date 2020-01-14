@@ -1,7 +1,5 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {Tile} from '../../model/Tile';
-import {GameService} from '../../services/game.service';
-import {MessageService} from '../../services/message.service';
 import {Message, MessageType} from '../../model/Message';
 import {Board} from '../../model/Board';
 import {PawnFactory} from '../../lib/factories/PawnFactory';

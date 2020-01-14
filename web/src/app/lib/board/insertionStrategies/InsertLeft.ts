@@ -6,11 +6,9 @@ export default class InsertLeft implements InsertionStrategy {
 
   public apply(row: number, board: Board): void {
     if (row % 2 !== 1) {
-      log.Error('Tried to insert into an even col');
       return;
     }
     if (row > 5) {
-      log.error('Tried to insert item from top into not existing col' + row);
       return;
     }
 

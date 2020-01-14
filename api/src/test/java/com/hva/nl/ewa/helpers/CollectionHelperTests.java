@@ -8,8 +8,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 
+/**
+ * @author Daan Heikens
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CollectionHelperTests {
@@ -25,16 +30,16 @@ public class CollectionHelperTests {
         // Call method
         List<Integer> list = CollectionHelper.combine(arr1, arr2);
         List<Integer> expectedList = Arrays.asList(20, 30);
-        Assert.assertEquals(2, list.size());
 
         Assert.assertThat(list, is(expectedList));
+        Assert.assertThat(list.size(), equalTo(2));
 
         Integer[] arr3 = new Integer[1];
         Integer[] arr4 = new Integer[1];
 
         List<Integer> list2 = CollectionHelper.combine(arr3, arr4);
 
-        Assert.assertEquals(2, list2.size());
+        Assert.assertThat(list2, hasSize(2));
 
         for (Integer i : list2) {
             Assert.assertNull(i);
@@ -58,5 +63,6 @@ public class CollectionHelperTests {
 
         Assert.assertThat(set1, is(expectedSet1));
         Assert.assertThat(set2, is(expectedSet2));
+
     }
 }
