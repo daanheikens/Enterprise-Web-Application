@@ -47,6 +47,8 @@ public class Card implements Model {
     }
 
     public void setId(long id) {
+
+        if(id < 0 ){ id = 0;}
         this.id = id;
     }
 

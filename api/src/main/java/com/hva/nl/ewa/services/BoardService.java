@@ -20,7 +20,7 @@ public class BoardService {
         this.tileRepository = tileRepository;
     }
 
-    // 33 + 1 since we need to have a placeabletile
+    // 32 + 1 since we need to have a placeabletile
     private static final int movableTiles = 33;
 
     private static Tile[][] GetDefaultBoard() {
