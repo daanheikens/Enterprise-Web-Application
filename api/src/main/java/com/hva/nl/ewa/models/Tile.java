@@ -2,7 +2,6 @@ package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,8 +14,10 @@ public class Tile implements Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private long tileId;
+
     @NotNull
     private TileRotation rotation;
+
     @JsonIgnore
     @OneToOne(targetEntity = Pawn.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "pawn_id")
@@ -34,7 +35,7 @@ public class Tile implements Model {
     @NotNull
     private boolean leftWall;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
 
@@ -43,6 +44,20 @@ public class Tile implements Model {
     private Integer yCoordinate;
 
     public Tile() {
+    }
+
+    public Tile(Pawn pawn, TileDefinition tileDefinition) {
+        this.rotation = TileRotation.Zero;
+        this.pawn = pawn;
+        this.tileDefinition = tileDefinition.getTileDefinitionId();
+    }
+
+    public Tile(Pawn pawn, TileDefinition tileDefinition, int initialYCoordinate, int initialXCoordinate) {
+        this.rotation = TileRotation.Zero;
+        this.pawn = pawn;
+        this.tileDefinition = tileDefinition.getTileDefinitionId();
+        this.xCoordinate = initialXCoordinate;
+        this.yCoordinate = initialYCoordinate;
     }
 
     public TileRotation getRotation() {
@@ -83,7 +98,7 @@ public class Tile implements Model {
 
     @JsonIgnore
     public void setTileDefinitionObject(TileDefinition tileDefinition) {
-        this.tileDefinition = tileDefinition.getTileDefinitionObjectId();
+        this.tileDefinition = tileDefinition.getTileDefinitionId();
     }
 
     public Integer getyCoordinate() {
@@ -149,4 +164,9 @@ public class Tile implements Model {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public boolean hasCard(Card card){
+        return card.IsOnTile(this);
+    }
+
 }
