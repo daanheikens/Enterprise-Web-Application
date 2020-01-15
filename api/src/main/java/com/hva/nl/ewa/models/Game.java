@@ -134,7 +134,7 @@ public class Game implements Model {
         for (Card userCard : userCards) {
             userCard.setGame(this);
         }
-        
+
         user.addCards(userCards);
     }
 

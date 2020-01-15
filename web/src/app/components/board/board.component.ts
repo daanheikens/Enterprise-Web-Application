@@ -3,14 +3,11 @@ import {faArrowDown, faArrowLeft, faArrowRight, faArrowUp, IconDefinition} from 
 import {TileAnimations} from '../animations/TileAnimations';
 import {Board} from '../../model/Board';
 import {Tile} from '../../model/Tile';
-import {PawnFactory} from '../../lib/factories/PawnFactory';
 import MovementHandler from '../../lib/movement/MovementHandler';
 import MoveUp from '../../lib/movement/strategies/MoveUp';
 import MoveLeft from '../../lib/movement/strategies/MoveLeft';
 import MoveRight from '../../lib/movement/strategies/MoveRight';
 import MoveDown from '../../lib/movement/strategies/MoveDown';
-import {MovementService} from '../../services/game/movement.service';
-import {TurnService} from '../../services/turn.service';
 import {HttpParams} from '@angular/common/http';
 import {MovementDirections} from '../../lib/movement/MovementDirections';
 import {GameService} from '../../services/game/game.service';
@@ -23,6 +20,7 @@ import InsertRight from '../../lib/board/insertionStrategies/InsertRight';
 import {Pawn} from '../../model/Pawn';
 import TurnResult, {TurnResultAction} from '../../model/TurnResult';
 import Turn from '../../model/Turn';
+import {TurnService} from '../../services/turn.service';
 
 @Component({
   selector: 'app-board',
@@ -221,14 +219,14 @@ export class BoardComponent implements AfterViewInit {
         .subscribe((result: TurnResult) => {
           if (result.resultAction !== TurnResultAction.INVALID_MOVE) {
             this.handleMovement(event.key);
+            // End game if end game action is given (Send endgame message and end game)
+            if (result.resultAction === TurnResultAction.GAME_END) {
+              this.gameEndedMessage.emit();
+            }
             // End turn if treasure is found + send message treasure is found
             if (result.resultAction === TurnResultAction.COLLECTED_TREASURE) {
               this.turn.withTreasure = true;
               this.turnEndedMessage.emit(this.turn);
-            }
-            // End game if end game action is given (Send endgame message and end game)
-            if (result.resultAction === TurnResultAction.GAME_END) {
-              this.gameEndedMessage.emit();
             }
           }
         });

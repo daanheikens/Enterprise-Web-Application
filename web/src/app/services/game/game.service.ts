@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {environment} from '../../environments/environment';
 import {tap} from 'rxjs/operators';
 import {Observable, Subject} from 'rxjs';
-import {Game} from '../model/Game';
-import {Board} from '../model/Board';
+import {environment} from '../../../environments/environment';
+import {Game} from '../../model/Game';
+import {Board} from '../../model/Board';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +81,8 @@ export class GameService {
       gameId: board.gameId
     }).toPromise();
   }
+
+  M;
 
   public endTurn(gameId: number) {
     this.placedTileSubject.next(false);
