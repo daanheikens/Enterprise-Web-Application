@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
 /*
- * @author Sebastiaan van de Griendt
+* @author Sebastiaan van de Griendt
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,8 +24,8 @@ public class TileDefinitionTest {
 
     TileDefinition var = TileDefinition.GetTile(30);
     List<TileDefinition> movableTile = TileDefinition.GetMovableTileDefinitions();
-    TileDefinition tile = new TileDefinition(1, true, true, true, true, true, null, TreasureStyle.BATCARD);
-    TileDefinition tile2 = new TileDefinition(2, true, true, true, true, false, null, TreasureStyle.BOOKCARD);
+    TileDefinition tile = new TileDefinition(1, true, true, true, true, true, null, TreasureStyle.NONE);
+    TileDefinition tile2 = new TileDefinition(2, true, true, true, true, false, null, TreasureStyle.NONE);
 
     @Test
     public void getTileReturnsSuccesfulIDTest() {
