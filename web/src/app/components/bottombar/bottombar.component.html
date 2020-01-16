@@ -5,8 +5,8 @@
     <img src="../../assets/images/card-backside.png" class="kaart-achterkant">
     <img src="{{card ? card.treasureStyle : ''}}" class="kaart">
     <button [disabled]="!turnEnded  || !isTurn" (click)="onEndTurn()" class="btn btn-primary">Speel</button>
-    <button class="btn btn-danger" (click)="quitGame()">Quit</button>
-    <button class="btn btn-info" data-toggle="modal" data-target="#gameModal">Help</button>
+    <button id="quitButton" class="btn btn-danger" (click)="quitGame()">Quit</button>
+    <button id="playButton" class="btn btn-info" data-toggle="modal" data-target="#gameModal">Help</button>
   </div>
 </nav>
 

@@ -89,9 +89,9 @@ describe('BottombarComponent', () => {
   /**
    * @author Sebastiaan van de Griendt
    */
-  it('should have a button with Speel',() =>{
+  it('should have a button with Speel', () => {
     let button = fixture.debugElement.queryAll(By.css('button'));
-    let button1 : HTMLButtonElement = button[0].nativeElement;
+    let button1: HTMLButtonElement = button[0].nativeElement;
     expect(button1.textContent).toBe('Speel');
   });
 
@@ -99,53 +99,55 @@ describe('BottombarComponent', () => {
    * @author Sebastiaan van de Griendt
    */
 
-  it('should have a button with Quit',() =>{
+  it('should have a button with Quit', () => {
     let button = fixture.debugElement.queryAll(By.css('button'));
-    let button1 : HTMLButtonElement = button[1].nativeElement;
+    let button1: HTMLButtonElement = button[1].nativeElement;
     expect(button1.textContent).toBe('Quit');
   });
 
   /**
    * @author Sebastiaan van de Griendt
    */
-  it('should have a button with Help on ',() =>{
+  it('should have a button with Help on ', () => {
     let button = fixture.debugElement.queryAll(By.css('button'));
-    let button1 : HTMLButtonElement = button[2].nativeElement;
+    let button1: HTMLButtonElement = button[2].nativeElement;
     expect(button1.textContent).toBe('Help');
   });
 
   /**
    * @author Sebastiaan van de Griendt
    */
-  it('button should not be named banaan', () =>{
+  it('button should not be named banaan', () => {
     let button = fixture.debugElement.queryAll(By.css('button'));
-    let button1 : HTMLButtonElement = button[1].nativeElement;
-    expect(button1.textContent).not.toContain('banaan')
+    let button1: HTMLButtonElement = button[1].nativeElement;
+    expect(button1.textContent).not.toContain('banaan');
   });
 
   /**
    * @author Sebastiaan van de Griendt
    */
   it('should load its images', () => {
-    componentHTML.querySelectorAll('img').forEach((img: HTMLImageElement)=>{
+    let count = 0;
+    componentHTML.querySelectorAll('img').forEach((img: HTMLImageElement) => {
       fixture.detectChanges();
       setTimeout(() => {
         expect(img).toBeTruthy();
         expect(img.complete).toBeTruthy();
       }, 30);
-      })
+      count++;
+    });
+    expect(count).toEqual(2);
   });
 
   /**
    * @author Sebastiaan van de Griendt
    */
-  it('should check playButton is disabled', async(() => {
+  it('should check playButton is enabled', async(() => {
     let loginBtn: HTMLButtonElement;
     loginBtn = fixture.debugElement.query(By.css('#playButton')).nativeElement;
     fixture.whenStable().then(() => {
-
       fixture.detectChanges();
-      expect(loginBtn.disabled).toBe(true)
+      expect(loginBtn.disabled).toBe(false);
     });
   }));
 
@@ -156,10 +158,8 @@ describe('BottombarComponent', () => {
     let quitBtn: HTMLButtonElement;
     quitBtn = fixture.debugElement.query(By.css('#quitButton')).nativeElement;
     fixture.whenStable().then(() => {
-
       fixture.detectChanges();
-      expect(quitBtn.disabled).toBe(false)
+      expect(quitBtn.disabled).toBe(false);
     });
-
   }));
 });
