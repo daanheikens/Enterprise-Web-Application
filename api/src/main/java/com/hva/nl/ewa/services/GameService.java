@@ -38,6 +38,13 @@ public class GameService {
     }
 
     public void delete(Long gameId) {
+        Game game = this.findOne(gameId);
+        if (game == null) {
+            return;
+        }
+
+        game.getUsers().clear();
+        game.getTiles().clear();
         this.gameRepository.deleteById(gameId);
     }
 

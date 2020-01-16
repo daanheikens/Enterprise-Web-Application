@@ -41,7 +41,7 @@ public class Game implements Model {
 
     @JsonIgnore
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(name = "user_id")
     private User initiator;
 
     @JsonIgnore
