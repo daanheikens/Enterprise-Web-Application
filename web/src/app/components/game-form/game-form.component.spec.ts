@@ -30,6 +30,7 @@ import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 describe('GameFormComponent', () => {
   let component: GameFormComponent;
   let fixture: ComponentFixture<GameFormComponent>;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -75,9 +76,44 @@ describe('GameFormComponent', () => {
     fixture = TestBed.createComponent(GameFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Should call the onSubmit method', async () => {
+    spyOn(component, 'onSubmit');
+    const submitButton = element.querySelector('.btn.btn-primary');
+    submitButton.click();
+    expect(component.onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.newGameForm).toBeTruthy();
+    expect(component.loading).toBe(false);
+    expect(component.submitted).toBe(false);
+    expect(component.error).toBe('');
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Check form validation', async () => {
+    component.onSubmit();
+    expect(component.newGameForm.invalid).toBeTruthy();
+    let formControls = component.formControls;
+    expect(component.newGameForm.invalid).toBeTruthy();
+    formControls.maxPlayers.setValue('4');
+    component.onSubmit();
+    expect(component.newGameForm.invalid).toBeTruthy();
+    formControls.name.setValue('UT_game');
+    component.onSubmit();
+    expect(component.newGameForm.invalid).toBeFalsy();
+    component.onSubmit();
   });
 });
