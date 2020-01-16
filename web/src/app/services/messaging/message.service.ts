@@ -111,7 +111,6 @@ export class MessageService implements OnInit {
   }
 
   private onMessageReceived(message) {
-    console.log(message);
     switch (message.type) {
       case MessageType.CHAT_MESSAGE:
         this.chatMessageSubject.next(message);

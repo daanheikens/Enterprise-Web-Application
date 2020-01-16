@@ -57,8 +57,8 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
       .toPromise()
       .then(data => {
         if (data !== null) {
-          this.cardService.getCurrentTreasureCard(data.id).subscribe((card: Card) => this.card = card);
           this.renderBoard(data);
+          this.cardService.getCurrentTreasureCard(data.id).subscribe((card: Card) => this.card = card);
           this.messageService.connect(data.id);
         } else {
           this.router.navigate(['/home']);
@@ -107,6 +107,8 @@ export class GameComponent implements AfterViewInit, OnInit, OnDestroy {
     this.gameService.getCurrentGame()
       .toPromise()
       .then(game => {
+        this.renderBoard(game);
+        this.renderPawn();
         if (game.currentPlayers.length >= game.maxPlayers) {
           this.gamePending = false;
           this.game = game;

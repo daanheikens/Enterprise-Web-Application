@@ -29,6 +29,6 @@ public class PasswordResetTokenService {
     }
 
     public void delete(PasswordResetToken passwordResetToken) {
-        this.passwordResetTokenRepository.delete(passwordResetToken);
+        this.passwordResetTokenRepository.deleteById(passwordResetToken.getId());
     }
 }

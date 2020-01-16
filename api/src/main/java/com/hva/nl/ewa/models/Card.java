@@ -30,7 +30,7 @@ public class Card implements Model {
     private User user;
 
     @JsonIgnore
-    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = Game.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id")
     private Game game;
 

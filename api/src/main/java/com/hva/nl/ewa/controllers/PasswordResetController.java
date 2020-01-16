@@ -13,7 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 @RestController
+@Transactional
 @RequestMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PasswordResetController {
 

@@ -22,15 +22,16 @@
   <div class="col-1">
     <!--User widgets component-->
     <app-user-widgets *ngIf="game" [users]="game.currentPlayers"></app-user-widgets>
-    </div>
   </div>
+</div>
 
 
 <!--Bottombar with controls-->
-<app-bottombar *ngIf="!gamePending"
+<app-bottombar *ngIf="game && !gamePending"
                [placeAbleTile]="placeableTile"
                [turnEnded]="turnCanEnd"
                [isTurn]="isTurn"
                [card]="card"
+               [gameId]="game.id"
                (turnEndedMessage)="onTurnEnded(turn)">
 </app-bottombar>

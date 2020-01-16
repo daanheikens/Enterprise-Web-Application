@@ -29,7 +29,6 @@ export class InvitesComponent implements OnInit {
       .set('gameId', String(gameId))
       .set('inviteId', String(inviteId));
 
-    console.log(body);
     this.gameService.joinGame(body).subscribe(() => this.router.navigate(['/game']));
   }
 }

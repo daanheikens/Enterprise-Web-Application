@@ -2,9 +2,9 @@ import MoveStrategy from './strategies/MoveStrategy';
 import {Pawn} from '../../model/Pawn';
 
 export default class MovementHandler {
-  private readonly pawn: Pawn;
+  private pawn: Pawn;
 
-  public constructor(pawn: Pawn) {
+  public setPawn(pawn: Pawn): void {
     this.pawn = pawn;
   }
 

@@ -15,7 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+
 @RestController
+@Transactional
 @RequestMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegisterController {
 

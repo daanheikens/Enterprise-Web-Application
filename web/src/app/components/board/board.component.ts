@@ -116,7 +116,7 @@ export class BoardComponent implements AfterViewInit {
       }
 
       this.insertionHandler = new InsertionHandler(this.placeableTileMessage, this.boardChangedMessage);
-      this.movementHandler = new MovementHandler(this.userPawn);
+      this.movementHandler = new MovementHandler();
       this.gameService.placedTile.subscribe((placedTile => this.placedTile = placedTile));
     }, 1000);
   }
@@ -234,6 +234,7 @@ export class BoardComponent implements AfterViewInit {
   }
 
   private handleMovement(key: string): void {
+    this.movementHandler.setPawn(this.userPawn);
     switch (key) {
       case 'ArrowRight':
         this.movementHandler.handleMovement(this.moveRight);

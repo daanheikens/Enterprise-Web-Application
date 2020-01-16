@@ -1,5 +1,4 @@
 import {InsertionStrategy} from './InsertionStrategy';
-import {log} from "util";
 import {Board} from '../../../model/Board';
 
 export default class InsertLeft implements InsertionStrategy {
@@ -15,7 +14,6 @@ export default class InsertLeft implements InsertionStrategy {
     let tileToMoveRight = board.placeAbleTile;
 
     let currentTile;
-    console.log(board.tiles);
     for (let i = 0; i < 7; i++) {
       currentTile = board.tiles[i][row];
       tileToMoveRight.xCoordinate = i;
