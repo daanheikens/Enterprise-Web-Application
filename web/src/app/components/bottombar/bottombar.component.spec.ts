@@ -26,10 +26,12 @@ import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
 import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
+import {Router} from '@angular/router';
 
 describe('BottombarComponent', () => {
   let component: BottombarComponent;
   let fixture: ComponentFixture<BottombarComponent>;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -64,8 +66,7 @@ describe('BottombarComponent', () => {
         ButtonsModule,
         NgSelectModule,
         ModalModule.forRoot(),
-        FormsModule,
-        RouterTestingModule
+        FormsModule
       ]
     })
       .compileComponents();
@@ -75,6 +76,7 @@ describe('BottombarComponent', () => {
     fixture = TestBed.createComponent(BottombarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
   it('should create', () => {
