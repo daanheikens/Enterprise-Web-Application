@@ -110,6 +110,9 @@ describe('RegisterComponent', () => {
     expect((<any>component).selectedFiles).toBeUndefined();
   });
 
+/**
+ * @author Daan Heikens
+ */
   it('Should add a file to the selectedFiles variable', async () => {
     let file = new Blob();
     const fileList = {
