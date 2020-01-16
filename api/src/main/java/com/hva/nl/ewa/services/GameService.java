@@ -6,6 +6,7 @@ import com.hva.nl.ewa.models.User;
 import com.hva.nl.ewa.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class GameService {
 
     @Autowired
     public GameService(GameRepository gameRepository) {
+        Assert.notNull(gameRepository, "Game repository should not be null");
         this.gameRepository = gameRepository;
     }
 

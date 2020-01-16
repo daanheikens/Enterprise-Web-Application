@@ -31,6 +31,7 @@ import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -76,9 +77,41 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Should call the onSubmit method', async () => {
+    spyOn(component, 'onSubmit');
+    const submitButton = element.querySelector('.btn.btn-primary');
+    submitButton.click();
+    expect(component.onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Check form validation', async () => {
+    component.onSubmit();
+    expect(component.loginForm.invalid).toBeTruthy();
+    let formControls = component.formControls;
+    expect(component.loginForm.invalid).toBeTruthy();
+    formControls.username.setValue('UT_username');
+    component.onSubmit();
+    expect(component.loginForm.invalid).toBeTruthy();
+    formControls.password.setValue('UT_password');
+    expect(component.loginForm.invalid).toBeFalsy()
+    component.onSubmit();
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.loginForm).toBeTruthy()
+    expect(component.returnUrl).toContain('/home')
   });
 });

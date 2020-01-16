@@ -1,6 +1,7 @@
 package com.hva.nl.ewa.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,15 +42,13 @@ public class Card implements Model {
         return TileDefinition.GetTile(tile.getTileDefinition()).getTreasureStyle() == this.treasureStyle;
     }
 
-    public static Card[] GetNewCardSet() {
-        return TREASURE_CARDS;
-    }
-
     public Card(TreasureStyle cardStyle) {
         this.treasureStyle = cardStyle;
     }
 
     public void setId(long id) {
+
+        if(id < 0 ){ id = 0;}
         this.id = id;
     }
 
@@ -95,6 +94,7 @@ public class Card implements Model {
     }
 
     public void setGame(Game game) {
+        Assert.notNull(game, "Game should not be null");
         this.game = game;
     }
 

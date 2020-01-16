@@ -25,7 +25,7 @@ import {InvitesComponent} from '../invites/invites.component';
 import {ChatComponent} from '../chat/chat.component';
 import {LoginComponent} from '../login/login.component';
 import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
-import {DebugElement} from '@angular/core';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('BottombarComponent', () => {
   let component: BottombarComponent;
@@ -67,6 +67,7 @@ describe('BottombarComponent', () => {
         NgSelectModule,
         ModalModule.forRoot(),
         FormsModule,
+        RouterTestingModule
       ]
     })
       .compileComponents();

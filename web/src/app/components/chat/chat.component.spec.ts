@@ -30,6 +30,7 @@ import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 describe('ChatComponent', () => {
   let component: ChatComponent;
   let fixture: ComponentFixture<ChatComponent>;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -77,7 +78,37 @@ describe('ChatComponent', () => {
     fixture.detectChanges();
   });
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ChatComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    element = fixture.nativeElement;
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Should have correct loading state', async () => {
+    expect(component.error).toBe('');
+    expect(component.loading).toBe(false);
+    expect(component.submitted).toBe(false);
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Should call the onSubmit method', async () => {
+    spyOn(component, 'onSendMessage');
+    const submitButton = element.querySelector('.btn.btn-primary');
+    submitButton.click();
+    expect(component.onSendMessage).toHaveBeenCalledTimes(1);
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.formControls).toBeTruthy();
   });
 });

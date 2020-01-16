@@ -30,6 +30,7 @@ import {UserWidgetsComponent} from '../user-widgets/user-widgets.component';
 describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
   let fixture: ComponentFixture<ForgotPasswordComponent>;
+  let element: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -75,9 +76,39 @@ describe('ForgotPasswordComponent', () => {
     fixture = TestBed.createComponent(ForgotPasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    element = fixture.nativeElement;
   });
 
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Should call the onSubmit method', async () => {
+    spyOn(component, 'onSubmit');
+    const submitButton = element.querySelector('.btn.btn-primary');
+    submitButton.click();
+    expect(component.onSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.forgotPasswordForm).toBeTruthy();
+    expect(component.loading).toBe(false)
+    expect(component.submitted).toBe(false)
+  });
+
+  /**
+   * @author Lars Bruins Slot
+   */
+  it('Check form validation', async () => {
+    component.onSubmit();
+    expect(component.forgotPasswordForm.invalid).toBeTruthy();
+    let formControls = component.formControls;
+    expect(component.forgotPasswordForm.invalid).toBeTruthy();
+    formControls.email.setValue('test@test.nl');
+    expect(component.forgotPasswordForm.invalid).toBeFalsy()
+    component.onSubmit();
   });
 });
