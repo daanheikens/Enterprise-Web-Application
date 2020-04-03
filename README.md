@@ -1,5 +1,7 @@
 # EWA
 
+Assignment for creating and SPA with Angular and a Spring Boot REST API.
+
 ### 1. Setup Angular CLI runner
 ![Alt text](images/Angular-CLI-config.png?raw=true "Title")
 
